@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set active = "muse" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/muse.css">
+{% endblock %}
+
+{% block content %}
+<div class="muse-main">
+    <nav class="muse-subnav">
+        <a href="/muse" {% if muse_active == "dashboard" %}class="active"{% endif %}>Dashboard</a>
+        <a href="/muse/heroes" {% if muse_active == "heroes" %}class="active"{% endif %}>Heroes</a>
+        <a href="/muse/creation-myths" {% if muse_active == "creation_myths" %}class="active"{% endif %}>Creation Myths</a>
+        <a href="/muse/pantheon" {% if muse_active == "pantheon" %}class="active"{% endif %}>Pantheon</a>
+        <a href="/muse/world-builder" {% if muse_active == "world_builder" %}class="active"{% endif %}>World Builder</a>
+        <a href="/muse/character-forge" {% if muse_active == "character_forge" %}class="active"{% endif %}>Character Forge</a>
+        <a href="/muse/story-seeds" {% if muse_active == "story_seeds" %}class="active"{% endif %}>Story Seeds</a>
+        <a href="/muse/story-architect" {% if muse_active == "story_architect" %}class="active"{% endif %}>Story Architect</a>
+    </nav>
+    {% block muse_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/muse.js"></script>
+{% block muse_scripts %}{% endblock %}
+{% endblock %}

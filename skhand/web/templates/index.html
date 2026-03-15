@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% set active = "ask" %}
+{% block title %}Skhand — Ask{% endblock %}
+
+{% block content %}
+<h1>Ask Skhand</h1>
+
+<div class="ask-form">
+    <div class="ask-input-row">
+        <input type="text" class="ask-input" id="question"
+               placeholder="Ask a question bridging ancient and modern knowledge..."
+               autofocus>
+        <button class="btn" id="ask-btn" onclick="submitQuestion()">Ask</button>
+    </div>
+    <div class="ask-options">
+        <label>
+            <input type="checkbox" id="save-cards"> Generate flashcards
+        </label>
+    </div>
+</div>
+
+<div id="answer-area"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const questionInput = document.getElementById('question');
+const askBtn = document.getElementById('ask-btn');
+const answerArea = document.getElementById('answer-area');
+const saveCardsCheck = document.getElementById('save-cards');
+
+questionInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !askBtn.disabled) submitQuestion();
+});
+
+async function submitQuestion() {
+    const question = questionInput.value.trim();
+    if (!question) return;
+
+    askBtn.disabled = true;
+    askBtn.textContent = 'Thinking...';
+    answerArea.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            <span>Searching corpora and synthesizing answer...</span>
+        </div>`;
+
+    try {
+        const resp = await fetch('/api/ask', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                question: question,
+                save_cards: saveCardsCheck.checked
+            })
+        });
+        const data = await resp.json();
+
+        if (data.error) {
+            answerArea.innerHTML = `<div class="error-msg">${escapeHtml(data.error)}</div>`;
+            return;
+        }
+
+        let html = '<div class="answer-container">';
+
+        // Shastra panel
+        html += `
+            <div class="panel panel-shastra">
+                <div class="panel-header">&#x0936;&#x093E;&#x0938;&#x094D;&#x0924;&#x094D;&#x0930; (Shastra) &mdash; Ancient Knowledge</div>
+                <div class="panel-body">${renderMarkdown(data.shastra)}</div>
+            </div>`;
+
+        // Science panel
+        html += `
+            <div class="panel panel-science">
+                <div class="panel-header">Modern Science</div>
+                <div class="panel-body">${renderMarkdown(data.science)}</div>
+            </div>`;
+
+        // Setu panel
+        html += `
+            <div class="panel panel-setu">
+                <div class="panel-header">&#x0938;&#x0947;&#x0924;&#x0941; (Setu) &mdash; Bridge</div>
+                <div class="panel-body">${renderMarkdown(data.setu)}</div>
+            </div>`;
+
+        html += '</div>';
+
+        // Usage info
+        if (data.usage) {
+            html += `<div class="usage-bar">
+                Tokens: ${data.usage.input_tokens || 0} in / ${data.usage.output_tokens || 0} out
+                &bull; Model: ${data.usage.model || ''}
+            </div>`;
+        }
+
+        // Cards generated
+        if (data.cards_generated) {
+            html += `<div class="usage-bar" style="color: var(--green);">
+                ${data.cards_generated} flashcard(s) generated and saved
+            </div>`;
+        }
+
+        answerArea.innerHTML = html;
+
+    } catch (err) {
+        answerArea.innerHTML = `<div class="error-msg">Request failed: ${escapeHtml(err.message)}</div>`;
+    } finally {
+        askBtn.disabled = false;
+        askBtn.textContent = 'Ask';
+    }
+}
+
+function renderMarkdown(text) {
+    if (!text) return '<em>No content</em>';
+    return marked.parse(text);
+}
+
+function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+</script>
+{% endblock %}

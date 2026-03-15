@@ -1,0 +1,59 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "creation_myths" %}
+
+{% block title %}Creation Myths — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Creation Myths of the World</h1>
+    <p>{{ myths|length }} cosmogonic narratives across 6 types — how civilizations imagined the beginning</p>
+</div>
+
+<!-- Taxonomy -->
+<h2 style="color: var(--muse-purple); margin-bottom: 1rem;">Six Types of Creation</h2>
+<div class="muse-grid muse-grid-sm" style="margin-bottom: 2rem;">
+    {% for t in taxonomy %}
+    <div class="muse-card" style="border-left-color: var(--muse-purple); cursor: default;" x-data="{ open: false }" @click="open = !open">
+        <h3>{{ t.type | replace('_', ' ') | title }}</h3>
+        <p>{{ t.description[:120] }}{% if t.description|length > 120 %}...{% endif %}</p>
+        <div x-show="open" x-transition style="margin-top: 0.75rem;">
+            <p style="color: var(--text-secondary); font-size: 0.85rem;">{{ t.description }}</p>
+            <div class="count" style="margin-top: 0.5rem;">Examples: {{ t.examples | join(', ') }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- All Myths -->
+<h2 style="color: var(--muse-amber); margin-bottom: 1rem;">All Creation Narratives</h2>
+<div class="muse-grid">
+    {% for myth in myths %}
+    <div class="muse-card" data-tradition="{{ myth.tradition }}" x-data="{ expanded: false }" @click="expanded = !expanded">
+        <span class="tradition-tag
+            {% if 'Vedic' in myth.tradition %}tag-vedic
+            {% elif 'Mesopotamian' in myth.tradition or 'Babylonian' in myth.tradition %}tag-mesopotamian
+            {% elif 'Egyptian' in myth.tradition %}tag-egyptian
+            {% elif 'Greek' in myth.tradition %}tag-greek
+            {% elif 'Norse' in myth.tradition %}tag-norse
+            {% elif 'Chinese' in myth.tradition %}tag-chinese
+            {% elif 'Japanese' in myth.tradition %}tag-vedic
+            {% elif 'Maya' in myth.tradition %}tag-mesopotamian
+            {% elif 'Judeo' in myth.tradition or 'Christian' in myth.tradition %}tag-greek
+            {% elif 'Finnish' in myth.tradition %}tag-norse
+            {% elif 'Yoruba' in myth.tradition %}tag-african
+            {% else %}tag-vedic{% endif %}">{{ myth.tradition }}</span>
+        <h3>{{ myth.id | replace('_', ' ') | title }}</h3>
+        <div class="count" style="margin-bottom: 0.5rem;">Type: {{ myth.type | replace('_', ' ') | title }}</div>
+        <p>{{ myth.summary[:180] }}{% if myth.summary|length > 180 %}...{% endif %}</p>
+
+        <div x-show="expanded" x-transition style="margin-top: 1rem;">
+            <p><strong>Source:</strong> {{ myth.source_text }}</p>
+            <p><strong>Primordial state:</strong> {{ myth.primordial_state }}</p>
+            <p><strong>Creative agent:</strong> {{ myth.creative_agent }}</p>
+            <p><strong>Method:</strong> {{ myth.method_of_creation }}</p>
+            <p><strong>First beings:</strong> {{ myth.first_beings }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

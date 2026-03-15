@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% set active = "status" %}
+{% block title %}Skhand — System Status{% endblock %}
+
+{% block content %}
+<h1>System Status</h1>
+
+<div id="status-area">
+    <div class="loading"><div class="spinner"></div><span>Checking system status...</span></div>
+</div>
+
+<div style="margin-top: 1rem; text-align: right;">
+    <button class="btn btn-sm" onclick="loadStatus()">Refresh</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadStatus() {
+    const area = document.getElementById('status-area');
+    area.innerHTML = '<div class="loading"><div class="spinner"></div><span>Checking system status...</span></div>';
+
+    try {
+        const resp = await fetch('/api/status');
+        const data = await resp.json();
+
+        if (data.error) {
+            area.innerHTML = `<div class="error-msg">${escapeHtml(data.error)}</div>`;
+            return;
+        }
+
+        let html = `<table>
+            <thead><tr>
+                <th>Component</th><th>Status</th><th>Detail</th>
+            </tr></thead><tbody>`;
+
+        for (const item of data.items) {
+            let statusClass = 'status-err';
+            if (item.status === 'OK') statusClass = 'status-ok';
+            else if (item.status === 'EMPTY') statusClass = 'status-warn';
+
+            html += `<tr>
+                <td>${escapeHtml(item.component)}</td>
+                <td class="${statusClass}">${escapeHtml(item.status)}</td>
+                <td>${escapeHtml(item.detail)}</td>
+            </tr>`;
+        }
+
+        html += '</tbody></table>';
+        area.innerHTML = html;
+
+    } catch (err) {
+        area.innerHTML = `<div class="error-msg">Failed to load status: ${escapeHtml(err.message)}</div>`;
+    }
+}
+
+function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+
+loadStatus();
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+.venv/
+.git/
+.env
+__pycache__/
+*.pyc
+*.pyo
+data/chromadb/
+data/sanskrit/
+data/papers/
+*.db
+.pytest_cache/
+tests/
+*.egg-info/
+docker-compose.yml

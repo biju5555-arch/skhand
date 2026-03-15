@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% set active = "learn" %}
+{% block title %}Skhand — Learn{% endblock %}
+
+{% block content %}
+<h1>Flashcard Review</h1>
+
+<div class="stats-grid" id="stats-area">
+    <div class="stat-card"><div class="stat-value" id="stat-total">-</div><div class="stat-label">Total Cards</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-due">-</div><div class="stat-label">Due Now</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-today">-</div><div class="stat-label">Reviews Today</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-all">-</div><div class="stat-label">Total Reviews</div></div>
+</div>
+
+<div class="card-container" id="card-area">
+    <div class="empty-state" id="no-cards">
+        <p>Loading cards...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let cards = [];
+let currentIndex = 0;
+let revealed = false;
+
+async function loadStats() {
+    try {
+        const resp = await fetch('/api/learn/stats');
+        const data = await resp.json();
+        document.getElementById('stat-total').textContent = data.total_cards;
+        document.getElementById('stat-due').textContent = data.due_now;
+        document.getElementById('stat-today').textContent = data.reviews_today;
+        document.getElementById('stat-all').textContent = data.total_reviews;
+    } catch (e) {}
+}
+
+async function loadCards() {
+    try {
+        const resp = await fetch('/api/learn/due?limit=20');
+        const data = await resp.json();
+        cards = data.cards || [];
+        currentIndex = 0;
+        revealed = false;
+
+        if (cards.length === 0) {
+            document.getElementById('card-area').innerHTML =
+                '<div class="empty-state"><p>No cards due for review. Come back later!</p></div>';
+            return;
+        }
+
+        showCard();
+    } catch (err) {
+        document.getElementById('card-area').innerHTML =
+            `<div class="error-msg">${escapeHtml(err.message)}</div>`;
+    }
+}
+
+function showCard() {
+    if (currentIndex >= cards.length) {
+        document.getElementById('card-area').innerHTML =
+            '<div class="empty-state"><p style="color: var(--green);">Session complete! All cards reviewed.</p></div>';
+        loadStats();
+        return;
+    }
+
+    const card = cards[currentIndex];
+    revealed = false;
+
+    document.getElementById('card-area').innerHTML = `
+        <div class="card-progress">Card ${currentIndex + 1} of ${cards.length}</div>
+        <div class="flashcard" id="flashcard" onclick="revealCard()">
+            <div class="flashcard-front">${escapeHtml(card.front)}</div>
+            <div class="flashcard-meta">Click to reveal answer</div>
+        </div>
+        <div id="rating-area"></div>
+        <div class="card-nav">Press <kbd>Space</kbd> to reveal &bull; <kbd>1-4</kbd> to rate</div>
+    `;
+}
+
+function revealCard() {
+    if (revealed) return;
+    revealed = true;
+
+    const card = cards[currentIndex];
+    const fc = document.getElementById('flashcard');
+    fc.innerHTML = `
+        <div class="flashcard-front" style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #333;">
+            ${escapeHtml(card.front)}
+        </div>
+        <div class="flashcard-back">${escapeHtml(card.back)}</div>
+    `;
+    fc.onclick = null;
+    fc.style.cursor = 'default';
+
+    document.getElementById('rating-area').innerHTML = `
+        <div class="rating-buttons">
+            <button class="btn btn-red btn-sm" onclick="rateCard(1)">Again (1)</button>
+            <button class="btn btn-gold btn-sm" onclick="rateCard(2)">Hard (2)</button>
+            <button class="btn btn-blue btn-sm" onclick="rateCard(3)">Good (3)</button>
+            <button class="btn btn-green btn-sm" onclick="rateCard(4)">Easy (4)</button>
+        </div>
+    `;
+}
+
+async function rateCard(rating) {
+    const card = cards[currentIndex];
+
+    // Disable buttons
+    document.querySelectorAll('.rating-buttons .btn').forEach(b => b.disabled = true);
+
+    try {
+        const resp = await fetch('/api/learn/review', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ card_id: card.id, rating: rating })
+        });
+        const data = await resp.json();
+
+        if (data.error) {
+            document.getElementById('rating-area').innerHTML +=
+                `<div class="error-msg">${escapeHtml(data.error)}</div>`;
+            return;
+        }
+
+        currentIndex++;
+        showCard();
+        loadStats();
+
+    } catch (err) {
+        document.getElementById('rating-area').innerHTML +=
+            `<div class="error-msg">${escapeHtml(err.message)}</div>`;
+    }
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space' && !revealed && cards.length > 0 && currentIndex < cards.length) {
+        e.preventDefault();
+        revealCard();
+    }
+    if (revealed && ['1','2','3','4'].includes(e.key)) {
+        rateCard(parseInt(e.key));
+    }
+});
+
+function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+
+// Init
+loadStats();
+loadCards();
+</script>
+{% endblock %}

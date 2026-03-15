@@ -1,0 +1,499 @@
+/* Writer's Muse — Creative theme extending Skhand dark UI */
+
+:root {
+    --muse-amber: #F59E0B;
+    --muse-purple: #A855F7;
+    --muse-rose: #F43F5E;
+    --muse-teal: #14B8A6;
+    --muse-gold: #FFD700;
+    --muse-blue: #3B82F6;
+    --muse-green: #10B981;
+    --muse-indigo: #6366F1;
+
+    /* Tradition colors */
+    --t-vedic: #FFD700;
+    --t-greek: #3B82F6;
+    --t-norse: #14B8A6;
+    --t-egyptian: #F59E0B;
+    --t-chinese: #F43F5E;
+    --t-african: #10B981;
+    --t-mesopotamian: #A855F7;
+    --t-celtic: #6366F1;
+    --t-buddhist: #F97316;
+    --t-japanese: #EC4899;
+    --t-mesoamerican: #EF4444;
+    --t-finnish: #06B6D4;
+}
+
+/* ─── Muse Layout ────────────────────────────────────────────────────── */
+
+.muse-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.muse-header {
+    margin-bottom: 2rem;
+}
+
+.muse-header h1 {
+    font-size: 1.8rem;
+    color: var(--muse-amber);
+    margin-bottom: 0.25rem;
+}
+
+.muse-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* ─── Sub-navigation ─────────────────────────────────────────────────── */
+
+.muse-subnav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.muse-subnav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    background: rgba(255,255,255,0.03);
+}
+
+.muse-subnav a:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--text-primary);
+}
+
+.muse-subnav a.active {
+    background: var(--muse-amber);
+    color: #1a1a2e;
+    font-weight: 600;
+}
+
+/* ─── Card Grid ──────────────────────────────────────────────────────── */
+
+.muse-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+.muse-grid-sm {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.muse-card {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--muse-amber);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.muse-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.muse-card h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.muse-card .tradition-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.muse-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.muse-card .count {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* Tradition-colored card borders */
+.muse-card[data-tradition*="Vedic"],
+.muse-card[data-tradition*="Hindu"],
+.muse-card[data-tradition*="Indian"] { border-left-color: var(--t-vedic); }
+.muse-card[data-tradition*="Greek"] { border-left-color: var(--t-greek); }
+.muse-card[data-tradition*="Norse"],
+.muse-card[data-tradition*="Germanic"] { border-left-color: var(--t-norse); }
+.muse-card[data-tradition*="Egyptian"] { border-left-color: var(--t-egyptian); }
+.muse-card[data-tradition*="Chinese"] { border-left-color: var(--t-chinese); }
+.muse-card[data-tradition*="African"],
+.muse-card[data-tradition*="Mande"],
+.muse-card[data-tradition*="Yoruba"] { border-left-color: var(--t-african); }
+.muse-card[data-tradition*="Mesopotamian"],
+.muse-card[data-tradition*="Babylonian"] { border-left-color: var(--t-mesopotamian); }
+.muse-card[data-tradition*="Celtic"],
+.muse-card[data-tradition*="Irish"] { border-left-color: var(--t-celtic); }
+.muse-card[data-tradition*="Buddhist"] { border-left-color: var(--t-buddhist); }
+.muse-card[data-tradition*="Japanese"] { border-left-color: var(--t-japanese); }
+.muse-card[data-tradition*="Maya"],
+.muse-card[data-tradition*="Aztec"] { border-left-color: var(--t-mesoamerican); }
+.muse-card[data-tradition*="Finnish"] { border-left-color: var(--t-finnish); }
+
+/* Tradition tag colors */
+.tag-vedic { background: rgba(255,215,0,0.15); color: var(--t-vedic); }
+.tag-greek { background: rgba(59,130,246,0.15); color: var(--t-greek); }
+.tag-norse { background: rgba(20,184,166,0.15); color: var(--t-norse); }
+.tag-egyptian { background: rgba(245,158,11,0.15); color: var(--t-egyptian); }
+.tag-chinese { background: rgba(244,63,94,0.15); color: var(--t-chinese); }
+.tag-african { background: rgba(16,185,129,0.15); color: var(--t-african); }
+.tag-mesopotamian { background: rgba(168,85,247,0.15); color: var(--t-mesopotamian); }
+.tag-celtic { background: rgba(99,102,241,0.15); color: var(--t-celtic); }
+.tag-buddhist { background: rgba(249,115,22,0.15); color: var(--t-buddhist); }
+
+/* ─── Category Tiles (Dashboard) ─────────────────────────────────────── */
+
+.category-tile {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.category-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border-color: var(--muse-amber);
+}
+
+.category-tile .tile-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.category-tile h3 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.category-tile .tile-count {
+    color: var(--muse-amber);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ─── Search ─────────────────────────────────────────────────────────── */
+
+.muse-search {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.muse-search input {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.muse-search input:focus {
+    border-color: var(--muse-amber);
+}
+
+/* ─── Hero Detail ────────────────────────────────────────────────────── */
+
+.hero-detail {
+    max-width: 800px;
+}
+
+.hero-detail h1 {
+    color: var(--muse-amber);
+    font-size: 1.6rem;
+}
+
+.hero-detail .hero-tradition {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-detail section {
+    margin-bottom: 1.5rem;
+}
+
+.hero-detail section h2 {
+    color: var(--muse-purple);
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+.hero-detail section p {
+    color: var(--text-primary);
+    line-height: 1.8;
+    font-size: 0.95rem;
+}
+
+/* ─── Forms ──────────────────────────────────────────────────────────── */
+
+.muse-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 700px;
+}
+
+.muse-form label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.muse-form input,
+.muse-form select,
+.muse-form textarea {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.muse-form input:focus,
+.muse-form select:focus,
+.muse-form textarea:focus {
+    border-color: var(--muse-amber);
+}
+
+.muse-form textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.muse-form select {
+    cursor: pointer;
+}
+
+.muse-form .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.muse-form .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.muse-form .checkbox-group input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--muse-amber);
+}
+
+.muse-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────── */
+
+.btn-muse {
+    background: linear-gradient(135deg, var(--muse-amber), var(--muse-rose));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-muse:hover { opacity: 0.9; }
+.btn-muse:active { transform: scale(0.98); }
+.btn-muse:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-muse-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.btn-muse-outline {
+    background: transparent;
+    border: 1px solid var(--muse-amber);
+    color: var(--muse-amber);
+}
+
+.btn-muse-outline:hover {
+    background: rgba(245,158,11,0.1);
+}
+
+/* ─── Result Output ──────────────────────────────────────────────────── */
+
+.muse-result {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 1.75rem;
+    margin-top: 1.5rem;
+    border-left: 4px solid var(--muse-purple);
+}
+
+.muse-result h2 {
+    color: var(--muse-purple);
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+}
+
+.muse-result h3 {
+    color: var(--muse-amber);
+    font-size: 1rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.muse-result p {
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.muse-result .seed-card {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--muse-amber);
+}
+
+.muse-result .seed-card h4 {
+    color: var(--muse-amber);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.muse-result .seed-card .opening-line {
+    font-style: italic;
+    color: var(--muse-teal);
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.muse-result .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.muse-result .tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(168,85,247,0.15);
+    color: var(--muse-purple);
+}
+
+/* ─── Loading State ──────────────────────────────────────────────────── */
+
+.muse-loading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+.muse-loading .spinner-muse {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(245,158,11,0.2);
+    border-top-color: var(--muse-amber);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* ─── Pantheon Table ─────────────────────────────────────────────────── */
+
+.pantheon-grid {
+    overflow-x: auto;
+}
+
+.pantheon-grid table {
+    min-width: 700px;
+}
+
+.pantheon-grid th {
+    background: var(--bg-card);
+    color: var(--muse-amber);
+}
+
+/* ─── Quick Inspire Box ──────────────────────────────────────────────── */
+
+.quick-inspire {
+    background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(168,85,247,0.08));
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.quick-inspire h2 {
+    color: var(--muse-amber);
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    .muse-main { padding: 1.25rem 1rem; }
+    .muse-grid { grid-template-columns: 1fr; }
+    .muse-subnav { gap: 0.3rem; }
+    .muse-subnav a { font-size: 0.8rem; padding: 0.3rem 0.6rem; }
+    .muse-form .form-row { grid-template-columns: 1fr; }
+    .muse-search { flex-direction: column; }
+}

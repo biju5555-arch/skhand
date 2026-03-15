@@ -1,0 +1,443 @@
+{
+  "title": "The Story of Humanity — Master Index",
+  "description": "A master index linking every tradition in the corpus through 7 Universal Story Threads, 5 Meta-Narratives, and 4 Comparative Frameworks. Enables cross-tradition queries like 'How do different traditions explain creation?' or 'Compare the hero journey across civilizations.'",
+  "generated": "2026-03-14",
+  "version": "1.0",
+
+  "universal_threads": [
+    {
+      "id": "creation",
+      "name": "Creation — How the Cosmos Began",
+      "description": "Every civilization asks: where did everything come from? The answers reveal what each culture values most — order from chaos, sacrifice, word, thought, or emergence.",
+      "traditions": {
+        "vedic": {
+          "texts": ["Rigveda 10.129 (Nasadiya Sukta)", "Rigveda 10.90 (Purusha Sukta)", "Aitareya Upanishad"],
+          "key_concepts": ["Hiranyagarbha (golden egg)", "Purusha sacrifice", "Neither existence nor non-existence"],
+          "collection": "sanskrit_texts"
+        },
+        "mesopotamian": {
+          "texts": ["Enuma Elish", "Eridu Genesis"],
+          "key_concepts": ["Marduk slays Tiamat", "Creation from divine body", "Apsu and Tiamat as primordial waters"],
+          "collection": "world_texts"
+        },
+        "egyptian": {
+          "texts": ["Book of the Dead", "Pyramid Texts", "Memphis Theology"],
+          "key_concepts": ["Atum self-creates", "Ptah creates through speech", "Nun as primordial waters"],
+          "collection": "world_texts"
+        },
+        "greek": {
+          "texts": ["Hesiod's Theogony", "Plato's Timaeus"],
+          "key_concepts": ["Chaos → Gaia → Titans → Olympians", "Demiurge shapes pre-existing matter"],
+          "collection": "world_texts"
+        },
+        "norse": {
+          "texts": ["Poetic Edda (Voluspa)", "Prose Edda (Gylfaginning)"],
+          "key_concepts": ["Ginnungagap void", "Ymir's body becomes world", "Ask and Embla first humans"],
+          "collection": "world_texts"
+        },
+        "chinese": {
+          "texts": ["Pan Gu myth", "Tao Te Ching ch.25", "I Ching"],
+          "key_concepts": ["Pan Gu breaks cosmic egg", "Tao as source of all", "Yin-Yang emergence"],
+          "collection": "world_texts"
+        },
+        "japanese": {
+          "texts": ["Kojiki", "Nihon Shoki"],
+          "key_concepts": ["Izanagi and Izanami stir the sea", "Islands born from divine union"],
+          "collection": "world_texts"
+        },
+        "mesoamerican": {
+          "texts": ["Popol Vuh"],
+          "key_concepts": ["Heart of Sky speaks world into being", "Multiple failed human creations", "Corn people"],
+          "collection": "world_texts"
+        },
+        "biblical": {
+          "texts": ["Genesis 1-3"],
+          "key_concepts": ["God speaks creation into being", "Creation in 7 days", "Adam from clay"],
+          "collection": "world_texts"
+        },
+        "finnish": {
+          "texts": ["Kalevala"],
+          "key_concepts": ["Ilmatar in primordial waters", "World egg cracks into sky and earth"],
+          "collection": "world_texts"
+        }
+      },
+      "cross_references": ["mesopotamian_creation.json", "creation_myths_universal.json"],
+      "sample_queries": [
+        "How do different traditions explain the origin of the cosmos?",
+        "Compare creation from chaos vs creation from nothing across traditions",
+        "What role does sacrifice play in creation myths?"
+      ]
+    },
+    {
+      "id": "flood",
+      "name": "The Flood — Universal Deluge",
+      "description": "Nearly every ancient civilization preserves a story of a catastrophic flood that destroyed the old world and enabled renewal. The flood is both destruction and baptism — an end that is also a beginning.",
+      "traditions": {
+        "mesopotamian": {
+          "texts": ["Epic of Gilgamesh (Tablet XI)", "Atrahasis"],
+          "key_concepts": ["Utnapishtim warned by Ea/Enki", "Boat with animals", "Raven and dove released"],
+          "collection": "world_texts"
+        },
+        "vedic": {
+          "texts": ["Shatapatha Brahmana", "Matsya Purana"],
+          "key_concepts": ["Manu warned by Matsya (fish avatar of Vishnu)", "Rope tied to fish horn"],
+          "collection": "sanskrit_texts"
+        },
+        "biblical": {
+          "texts": ["Genesis 6-9"],
+          "key_concepts": ["Noah warned by God", "Ark with pairs of animals", "Rainbow covenant"],
+          "collection": "world_texts"
+        },
+        "greek": {
+          "texts": ["Ovid's Metamorphoses", "Apollodorus"],
+          "key_concepts": ["Deucalion and Pyrrha survive Zeus's flood", "Repopulate by throwing stones"],
+          "collection": "world_texts"
+        },
+        "chinese": {
+          "texts": ["Shanhaijing", "Historical records"],
+          "key_concepts": ["Yu the Great controls the flood", "Engineering rather than escape"],
+          "collection": "world_texts"
+        },
+        "mesoamerican": {
+          "texts": ["Popol Vuh"],
+          "key_concepts": ["Failed wooden people destroyed by flood", "Rain of resin"],
+          "collection": "world_texts"
+        }
+      },
+      "cross_references": ["flood_narratives.json"],
+      "sample_queries": [
+        "Compare flood narratives across Mesopotamian, Vedic, and Biblical traditions",
+        "What common motifs appear in flood stories worldwide?",
+        "How does the Chinese flood narrative differ from the Western pattern?"
+      ]
+    },
+    {
+      "id": "hero_journey",
+      "name": "The Hero's Journey — The Monomyth",
+      "description": "Joseph Campbell's monomyth finds expression in every culture: a hero leaves the ordinary world, faces trials, achieves transformation, and returns with a boon for humanity.",
+      "traditions": {
+        "mesopotamian": {
+          "texts": ["Epic of Gilgamesh"],
+          "key_concepts": ["Gilgamesh seeks immortality", "Enkidu as companion", "Failure to achieve eternal life"],
+          "collection": "world_texts"
+        },
+        "vedic": {
+          "texts": ["Ramayana", "Mahabharata", "Bhagavad Gita"],
+          "key_concepts": ["Rama's exile and rescue of Sita", "Arjuna's crisis and divine teaching"],
+          "collection": "sanskrit_texts"
+        },
+        "greek": {
+          "texts": ["Odyssey", "Iliad"],
+          "key_concepts": ["Odysseus's 20-year journey home", "Achilles choosing glory over long life"],
+          "collection": "world_texts"
+        },
+        "norse": {
+          "texts": ["Volsunga Saga", "Poetic Edda"],
+          "key_concepts": ["Sigurd slays Fafnir", "Odin's self-sacrifice for wisdom"],
+          "collection": "world_texts"
+        },
+        "west_african": {
+          "texts": ["Sundiata epic"],
+          "key_concepts": ["Sundiata overcomes disability to unite Mali", "Exile and return"],
+          "collection": "world_texts"
+        },
+        "finnish": {
+          "texts": ["Kalevala"],
+          "key_concepts": ["Väinämöinen's quest for the Sampo", "Journey to Tuonela (underworld)"],
+          "collection": "world_texts"
+        }
+      },
+      "cross_references": ["hero_journey_parallels.json", "hero_epics_global.json"],
+      "sample_queries": [
+        "Compare the hero's journey in Indian vs Greek vs Mesopotamian traditions",
+        "How do heroes face death across different mythologies?",
+        "What role does the companion/sidekick play in world epics?"
+      ]
+    },
+    {
+      "id": "cosmic_cycles",
+      "name": "Cosmic Cycles — Time and Eternity",
+      "description": "Is time linear or cyclical? Most ancient traditions envision cosmic cycles of creation and destruction, with humanity currently in a declining age.",
+      "traditions": {
+        "vedic": {
+          "texts": ["Vishnu Purana", "Bhagavata Purana", "Surya Siddhanta"],
+          "key_concepts": ["Four Yugas: Satya/Treta/Dvapara/Kali", "Mahayuga = 4.32 million years", "Pralaya (dissolution)"],
+          "collection": "sanskrit_texts"
+        },
+        "buddhist": {
+          "texts": ["Abhidharmakosha", "Visuddhimagga"],
+          "key_concepts": ["Kalpas of creation/destruction", "World systems arising and passing"],
+          "collection": "world_texts"
+        },
+        "greek": {
+          "texts": ["Hesiod's Works and Days"],
+          "key_concepts": ["Five Ages: Gold, Silver, Bronze, Heroic, Iron", "Decline from golden age"],
+          "collection": "world_texts"
+        },
+        "norse": {
+          "texts": ["Voluspa (Poetic Edda)"],
+          "key_concepts": ["Ragnarök destruction and rebirth", "New earth rises from sea"],
+          "collection": "world_texts"
+        },
+        "mesoamerican": {
+          "texts": ["Popol Vuh", "Aztec Stone of the Five Suns"],
+          "key_concepts": ["Five Suns/world ages", "Each sun destroyed differently"],
+          "collection": "world_texts"
+        },
+        "zoroastrian": {
+          "texts": ["Bundahishn", "Zend-Avesta"],
+          "key_concepts": ["12,000-year cosmic cycle", "Frashokereti (final renovation)"],
+          "collection": "sanskrit_texts"
+        }
+      },
+      "cross_references": ["ragnarok_pralaya.json", "cosmic_cycles_global.json"],
+      "sample_queries": [
+        "Compare cyclical time in Hindu, Norse, and Mesoamerican traditions",
+        "What do different traditions say about the current age of humanity?",
+        "How do traditions envision the end and renewal of the world?"
+      ]
+    },
+    {
+      "id": "immortality_quest",
+      "name": "The Immortality Quest — Conquering Death",
+      "description": "From Gilgamesh seeking the herb of life to the churning of the ocean for Amrita, humanity's oldest obsession is defeating death.",
+      "traditions": {
+        "mesopotamian": {
+          "texts": ["Epic of Gilgamesh"],
+          "key_concepts": ["Plant of youth lost to serpent", "Acceptance of mortality"],
+          "collection": "world_texts"
+        },
+        "vedic": {
+          "texts": ["Samudra Manthan (Vishnu Purana)", "Katha Upanishad"],
+          "key_concepts": ["Amrita from churning the ocean", "Nachiketas learns secret of death from Yama"],
+          "collection": "sanskrit_texts"
+        },
+        "greek": {
+          "texts": ["Odyssey (Calypso offer)", "Myth of Tithonus"],
+          "key_concepts": ["Odysseus rejects immortality", "Tithonus — eternal life without youth"],
+          "collection": "world_texts"
+        },
+        "chinese": {
+          "texts": ["Tao Te Ching", "Journey to the West"],
+          "key_concepts": ["Taoist elixir of life", "Peaches of immortality"],
+          "collection": "world_texts"
+        },
+        "egyptian": {
+          "texts": ["Book of the Dead"],
+          "key_concepts": ["Preservation of the body", "Justified before Osiris for eternal afterlife"],
+          "collection": "world_texts"
+        },
+        "hermetic": {
+          "texts": ["Corpus Hermeticum", "Emerald Tablet"],
+          "key_concepts": ["Philosopher's Stone", "Spiritual transmutation"],
+          "collection": "world_texts"
+        }
+      },
+      "cross_references": [],
+      "sample_queries": [
+        "How do different traditions approach the quest for immortality?",
+        "Compare Gilgamesh's failure with the Vedic Amrita churning",
+        "What wisdom about death appears across world traditions?"
+      ]
+    },
+    {
+      "id": "knowledge_theft",
+      "name": "Knowledge Theft / Divine Gift — The Fire Bringer",
+      "description": "In many traditions, civilization-enabling knowledge is stolen from the gods or given at great cost. Fire, writing, agriculture, and wisdom all have mythic origins.",
+      "traditions": {
+        "greek": {
+          "texts": ["Hesiod's Theogony", "Prometheus Bound (Aeschylus)"],
+          "key_concepts": ["Prometheus steals fire from Zeus", "Punished by eternal torment"],
+          "collection": "world_texts"
+        },
+        "vedic": {
+          "texts": ["Rigveda (Matarisvan hymns)"],
+          "key_concepts": ["Matarisvan brings fire from heaven", "Agni as divine messenger"],
+          "collection": "sanskrit_texts"
+        },
+        "norse": {
+          "texts": ["Havamal (Poetic Edda)"],
+          "key_concepts": ["Odin sacrifices himself on Yggdrasil for 9 days", "Gains the secret of runes"],
+          "collection": "world_texts"
+        },
+        "biblical": {
+          "texts": ["Genesis 2-3"],
+          "key_concepts": ["Tree of Knowledge of Good and Evil", "Serpent as knowledge-bringer", "Fall from paradise"],
+          "collection": "world_texts"
+        },
+        "mesopotamian": {
+          "texts": ["Myth of Adapa", "Descent of Inanna"],
+          "key_concepts": ["Adapa refuses immortality for knowledge", "Me (divine laws) distributed to cities"],
+          "collection": "world_texts"
+        },
+        "mesoamerican": {
+          "texts": ["Popol Vuh"],
+          "key_concepts": ["Quetzalcoatl gives corn/knowledge to humanity"],
+          "collection": "world_texts"
+        }
+      },
+      "cross_references": [],
+      "sample_queries": [
+        "Compare Prometheus, Matarisvan, and Odin as knowledge bringers",
+        "Is knowledge a gift or a theft in different mythologies?",
+        "How do traditions view the cost of gaining wisdom?"
+      ]
+    },
+    {
+      "id": "underworld_descent",
+      "name": "The Underworld Descent — Journey to the Land of the Dead",
+      "description": "The katabasis — descent to the underworld — appears in nearly every tradition. The hero goes down to death and returns transformed, bringing wisdom back to the living.",
+      "traditions": {
+        "mesopotamian": {
+          "texts": ["Descent of Inanna", "Epic of Gilgamesh (Tablet XII)"],
+          "key_concepts": ["Inanna stripped at seven gates", "Must find a substitute to return"],
+          "collection": "world_texts"
+        },
+        "greek": {
+          "texts": ["Odyssey (Book XI)", "Orpheus and Eurydice"],
+          "key_concepts": ["Odysseus summons the dead", "Orpheus fails by looking back"],
+          "collection": "world_texts"
+        },
+        "vedic": {
+          "texts": ["Katha Upanishad", "Savitri episode (Mahabharata)"],
+          "key_concepts": ["Nachiketas debates Yama", "Savitri argues her husband back from death"],
+          "collection": "sanskrit_texts"
+        },
+        "japanese": {
+          "texts": ["Kojiki"],
+          "key_concepts": ["Izanagi descends to Yomi to retrieve Izanami", "Sees her decaying form"],
+          "collection": "world_texts"
+        },
+        "egyptian": {
+          "texts": ["Book of the Dead"],
+          "key_concepts": ["Journey through Duat", "Spells for navigating the afterlife"],
+          "collection": "world_texts"
+        },
+        "norse": {
+          "texts": ["Prose Edda (Baldr's death)"],
+          "key_concepts": ["Hermod rides to Hel to retrieve Baldr", "Hel demands all things weep"],
+          "collection": "world_texts"
+        },
+        "finnish": {
+          "texts": ["Kalevala"],
+          "key_concepts": ["Väinämöinen descends to Tuonela", "Gains knowledge from the dead"],
+          "collection": "world_texts"
+        }
+      },
+      "cross_references": [],
+      "sample_queries": [
+        "Compare underworld descents across mythologies",
+        "What do heroes learn from visiting the land of the dead?",
+        "How do Inanna, Orpheus, and Nachiketas differ in their underworld encounters?"
+      ]
+    }
+  ],
+
+  "meta_narratives": [
+    {
+      "id": "origin",
+      "name": "Origin — Cosmogony and Anthropogony",
+      "description": "How each tradition explains the creation of the cosmos, the gods, and humanity. Includes divine hierarchy and the relationship between creator and creation.",
+      "related_threads": ["creation"],
+      "traditions_covered": ["vedic", "mesopotamian", "egyptian", "greek", "norse", "chinese", "japanese", "mesoamerican", "biblical", "finnish"],
+      "knowledge_files": ["mesopotamian_creation.json", "creation_myths_universal.json"]
+    },
+    {
+      "id": "order",
+      "name": "Order — Law, Dharma, and Cosmic Structure",
+      "description": "How each tradition structures society and aligns human behavior with cosmic law. Dharma, Ma'at, Ren, Nomos, Torah — different names for the same insight that the cosmos has a moral structure.",
+      "related_threads": [],
+      "traditions_covered": ["vedic", "egyptian", "chinese", "greek", "biblical", "zoroastrian"],
+      "knowledge_files": ["ethics_across_traditions.json"]
+    },
+    {
+      "id": "crisis",
+      "name": "Crisis — Flood, Fall, and Cosmic War",
+      "description": "Every tradition records a moment when the cosmic order was threatened or broken. The flood, the fall from paradise, the war of gods — these crises define the human condition.",
+      "related_threads": ["flood", "cosmic_cycles"],
+      "traditions_covered": ["mesopotamian", "vedic", "biblical", "greek", "norse", "mesoamerican"],
+      "knowledge_files": ["flood_narratives.json", "ragnarok_pralaya.json"]
+    },
+    {
+      "id": "quest",
+      "name": "Quest — Hero Journey and Philosophical Seeking",
+      "description": "The human response to crisis: the hero ventures forth, the philosopher seeks truth, the mystic ascends. This meta-narrative encompasses both external adventure and internal transformation.",
+      "related_threads": ["hero_journey", "immortality_quest", "knowledge_theft", "underworld_descent"],
+      "traditions_covered": ["mesopotamian", "vedic", "greek", "norse", "west_african", "finnish", "chinese"],
+      "knowledge_files": ["hero_journey_parallels.json", "hero_epics_global.json"]
+    },
+    {
+      "id": "renewal",
+      "name": "Renewal — Eschatology and the Return of the Golden Age",
+      "description": "After destruction comes renewal. Every tradition envisions a return to paradise — whether through cosmic cycles, divine intervention, or human liberation (moksha, nirvana, salvation).",
+      "related_threads": ["cosmic_cycles"],
+      "traditions_covered": ["vedic", "buddhist", "norse", "zoroastrian", "mesoamerican", "greek", "biblical"],
+      "knowledge_files": ["cosmic_cycles_global.json", "ragnarok_pralaya.json"]
+    }
+  ],
+
+  "comparative_frameworks": [
+    {
+      "id": "dumezil_trifunctionality",
+      "name": "Dumézil's Trifunctionality",
+      "description": "Georges Dumézil's theory that Indo-European societies shared a tripartite ideology: priestly/sovereign, warrior, and producer functions. Traces this across Vedic varnas, Roman flamines, Norse gods (Odin/Thor/Freyr), Celtic druids/warriors/commoners.",
+      "applicable_traditions": ["vedic", "greek", "roman", "norse", "celtic"],
+      "knowledge_files": ["indo_european_pantheon.json"]
+    },
+    {
+      "id": "axial_age_mapping",
+      "name": "Axial Age Mapping (800-200 BCE)",
+      "description": "Karl Jaspers' observation that philosophy and ethical religion emerged simultaneously across disconnected civilizations. Maps the parallel emergence of Buddha, Confucius, Lao Tzu, Pythagoras, Hebrew prophets, Mahavira, and Zarathustra.",
+      "applicable_traditions": ["vedic", "buddhist", "chinese", "greek", "zoroastrian", "biblical"],
+      "knowledge_files": ["axial_age_parallel.json"]
+    },
+    {
+      "id": "knowledge_transfer_routes",
+      "name": "Knowledge Transfer Routes",
+      "description": "Historical pathways of intellectual exchange: Silk Road, Alexandria, Baghdad's House of Wisdom, Nalanda, Taxila. Tracks how ideas moved between civilizations — sometimes with clear evidence, sometimes through parallel independent development.",
+      "routes": [
+        {"name": "Silk Road", "era": "200 BCE - 1400 CE", "connected": ["china", "india", "persia", "rome"]},
+        {"name": "Alexandria", "era": "300 BCE - 400 CE", "connected": ["egypt", "greece", "india", "persia"]},
+        {"name": "Baghdad House of Wisdom", "era": "800-1200 CE", "connected": ["arabia", "india", "greece", "persia"]},
+        {"name": "Nalanda/Taxila", "era": "500 BCE - 1200 CE", "connected": ["india", "china", "southeast_asia", "tibet"]}
+      ],
+      "knowledge_files": []
+    },
+    {
+      "id": "parallel_independent_inventions",
+      "name": "Parallel Independent Inventions",
+      "description": "Similar ideas arising without contact — suggesting something universal about human cognition. Atomic theory (Democritus/Vaisheshika), zero (Maya/India), flood narratives, hero journeys, creation-from-sacrifice myths.",
+      "examples": [
+        {"concept": "Atomic theory", "traditions": ["greek (Democritus)", "indian (Kanada/Vaisheshika)"], "era": "c. 500 BCE"},
+        {"concept": "Zero as number", "traditions": ["maya", "indian (Brahmagupta)"], "era": "c. 300 CE"},
+        {"concept": "Golden Rule", "traditions": ["confucian", "christian", "hindu", "buddhist", "jewish"], "era": "600 BCE - 100 CE"},
+        {"concept": "Flood narrative", "traditions": ["mesopotamian", "vedic", "biblical", "greek", "chinese", "mesoamerican"], "era": "various"},
+        {"concept": "World as illusion", "traditions": ["vedantic (maya)", "platonic (cave)", "buddhist (sunyata)", "gnostic (demiurge)"], "era": "various"}
+      ],
+      "knowledge_files": ["greek_philosophy_darshana.json"]
+    }
+  ],
+
+  "collections": {
+    "sanskrit_texts": "Existing Indic/Sanskrit corpus (Vedas, Upanishads, Epics, Darshana, Puranas, etc.)",
+    "world_texts": "New cross-cultural corpus (Mesopotamia, Egypt, Greece, Norse, China, Japan, Africa, etc.)",
+    "science_papers": "Modern scientific papers bridging ancient and modern knowledge"
+  },
+
+  "civilizations_index": {
+    "mesopotamia": {"era": "3500-539 BCE", "tradition": "ancient_near_east", "texts": ["Epic of Gilgamesh", "Enuma Elish", "Code of Hammurabi", "Descent of Inanna"]},
+    "egypt": {"era": "3100-30 BCE", "tradition": "ancient_near_east", "texts": ["Book of the Dead", "Pyramid Texts"]},
+    "india": {"era": "1500 BCE - present", "tradition": "vedic/indic", "texts": ["Vedas", "Upanishads", "Mahabharata", "Ramayana", "Puranas", "Darshana"]},
+    "greece": {"era": "800-31 BCE", "tradition": "indo_european", "texts": ["Iliad", "Odyssey", "Theogony", "Republic", "Timaeus"]},
+    "rome": {"era": "753 BCE - 476 CE", "tradition": "indo_european", "texts": ["Meditations", "Discourses", "Enneads"]},
+    "norse": {"era": "793-1066 CE (texts recorded)", "tradition": "indo_european", "texts": ["Poetic Edda", "Prose Edda"]},
+    "china": {"era": "1600 BCE - present", "tradition": "east_asian", "texts": ["Tao Te Ching", "Analects", "I Ching"]},
+    "japan": {"era": "300 BCE - present", "tradition": "east_asian", "texts": ["Kojiki"]},
+    "mesoamerica": {"era": "2000 BCE - 1521 CE", "tradition": "world_traditions", "texts": ["Popol Vuh"]},
+    "west_africa": {"era": "1235 CE (Sundiata)", "tradition": "world_traditions", "texts": ["Sundiata"]},
+    "finland": {"era": "oral (compiled 1835)", "tradition": "world_traditions", "texts": ["Kalevala"]},
+    "persia": {"era": "1500 BCE - present", "tradition": "indo_iranian", "texts": ["Zend-Avesta", "Bundahishn", "Shahnameh", "Masnavi"]},
+    "israel": {"era": "1200 BCE - present", "tradition": "abrahamic", "texts": ["Genesis", "Exodus", "Job", "Ecclesiastes", "Book of Enoch"]},
+    "arabia": {"era": "610 CE - present", "tradition": "abrahamic", "texts": ["Quran"]}
+  }
+}

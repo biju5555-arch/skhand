@@ -1,0 +1,140 @@
+{
+  "title": "Comparative Flood Narratives Across Ancient Civilizations",
+  "description": "A cross-cultural analysis of deluge mythology spanning Mesopotamian, Vedic, Biblical, Greek, Chinese, and Quranic traditions. This dataset catalogues the major flood narratives with attention to structural parallels, divergences, and transmission pathways. The flood myth is one of the most widely distributed mythemes in human culture; this collection focuses on the six best-attested literary traditions with scholarly apparatus. Following the methodology of Alan Dundes ('The Flood Myth', 1988) and Witzel (2012), entries are analyzed for shared motifs without presupposing monogenesis.",
+  "common_motifs": [
+    {
+      "motif_id": "CM01",
+      "name": "Divine Warning to a Chosen Survivor",
+      "description": "A deity or divine agent warns a single righteous/wise mortal of the impending deluge, often in secret or against the wishes of the divine assembly.",
+      "distribution": "Universal across all six traditions analyzed"
+    },
+    {
+      "motif_id": "CM02",
+      "name": "Construction of a Vessel",
+      "description": "The survivor is instructed to build a boat, ark, or sealed vessel of specific dimensions, often with bitumen/pitch waterproofing.",
+      "distribution": "Strong in Mesopotamian, Biblical, Quranic; modified in Vedic (Manu's boat is divinely provided or a simple craft); absent in Chinese (Yu controls flood, does not flee)"
+    },
+    {
+      "motif_id": "CM03",
+      "name": "Preservation of Seed/Species",
+      "description": "Animals, seeds, craftspeople, or 'the seed of all living things' are loaded aboard the vessel to ensure post-diluvian continuity.",
+      "distribution": "Strong in Mesopotamian, Biblical, Quranic; partial in Vedic (seeds of all beings, Seven Sages); absent in Greek and Chinese"
+    },
+    {
+      "motif_id": "CM04",
+      "name": "Flood as Divine Punishment or Cosmic Reset",
+      "description": "The flood is caused by divine displeasure (human noise, sin, overpopulation) or cosmic necessity (cyclical destruction/renewal).",
+      "distribution": "Universal with variation: noise (Atrahasis), sin (Biblical/Quranic), cosmic cycle (Vedic), divine punishment (Greek), natural disaster requiring heroic intervention (Chinese)"
+    },
+    {
+      "motif_id": "CM05",
+      "name": "Landing on a Mountain",
+      "description": "The vessel comes to rest on a specific mountain or mountain range after the waters recede.",
+      "distribution": "Mesopotamian (Nisir/Nimush), Biblical (Ararat), Quranic (al-Judi), Greek (Parnassus); Vedic (Himalayas, 'Northern Mountain'); absent in Chinese"
+    },
+    {
+      "motif_id": "CM06",
+      "name": "Post-Flood Sacrifice and Divine Covenant",
+      "description": "The survivor performs a sacrifice upon disembarking; the deity smells the offering and establishes a new covenant or world-order.",
+      "distribution": "Strong in Mesopotamian, Biblical; modified in Vedic and Quranic; absent in Chinese and Greek (Deucalion repopulates through stone-throwing)"
+    },
+    {
+      "motif_id": "CM07",
+      "name": "Bird Reconnaissance",
+      "description": "Birds (dove, raven, swallow) are released to test whether dry land has emerged.",
+      "distribution": "Mesopotamian (dove, swallow, raven), Biblical (raven, dove with olive branch); absent or modified in other traditions"
+    },
+    {
+      "motif_id": "CM08",
+      "name": "Repopulation of the Earth",
+      "description": "After the flood, humanity is re-established either through the survivor's offspring or through a miraculous re-creation.",
+      "distribution": "Universal with variation: offspring (Biblical, Quranic, Vedic), stone-throwing (Greek), heroic water-management (Chinese)"
+    }
+  ],
+  "narratives": [
+    {
+      "id": "FN001",
+      "tradition": "Mesopotamian (Sumero-Akkadian)",
+      "source_text": "Three primary recensions: (1) Sumerian Eridu Genesis (Ziusudra version, ca. 1600 BCE, fragmentary Nippur tablet CBS 10673); (2) Old Babylonian Atrahasis Epic (ca. 1700 BCE, Sippar tablet, 3 tablets, ~1245 lines); (3) Standard Babylonian Gilgamesh Epic, Tablet XI (Utnapishtim version, ca. 1100 BCE, from Library of Ashurbanipal). Critical editions: Lambert & Millard (1969), George (2003).",
+      "survivor": "Ziusudra (Sumerian: 'Life of Long Days'), Atrahasis (Akkadian: 'Exceedingly Wise'), or Utnapishtim (Akkadian: 'He Found Life')",
+      "deity_who_warns": "Enki/Ea -- the god of wisdom and fresh water. In the Atrahasis and Gilgamesh versions, Ea circumvents the divine assembly's decree of secrecy by speaking to a 'reed wall' (kikkish) rather than directly to the human: 'Reed wall, reed wall! Wall, wall! Reed wall, hear! Wall, understand!'",
+      "vessel": "A cube-shaped (Atrahasis) or large multi-decked boat (Gilgamesh XI: 120 cubits per side, 6 decks, waterproofed with bitumen). In the Atrahasis, dimensions form a perfect cube; in the coracle-variant (Ark Tablet, Finkel 2014), it is a massive round coracle (quppu).",
+      "cause_of_flood": "In the Atrahasis, the gods are disturbed by human 'noise' (rigmu/huburu) -- possibly overpopulation or the clamor of civilization. Enlil decrees flood after plague, drought, and famine fail to reduce the human population. The flood is explicitly a population-control measure.",
+      "aftermath": "Utnapishtim offers sacrifice on the mountain. 'The gods smelled the sweet savor, the gods crowded like flies about the sacrificer' (Gilgamesh XI.161-162). Enlil is initially furious that anyone survived but is reconciled by Ea. Utnapishtim and his wife are granted immortality and placed 'at the mouth of the rivers' (i.e., in a paradise beyond human reach).",
+      "key_quote": "'I will reveal to thee, Gilgamesh, a hidden matter, and a secret of the gods will I tell thee. Shuruppak -- a city which thou knowest, which on the Euphrates' bank is situated -- that city was ancient, and the gods within it, when their heart led the great gods to produce the flood.' (Gilgamesh XI.9-14, Speiser translation)",
+      "motifs_present": ["CM01", "CM02", "CM03", "CM04", "CM05", "CM06", "CM07", "CM08"],
+      "cross_references": ["FN002", "FN003", "FN006"]
+    },
+    {
+      "id": "FN002",
+      "tradition": "Vedic / Hindu",
+      "source_text": "Three primary recensions: (1) Shatapatha Brahmana 1.8.1.1-10 (earliest, ca. 800-700 BCE); (2) Mahabharata, Vana Parva 187 (Markandeya's narration, ca. 400 BCE-400 CE); (3) Matsya Purana 1-2 (ca. 250-500 CE). The Shatapatha Brahmana version is the earliest Indic flood account and the most structurally parallel to the Mesopotamian tradition.",
+      "survivor": "Manu Vaivasvata ('Manu, son of Vivasvat/the Sun') -- the progenitor of humanity. His name is cognate with English 'man', German 'Mensch', and is etymologically related to 'manas' (mind/thought).",
+      "deity_who_warns": "Matsya (the Fish) -- a manifestation of Vishnu (in later versions) or Brahma/Prajapati (in the Shatapatha Brahmana). The fish warns Manu while he is performing his morning ablutions: 'In such and such a year the flood will come. Thou shalt then attend to my advice and prepare a ship; and when the flood has risen thou shalt enter into the ship, and I will save thee from it.'",
+      "vessel": "A nau (ship/boat) constructed by Manu at the fish's instruction. In the Shatapatha Brahmana, no dimensions are given. In the Mahabharata version, it is large enough to hold the Seven Sages (Saptarishi) and seeds of all beings. The fish tows the ship with a rope attached to its horn (shringa).",
+      "cause_of_flood": "In the Shatapatha Brahmana, the flood is stated as a cosmic inevitability -- no moral cause is given. It is described simply: 'In the morning they brought to Manu water for washing... A fish came into his hands.' The Mahabharata and Puranic versions introduce cyclical destruction (pralaya) at the end of a cosmic age (yuga/kalpa) as the cause. This is fundamentally different from the Mesopotamian moral/noise framework.",
+      "aftermath": "The fish guides Manu's ship to 'the northern mountain' (uttara parvata, identified with the Himalayas). Manu performs sacrifice (sraddha) and pours oblations of clarified butter (ghee) and sour milk into the waters. From these oblations, a woman (Ida/Ila) is produced, who becomes his wife/daughter, and together they repopulate the earth. The Shatapatha Brahmana explicitly calls this 'Manu's generation' (manoh prajah), establishing him as the ancestor of all humanity.",
+      "key_quote": "'A fish came into his hands. It spoke to him the word: Rear me, I will save thee. Wherefrom wilt thou save me? A flood will carry away all these creatures; from that I will save thee.' (Shatapatha Brahmana 1.8.1.1-2, Eggeling translation)",
+      "motifs_present": ["CM01", "CM02", "CM03", "CM04", "CM05", "CM06", "CM08"],
+      "cross_references": ["FN001", "FN003", "MC005"]
+    },
+    {
+      "id": "FN003",
+      "tradition": "Biblical (Hebrew)",
+      "source_text": "Genesis 6:5-9:17. The text as it stands is a composite of the Yahwist (J) source (ca. 950-850 BCE) and the Priestly (P) source (ca. 550-400 BCE), redacted together. The J source emphasizes moral corruption; the P source adds precise dimensions, dates, and covenantal theology. Critical editions: BHS (Biblia Hebraica Stuttgartensia).",
+      "survivor": "Noah (Hebrew: Noach, possibly from n-w-h 'to rest' or n-h-m 'to comfort'). Described as 'a righteous man, blameless in his generation; Noah walked with God' (Genesis 6:9). He is the tenth patriarch from Adam -- Utnapishtim is also placed in a primordial genealogy as king of Shuruppak.",
+      "deity_who_warns": "YHWH/Elohim -- the single God of Israelite monotheism. Unlike the Mesopotamian version, there is no divine assembly or secret communication. God speaks directly to Noah: 'I have determined to make an end of all flesh, for the earth is filled with violence through them. Behold, I will destroy them with the earth' (Genesis 6:13).",
+      "vessel": "The Ark (tevah) -- 300 cubits long, 50 cubits wide, 30 cubits high (approximately 137 x 23 x 14 meters). Three decks, waterproofed with pitch (kopher). The Hebrew tevah is used only here and for Moses' basket (Exodus 2:3), possibly related to Egyptian db.t (chest/coffin) rather than to normal Hebrew words for 'boat'.",
+      "cause_of_flood": "Moral corruption and violence (hamas): 'The LORD saw that the wickedness of man was great in the earth, and that every inclination of the thoughts of his heart was only evil continually' (Genesis 6:5). Also the Nephilim episode (6:1-4) -- divine-human miscegenation. This moralizes the Mesopotamian 'noise' motif.",
+      "aftermath": "Noah releases a raven, then a dove three times (the dove returns with an olive branch, then does not return). The ark lands on 'the mountains of Ararat' (Urartu, eastern Turkey). Noah builds an altar and sacrifices burnt offerings: 'And when the LORD smelled the pleasing aroma, the LORD said in his heart, I will never again curse the ground because of man' (Genesis 8:21). God establishes the rainbow covenant (berith) -- never again to destroy the earth by flood.",
+      "key_quote": "'And God said to Noah, I have determined to make an end of all flesh, for the earth is filled with violence through them. Behold, I will destroy them with the earth. Make yourself an ark of gopher wood.' (Genesis 6:13-14, ESV)",
+      "motifs_present": ["CM01", "CM02", "CM03", "CM04", "CM05", "CM06", "CM07", "CM08"],
+      "cross_references": ["FN001", "FN006"]
+    },
+    {
+      "id": "FN004",
+      "tradition": "Greek",
+      "source_text": "Primary sources: (1) Apollodorus, Bibliotheca 1.7.2 (ca. 1st-2nd c. CE, drawing on earlier sources); (2) Ovid, Metamorphoses 1.253-415 (8 CE, Latin adaptation); (3) Pindar, Olympian Ode 9.41-53 (476 BCE, earliest literary reference); (4) Fragmentary references in Hesiod's Catalogue of Women (fr. 234 M-W). The myth likely predates all extant literary attestations.",
+      "survivor": "Deucalion, son of Prometheus (the Titan who gave fire to humanity). His wife Pyrrha, daughter of Epimetheus and Pandora, survives with him. The Prometheus connection is significant: the flood-survivor is the son of the culture-hero who defied the gods.",
+      "deity_who_warns": "Prometheus warns his son Deucalion (in Apollodorus). Zeus decides to destroy the 'Bronze Race' of humanity. Unlike the Mesopotamian Ea, Prometheus is not a member of the ruling divine council but an outsider/rebel who has already been punished for aiding humanity.",
+      "vessel": "A larnax (wooden chest or coffer) -- not a full-scale ship. Deucalion and Pyrrha simply enter the chest and float for nine days and nine nights. The modest vessel contrasts with the elaborate arks of the Near Eastern traditions.",
+      "cause_of_flood": "Zeus's displeasure with the wickedness of humanity, specifically the impiety of Lycaon (who served Zeus human flesh at a feast) and the general moral corruption of the Bronze Age. Zeus sends torrential rain; Poseidon assists by raising the seas and rivers. The flood is explicitly punitive.",
+      "aftermath": "The chest lands on Mount Parnassus (or Mount Othrys, in some versions). Deucalion sacrifices to Zeus. To repopulate the earth, Deucalion and Pyrrha are told by Themis (or Hermes) to 'throw the bones of their mother behind them.' They interpret this as stones (bones of Gaia/Mother Earth). Deucalion's stones become men; Pyrrha's become women. This lithic anthropogony is unique to the Greek tradition.",
+      "key_quote": "'Deucalion, by the advice of Prometheus, constructed a chest, and having stored it with provisions, entered it with Pyrrha. Zeus poured a great rain from heaven and flooded the greater part of Greece, so that all men perished except a few who fled to the high mountains nearby.' (Apollodorus, Bibliotheca 1.7.2, Frazer translation)",
+      "motifs_present": ["CM01", "CM02", "CM04", "CM05", "CM08"],
+      "cross_references": ["FN001", "FN003"]
+    },
+    {
+      "id": "FN005",
+      "tradition": "Chinese",
+      "source_text": "Primary sources: (1) Shangshu/Shujing (Book of Documents), 'Canon of Yao' and 'Counsels of Yu' (traditional date ca. 2200 BCE; received text ca. 4th-3rd c. BCE); (2) Mengzi (Mencius) 3A.4; (3) Shiji (Records of the Grand Historian) by Sima Qian, ch. 2 (ca. 94 BCE); (4) Shanhaijing (Classic of Mountains and Seas), passim; (5) Huainanzi 6 (ca. 139 BCE). Fragmentary Miao/Hmong, Yi, and other minority nationality flood myths may preserve older strata.",
+      "survivor": "Yu the Great (Da Yu) -- not a passive survivor but an active hero who controls and channels the floodwaters through labor. His father Gun first attempted to dam the waters using 'self-expanding soil' (xirang) stolen from heaven, and failed. Yu succeeds through 13 years of tireless channel-digging.",
+      "deity_who_warns": "No single warning deity. The flood is a natural/cosmic disaster, not a divine punishment. Emperor Yao commissions Gun to control the flood; after Gun fails, Emperor Shun commissions Yu. The gods assist indirectly: a divine turtle carries the xirang soil; a dragon's tail carves channels.",
+      "vessel": "No vessel. This is the fundamental divergence from all other flood traditions. Yu does not flee the flood but conquers it through hydraulic engineering -- channeling rivers, cutting through mountains, draining marshes. The Chinese tradition is unique in presenting the flood as a problem to be solved through human effort and ingenuity rather than divine rescue.",
+      "cause_of_flood": "In most versions, the flood has no moral cause -- it is a natural catastrophe (cosmic waters overflowing, rivers bursting their banks). Some versions attribute it to Gong Gong (a malevolent water deity) smashing his head against Mount Buzhou, tilting heaven and earth so that waters flow southeast. The naturalistic/hydrological framing is distinctive.",
+      "aftermath": "Yu successfully controls the flood by channeling rivers to the sea, divides China into the Nine Provinces (Jiuzhou), and is rewarded with the throne -- founding the Xia dynasty (traditional dates: 2070-1600 BCE). His achievement is the archetype of the sage-king who earns sovereignty through meritorious service rather than divine birth or favor. 'Yu tamed the waters and the land emerged' (Mengzi 3A.4).",
+      "key_quote": "'Yu divided the land. Following the mountains, he cut down the trees. He determined the high hills and great rivers. He opened passages for the streams throughout the nine provinces, and conducted them to the sea.' (Shangshu, 'Tribute of Yu', Legge translation)",
+      "motifs_present": ["CM04", "CM08"],
+      "cross_references": ["FN001"],
+      "distinctive_elements": "The Chinese flood narrative inverts the core pattern of every other major tradition. There is no chosen survivor, no vessel, no divine warning, no animal preservation, and no mountain-landing. Instead, the flood is overcome by human labor and engineering. This has been interpreted (by Marcel Granet, K.C. Chang, and others) as reflecting a fundamentally different relationship between Chinese civilization and the natural world -- one of mastery and management rather than submission and rescue. The Yu legend may also preserve genuine historical memory of Neolithic/Bronze Age flood-control projects in the Yellow River basin, recently supported by geological evidence (Wu et al., Science, 2016)."
+    },
+    {
+      "id": "FN006",
+      "tradition": "Quranic / Islamic",
+      "source_text": "The Quran addresses Noah (Nuh) in multiple surahs: Surah Nuh (71), Surah Hud (11:25-49), Surah Al-Mu'minun (23:23-30), Surah Al-Qamar (54:9-17), Surah Al-Ankabut (29:14-15), Surah As-Saffat (37:75-82), Surah Ash-Shu'ara (26:105-122). The Quranic version adapts and reinterprets the Biblical narrative within the framework of Islamic prophetology (Nuh as one of the Ulu al-Azm, the 'Prophets of Determination').",
+      "survivor": "Nuh (Noah) -- presented not merely as a righteous man but as a rasul (messenger/prophet) sent to his people with a specific divine message: worship God alone and abandon idolatry. His mission lasts 950 years (Quran 29:14). His wife and one son refuse to board the ark and perish.",
+      "deity_who_warns": "Allah -- directly, through revelation (wahy). Nuh receives prophetic commission and detailed instructions. The Quranic emphasis is on Nuh's role as a preacher who warns his people for centuries before the flood, making the flood a response to their rejection of his prophetic message.",
+      "vessel": "The fulk (ship/ark), constructed under divine instruction: 'Build the ship under Our eyes and Our inspiration' (Quran 11:37). The Quran does not give specific dimensions but describes it as running 'amid waves like mountains' (Quran 11:42). Springs of water burst from the earth (tannur -- 'oven' -- boils over) in addition to rain from the sky.",
+      "cause_of_flood": "Rejection of prophetic guidance and persistent idolatry/polytheism (shirk). The Quran names the idols worshipped by Nuh's people: Wadd, Suwa, Yaghuth, Ya'uq, and Nasr (71:23). The flood is divine retribution for refusal to heed the messenger, consistent with the Quranic pattern of earlier destroyed nations (qawm).",
+      "aftermath": "The ship lands on Mount al-Judi (traditionally identified with Cudi Dagh in southeastern Turkey, distinct from the Biblical Ararat). Nuh's son Kan'an (or Yam) drowns despite Nuh's plea -- a powerful Quranic lesson that familial relationship does not override divine judgment (11:42-47). Allah declares: 'O earth, swallow your water, and O sky, withhold [your rain]' (11:44) -- one of the most celebrated verses in Arabic rhetoric for its eloquence (ijaz).",
+      "key_quote": "'And it was revealed to Nuh: None of your people will believe except those who have already believed, so do not be distressed by what they have been doing. Build the ship under Our eyes and Our inspiration, and do not address Me concerning those who have wronged; indeed, they are to be drowned.' (Quran 11:36-37, Sahih International translation)",
+      "motifs_present": ["CM01", "CM02", "CM03", "CM04", "CM05", "CM08"],
+      "cross_references": ["FN001", "FN003"]
+    }
+  ],
+  "scholarly_notes": {
+    "transmission_debate": "The relationship between the Mesopotamian, Biblical, and Vedic flood narratives has been debated since George Smith's 1872 discovery of the Gilgamesh flood tablet. Three models are current: (1) Direct borrowing from Mesopotamia to Israel during the Babylonian exile (6th c. BCE) or earlier contact; (2) Common inheritance from an older (possibly Neolithic) prototype, as argued by Witzel (2012); (3) Independent invention based on universal human experience of catastrophic flooding (Dundes 1988). The Vedic-Mesopotamian parallel is particularly debated because direct contact between Harappan/Indo-Aryan and Mesopotamian civilizations is archaeologically attested (Meluhha trade) but literary transmission is harder to demonstrate.",
+    "geological_evidence": "Ryan and Pitman (1998) proposed that the Black Sea flood (ca. 5600 BCE) -- when the Mediterranean broke through the Bosporus -- may underlie Near Eastern flood myths. More recently, Wu et al. (Science 353, 2016) identified geological evidence for a catastrophic Yellow River flood ca. 1920 BCE that may underlie the Yu legend. However, the structural and literary complexity of flood myths far exceeds what could be explained by simple memory of a historical event.",
+    "comparative_methodology": "This dataset follows the 'polythetic' classification method of Stith Thompson's Motif-Index (motifs A1010-A1099: Deluge) and Dundes' 'oral-formulaic' approach, identifying shared motifs without assuming a single origin. The Chinese case (FN005) is particularly instructive as a control: it demonstrates that the flood-myth complex is not universal in its Near Eastern form, and that radically different narrative structures can address the same natural phenomenon."
+  }
+}

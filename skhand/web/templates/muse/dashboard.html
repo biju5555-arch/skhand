@@ -1,0 +1,178 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "dashboard" %}
+
+{% block title %}Writer's Muse — Skhand{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Writer's Muse</h1>
+    <p>Inspiration engine and world-building tool — drawing from 16 knowledge sources across 11+ civilizations</p>
+</div>
+
+<!-- Quick Inspire -->
+<div class="quick-inspire" x-data="quickInspire()">
+    <h2>Quick Inspire</h2>
+    <div class="muse-search">
+        <input type="text" x-model="theme" placeholder="Enter a theme: forbidden knowledge, dragon slayer, cosmic flood..." @keydown.enter="inspire()">
+        <button class="btn-muse" @click="inspire()" :disabled="loading || !theme.trim()">
+            <span x-show="!loading">Inspire Me</span>
+            <span x-show="loading">Generating...</span>
+        </button>
+    </div>
+    <div x-show="error" class="error-msg" x-text="error"></div>
+    <div x-show="results">
+        <template x-for="seed in (results && results.seeds ? results.seeds : [])" :key="seed.title">
+            <div class="muse-result seed-card">
+                <h4 x-text="seed.title"></h4>
+                <p x-text="seed.premise"></p>
+                <p><strong>Key tension:</strong> <span x-text="seed.key_tension"></span></p>
+                <p class="opening-line" x-text="'\"' + seed.opening_line + '\"'"></p>
+                <div class="tag-list">
+                    <template x-for="t in (seed.traditions_used || [])" :key="t">
+                        <span class="tag" x-text="t"></span>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="muse-search" x-data="{ query: '' }">
+    <input id="corpus-search-input" type="text" x-model="query" placeholder="Search the corpus: dragon, trickster, cosmic egg, dharma..." @keydown.enter="searchCorpus()">
+    <button class="btn-muse" @click="searchCorpus()">Search</button>
+</div>
+
+<!-- Category Tiles -->
+<h2 style="color: var(--text-primary); margin-bottom: 1rem;">Explore the Corpus</h2>
+<div class="muse-grid muse-grid-sm">
+    <a href="/muse/heroes" class="category-tile">
+        <div class="tile-icon">&#9876;</div>
+        <h3>Epic Heroes</h3>
+        <div class="tile-count">{{ counts.get('heroes', 0) }} heroes</div>
+    </a>
+    <a href="/muse/creation-myths" class="category-tile">
+        <div class="tile-icon">&#10026;</div>
+        <h3>Creation Myths</h3>
+        <div class="tile-count">{{ counts.get('creation_myths', 0) }} myths</div>
+    </a>
+    <a href="/muse/pantheon" class="category-tile">
+        <div class="tile-icon">&#9733;</div>
+        <h3>Deity Pantheon</h3>
+        <div class="tile-count">{{ counts.get('pantheon', 0) }} deity sets</div>
+    </a>
+    <a href="/muse/world-builder" class="category-tile">
+        <div class="tile-icon">&#127760;</div>
+        <h3>World Builder</h3>
+        <div class="tile-count">Build a world</div>
+    </a>
+    <a href="/muse/character-forge" class="category-tile">
+        <div class="tile-icon">&#128100;</div>
+        <h3>Character Forge</h3>
+        <div class="tile-count">Forge a character</div>
+    </a>
+    <a href="/muse/story-seeds" class="category-tile">
+        <div class="tile-icon">&#127793;</div>
+        <h3>Story Seeds</h3>
+        <div class="tile-count">Generate ideas</div>
+    </a>
+    <a href="/muse/story-architect" class="category-tile">
+        <div class="tile-icon">&#128220;</div>
+        <h3>Story Architect</h3>
+        <div class="tile-count">Plot structure</div>
+    </a>
+    <a class="category-tile" onclick="return false;" style="cursor: default;">
+        <div class="tile-icon">&#128218;</div>
+        <h3>More Coming</h3>
+        <div class="tile-count">{{ counts.get('ethics', 0) }} ethics + {{ counts.get('mystical', 0) }} mystical + {{ counts.get('cosmic_cycles', 0) }} cycles</div>
+    </a>
+</div>
+
+<div id="search-results" style="margin-top: 2rem;"></div>
+{% endblock %}
+
+{% block muse_scripts %}
+<script>
+function quickInspire() {
+    return {
+        theme: '',
+        loading: false,
+        results: null,
+        error: '',
+
+        async inspire() {
+            if (!this.theme.trim()) return;
+            this.loading = true;
+            this.error = '';
+            this.results = null;
+            try {
+                const data = await Muse.post('/api/muse/inspire', {
+                    theme: this.theme,
+                    traditions: [],
+                    mood: 'epic',
+                    count: 3,
+                    quality: 'fast',
+                });
+                this.results = data;
+                Muse.saveToHistory('quick_inspire', data);
+            } catch (err) {
+                this.error = err.message;
+            } finally {
+                this.loading = false;
+            }
+        }
+    };
+}
+
+// Search function
+async function searchCorpus() {
+    const input = document.getElementById('corpus-search-input');
+    const q = input.value.trim();
+    if (!q) return;
+
+    const container = document.getElementById('search-results');
+    container.innerHTML = '<div class="muse-loading"><div class="spinner-muse"></div>Searching...</div>';
+
+    try {
+        const data = await Muse.get(`/api/muse/search?q=${encodeURIComponent(q)}`);
+        let html = `<h2 style="color: var(--text-primary);">Results for "${q}" (${data.total})</h2>`;
+
+        if (data.corpus_results && data.corpus_results.length) {
+            html += '<div class="muse-grid">';
+            for (const r of data.corpus_results) {
+                html += `<div class="muse-card" data-tradition="${r.tradition || ''}">
+                    <span class="tradition-tag ${Muse.traditionTag(r.tradition)}">${r.tradition || r.category}</span>
+                    <h3>${r.name}</h3>
+                    <p>${Muse.truncate(r.summary, 150)}</p>
+                    <div class="count">${r.category}</div>
+                </div>`;
+            }
+            html += '</div>';
+        }
+
+        if (data.chromadb_results && data.chromadb_results.length) {
+            html += '<h3 style="color: var(--muse-teal); margin-top: 1.5rem;">Semantic Matches</h3><div class="muse-grid">';
+            for (const r of data.chromadb_results) {
+                const name = r.metadata && r.metadata.name ? r.metadata.name : 'Unknown';
+                const civ = (r.metadata && (r.metadata.civilization_display || r.metadata.civilization)) || '';
+                html += `<div class="muse-card" data-tradition="${civ}">
+                    <span class="tradition-tag ${Muse.traditionTag(civ)}">${civ}</span>
+                    <h3>${name}</h3>
+                    <p>${Muse.truncate(r.text, 150)}</p>
+                    <div class="count">Score: ${r.score}</div>
+                </div>`;
+            }
+            html += '</div>';
+        }
+
+        if (!data.total) {
+            html += '<p style="color: var(--text-muted);">No results found.</p>';
+        }
+
+        container.innerHTML = html;
+    } catch (err) {
+        container.innerHTML = `<div class="error-msg">${err.message}</div>`;
+    }
+}
+</script>
+{% endblock %}

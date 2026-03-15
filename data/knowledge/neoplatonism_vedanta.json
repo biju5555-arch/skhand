@@ -1,0 +1,125 @@
+{
+  "title": "Neoplatonism and Vedanta: Parallel Philosophies of the Absolute",
+  "description": "A comparative analysis of Plotinus's Neoplatonism and Shankara's Advaita Vedanta — two traditions that independently developed strikingly parallel metaphysical systems. Both posit an ineffable, non-dual Absolute beyond being and thought, from which the manifest world emanates through intermediate principles. This dataset maps the structural correspondences and significant differences between these traditions, following the scholarship of J.F. Staal, R.C. Zaehner, Paul Hacker, and more recently Chakravarthi Ram-Prasad.",
+  "comparisons": [
+    {
+      "id": "NV001",
+      "theme": "The Absolute Beyond Being",
+      "neoplatonic": {
+        "concept": "The One (To Hen)",
+        "thinker": "Plotinus (204-270 CE)",
+        "source": "Enneads V.1, V.2, VI.9",
+        "description": "The One is 'beyond being' (epekeina tes ousias), absolutely simple, without parts or predicates. It is not a thing, not even Being itself, but the source from which Being emanates. We cannot properly say 'the One is' because 'is' already introduces predication and thus multiplicity. The One is known only through mystical union (henosis) in which all distinction between knower and known is transcended."
+      },
+      "vedantic": {
+        "concept": "Nirguna Brahman",
+        "thinker": "Shankara (788-820 CE)",
+        "source": "Vivekachudamani, Upadeshasahasri, Brahma Sutra Bhashya",
+        "description": "Nirguna Brahman is 'without qualities' (nirguna), beyond all predication. It is defined only through negation: 'neti neti' (not this, not this). Brahman is sat-chit-ananda (being-consciousness-bliss), but these are not attributes of Brahman; they are Brahman's very nature. Brahman is known through the sublation (badha) of all superimposed distinctions in the direct experience (aparoksha anubhuti) of non-dual awareness."
+      },
+      "analysis": "Both the One and Nirguna Brahman are placed beyond the ontological categories applicable to all other reality. Both are defined through negation rather than positive predication. Both are experienced rather than known conceptually. The key difference: Plotinus's One is 'beyond being,' while Shankara's Brahman is 'pure being' (sat) — though both mean that the Absolute cannot be classified alongside finite beings. Plotinus reaches the One by ascending through Nous and Soul; Shankara reaches Brahman by negating all that is not-Self (anatman)."
+    },
+    {
+      "id": "NV002",
+      "theme": "Emanation vs Maya",
+      "neoplatonic": {
+        "concept": "Emanation (Proodos)",
+        "thinker": "Plotinus",
+        "source": "Enneads V.1.6, V.2.1",
+        "description": "From the One emanates Nous (Intellect/Mind), which contains the Platonic Forms. From Nous emanates Psyche (Soul), which generates the material cosmos. Emanation is necessary, timeless, and non-volitional — the One does not choose to create but overflows by the superabundance of its nature, like light radiating from a sun. Each hypostasis (One, Nous, Soul) is less unified than its source. Matter (hyle) is the last, weakest emanation, approaching non-being."
+      },
+      "vedantic": {
+        "concept": "Maya / Vivarta",
+        "thinker": "Shankara, Mandana Mishra",
+        "source": "Brahma Sutra Bhashya 2.1.14, Vivekachudamani",
+        "description": "The world appears as a transformation (vivarta) of Brahman through maya (cosmic ignorance/creative power). Maya is 'neither real nor unreal' (sadasadvilakshana) — it is not independently real (since only Brahman is real) but it is not nothing (since the world of experience is not sheer hallucination). Maya superimposes (adhyasa) name and form (namarupa) upon the undifferentiated Brahman, producing the illusion of multiplicity. When maya is sublated through knowledge (jnana), only Brahman remains."
+      },
+      "analysis": "Both systems address the same fundamental question: how does the infinite, non-dual Absolute relate to the finite, multiple world? Plotinus's emanation is a real, graded hierarchy of being — each level is genuinely real, though less real than its source. Shankara's maya is more radical: the world has only empirical (vyavaharika) reality, not absolute (paramarthika) reality. For Plotinus, matter is the lowest rung of a real cosmic ladder; for Shankara, multiplicity itself is a misperception. This is the deepest divergence between the two systems, though it should be noted that Plotinus sometimes approaches a maya-like position when he says matter is 'non-being' (me on)."
+    },
+    {
+      "id": "NV003",
+      "theme": "The Intermediate Principle: Nous vs Ishvara",
+      "neoplatonic": {
+        "concept": "Nous (Intellect / Divine Mind)",
+        "thinker": "Plotinus, Proclus",
+        "source": "Enneads V.1, V.3, V.9",
+        "description": "Nous is the first emanation from the One, the level of unified multiplicity where Being, Thought, and the Forms coincide. Nous simultaneously thinks the Forms and is the Forms — it is the self-thinking thought (noesis noeseos), the realm where subject and object are united in a single act of intellectual vision. Nous is the highest reality that can be grasped by thought, because thought requires the minimal duality of thinker and thought."
+      },
+      "vedantic": {
+        "concept": "Ishvara / Saguna Brahman",
+        "thinker": "Shankara, Ramanuja, Madhva",
+        "source": "Brahma Sutra Bhashya, Mandukya Upanishad with Gaudapada Karika",
+        "description": "Ishvara (the Lord) is Brahman as qualified by maya, the personal God who creates, sustains, and dissolves the universe. Ishvara is omniscient, omnipotent, and the proper object of devotion (bhakti). In Shankara's framework, Ishvara belongs to the empirical (vyavaharika) level of reality — real relative to the world but sublated from the standpoint of Nirguna Brahman. In Ramanuja's Vishishtadvaita, Ishvara is the ultimate reality, and there is no 'higher' Nirguna Brahman."
+      },
+      "analysis": "Plotinus's Nous and Shankara's Ishvara serve analogous structural functions: both are the first differentiation of the Absolute, the level at which thought, intelligence, and creativity first emerge. Both are 'lower' than the ineffable source yet 'higher' than the empirical world. However, Nous is primarily an ontological-epistemological principle (the realm of Forms and intellectual vision), while Ishvara is primarily a theological-devotional principle (the personal God of worship). Nous is impersonal; Ishvara is personal. This reflects the different cultural contexts: Greek philosophical ontology vs. Hindu devotional theism."
+    },
+    {
+      "id": "NV004",
+      "theme": "The Soul and Its Return",
+      "neoplatonic": {
+        "concept": "Psyche (Soul) and Epistrophe (Return)",
+        "thinker": "Plotinus",
+        "source": "Enneads IV.8, I.6, VI.9",
+        "description": "The individual soul is an emanation of the World Soul, which is itself an emanation of Nous. The soul 'descends' into matter through its fascination with the sensible world, forgetting its divine origin. The philosophical-spiritual life is the soul's 'return' (epistrophe) to its source: through purification (katharsis), intellectual contemplation (theoria), and finally mystical union (henosis) with the One. Plotinus describes henosis as 'the flight of the alone to the Alone.'"
+      },
+      "vedantic": {
+        "concept": "Jiva, Avidya, and Moksha",
+        "thinker": "Shankara",
+        "source": "Vivekachudamani, Upadeshasahasri, Brihadaranyaka Upanishad Bhashya",
+        "description": "The individual self (jiva) is not ultimately different from Brahman but appears limited due to avidya (ignorance/nescience). Through the superimposition (adhyasa) of the body-mind complex upon the Self, the jiva mistakes itself for a finite, suffering individual. Moksha (liberation) is the recognition that 'I am Brahman' (aham brahmasmi) — not a new attainment but the removal of ignorance that obscured the ever-present truth. Shankara distinguishes jivanmukti (liberation while living) from videhamukti (liberation at death of the body)."
+      },
+      "analysis": "Both traditions describe a drama of descent and return: the soul/self falls into identification with matter/the body, and the spiritual life consists of reversing this fall. For Plotinus, the descent is a real ontological event (the soul genuinely participates in a lower level of being); for Shankara, the descent is epistemic (the Self never actually becomes limited — only ignorance makes it appear so). Both traditions emphasize that the goal is not to acquire something new but to recover what was always present. Plotinus's 'flight of the alone to the Alone' resonates with Shankara's 'kaivalya' (absolute aloneness/isolation of the Self)."
+    },
+    {
+      "id": "NV005",
+      "theme": "Via Negativa: Apophatic Theology",
+      "neoplatonic": {
+        "concept": "Apophasis / Negative Theology",
+        "thinker": "Plotinus, Pseudo-Dionysius the Areopagite",
+        "source": "Enneads V.3.14, VI.9.3; Pseudo-Dionysius, The Mystical Theology",
+        "description": "Since the One is beyond all predication, it can only be approached through systematic negation: it is not being, not intellect, not life, not anything that can be thought or said. Pseudo-Dionysius (following Plotinus and Proclus) developed this into a rigorous method: ascending through affirmation (kataphasis), then through negation (apophasis), and finally through the 'hyper-negation' that negates even the negations, reaching a 'divine darkness' (theion skotos) beyond all knowing and unknowing."
+      },
+      "vedantic": {
+        "concept": "Neti Neti (Not This, Not This)",
+        "thinker": "Yajnavalkya (Brihadaranyaka Upanishad), Shankara",
+        "source": "Brihadaranyaka Upanishad 2.3.6, 4.2.4, 4.4.22, 4.5.15",
+        "description": "Brahman is described through the method of neti neti: 'not this, not this.' By negating every finite determination — Brahman is not the body, not the mind, not the senses, not any object of experience — one arrives at the pure witness-consciousness (sakshi) that is Brahman. This is not a blank negation but a progressive stripping away of misidentifications to reveal the luminous Self that was always present."
+      },
+      "analysis": "The structural parallel between Plotinian/Dionysian apophasis and Upanishadic neti neti is one of the most striking convergences in the history of philosophy. Both traditions conclude that the Absolute can only be indicated by saying what it is not. Both move through a threefold process: affirmation (the Absolute has certain characteristics), negation (it does not have those characteristics in any ordinary sense), and transcendence (it is beyond the very distinction between having and not-having characteristics). Whether this convergence reflects universal features of mystical experience, deep structural features of human cognition, or some form of historical contact remains debated."
+    },
+    {
+      "id": "NV006",
+      "theme": "The Problem of Evil and Matter",
+      "neoplatonic": {
+        "concept": "Matter as privation (steresis)",
+        "thinker": "Plotinus",
+        "source": "Enneads I.8, II.4",
+        "description": "Evil is not a positive substance or force but the privation (steresis) of good, form, and being. Matter is the lowest point of emanation, approaching non-being; it is evil not because it acts but because it lacks. Evil arises when the soul turns away from Nous toward matter, choosing the lesser over the greater. This theodicy profoundly influenced Augustine and through him all of Western Christian theology."
+      },
+      "vedantic": {
+        "concept": "Avidya (ignorance) as the root of suffering",
+        "thinker": "Shankara",
+        "source": "Brahma Sutra Bhashya 1.1.1, Vivekachudamani",
+        "description": "In Advaita Vedanta, evil and suffering are not ultimately real but arise from avidya (ignorance/nescience). The jiva, identified with the body-mind through superimposition (adhyasa), experiences suffering that Brahman never undergoes. Maya is 'beginningless' (anadi) — it cannot be explained by a prior cause — but it is 'terminable' (santa) through knowledge. This is not an evasion of the problem of evil but a radical dissolution of it: evil exists only from the standpoint of ignorance."
+      },
+      "analysis": "Both traditions 'solve' the problem of evil by denying it ultimate reality. For Plotinus, evil is privation — the absence of good; for Shankara, evil is the product of ignorance — the misperception of multiplicity. Both insist that the Absolute itself is untouched by evil. The difference is that Plotinus's matter, while approaching non-being, is still a genuine level of reality (evil is real but parasitic), while Shankara's maya is not ultimately real at all (evil is a misperception, not a feature of reality). Both positions have been criticized: Plotinus for making evil too real (why does the One produce matter at all?), Shankara for making evil too unreal (how does this console actual suffering?)."
+    },
+    {
+      "id": "NV007",
+      "theme": "Historical Contact vs Independent Emergence",
+      "neoplatonic": {
+        "concept": "Plotinus's awareness of Indian thought",
+        "thinker": "Plotinus",
+        "source": "Porphyry, Life of Plotinus 3",
+        "description": "According to his biographer Porphyry, Plotinus joined the military expedition of Emperor Gordian III against Persia (243 CE) specifically to encounter Indian and Persian philosophers. The expedition failed and Plotinus never reached India, but the intent demonstrates awareness of Eastern philosophy. The city of Alexandria, where Plotinus studied, was a crossroads of Greek, Egyptian, Jewish, and Indian ideas."
+      },
+      "vedantic": {
+        "concept": "Indian awareness of Greek thought",
+        "thinker": "Various",
+        "source": "Indo-Greek kingdoms, Milindapanha",
+        "description": "The Indo-Greek kingdoms (180 BCE - 10 CE) produced centuries of direct contact between Greek and Indian philosophical cultures. The Milindapanha records debates between the Greek king Menander (Milinda) and the Buddhist monk Nagasena. Ashoka's edicts mention Greek kingdoms. The Gandhara region was a melting pot of Greek and Indian art and ideas. However, direct textual influence of Greek philosophy on Vedanta specifically remains undemonstrated."
+      },
+      "analysis": "The question of whether Plotinus was influenced by Indian philosophy or whether the parallels are independent convergences remains one of the most debated topics in comparative philosophy. The circumstantial evidence for contact is strong (Alexandria, the Indo-Greek kingdoms, trade routes), but no direct textual borrowing has been demonstrated. E.R. Dodds, R.T. Wallis, and more recently Thomas McEvilley ('The Shape of Ancient Thought', 2002) have argued for mutual influence. J.F. Staal, Paul Hacker, and most Indologists argue for independent development. The truth may be that both contact and independent development are at work: certain core intuitions about the Absolute may arise independently from sufficiently deep philosophical reflection, while specific formulations may have been transmitted along trade and diplomatic routes."
+    }
+  ]
+}

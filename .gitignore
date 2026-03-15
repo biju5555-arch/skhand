@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Environment
+.env
+
+# Data (large files)
+data/sanskrit/charaka-samhita/
+data/sanskrit/dcs/
+data/papers/
+data/chromadb/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+*.db-journal

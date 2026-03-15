@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skhand"
+version = "0.1.0"
+description = "Polymath AI learning companion bridging Sanskrit/Ayurvedic knowledge with modern science"
+requires-python = ">=3.9"
+dependencies = [
+    "typer[all]>=0.9.0,<1.0",
+    "rich>=13.0",
+    "anthropic>=0.34.0,<1.0",
+    "chromadb>=0.4.0,<0.6.0",
+    "neo4j>=5.0,<6.0",
+    "sentence-transformers>=2.2.0,<4.0",
+    "python-dotenv>=1.0",
+    "pydantic-settings>=2.0,<3.0",
+    "httpx>=0.24",
+    "PyMuPDF>=1.23,<2.0",
+    "fsrs>=3.0,<5.0",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+skhand = "skhand.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["skhand*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"

@@ -1,0 +1,441 @@
+/* Skhand Web UI — Theme matching CLI display.py colors */
+
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: #0f3460;
+    --bg-input: #1e2a4a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0b0;
+    --text-muted: #707080;
+    --gold: #FFD700;
+    --blue: #1E90FF;
+    --green: #00CD66;
+    --magenta: #FF69B4;
+    --red: #FF4444;
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ─── Navigation ─────────────────────────────────────────────────────── */
+
+nav {
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--magenta);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav .logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--magenta);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+}
+
+nav .logo span {
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--magenta);
+}
+
+/* ─── Layout ─────────────────────────────────────────────────────────── */
+
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+h1 {
+    color: var(--magenta);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ─── Ask Page ───────────────────────────────────────────────────────── */
+
+.ask-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.ask-input-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.ask-input {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid #333;
+    border-radius: var(--border-radius);
+    padding: 0.85rem 1rem;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.ask-input:focus {
+    border-color: var(--magenta);
+}
+
+.ask-options {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ask-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.ask-options input[type="checkbox"] {
+    accent-color: var(--green);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────── */
+
+.btn {
+    background: var(--magenta);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.btn:hover { opacity: 0.85; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.btn-gold { background: var(--gold); color: #1a1a2e; }
+.btn-blue { background: var(--blue); }
+.btn-green { background: var(--green); color: #1a1a2e; }
+.btn-red { background: var(--red); }
+
+/* ─── Answer Panels ──────────────────────────────────────────────────── */
+
+.answer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.panel {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid;
+}
+
+.panel-shastra { border-left-color: var(--gold); }
+.panel-science { border-left-color: var(--blue); }
+.panel-setu    { border-left-color: var(--green); }
+
+.panel-header {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.panel-shastra .panel-header { color: var(--gold); }
+.panel-science .panel-header { color: var(--blue); }
+.panel-setu    .panel-header { color: var(--green); }
+
+.panel-body {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.panel-body p { margin-bottom: 0.6rem; }
+.panel-body strong { color: var(--text-primary); }
+.panel-body em { color: var(--gold); font-style: italic; }
+.panel-body ul, .panel-body ol { margin-left: 1.5rem; margin-bottom: 0.6rem; }
+.panel-body code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+/* ─── Usage / Meta ───────────────────────────────────────────────────── */
+
+.usage-bar {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    text-align: right;
+}
+
+/* ─── Loading ────────────────────────────────────────────────────────── */
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    padding: 1.5rem 0;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-muted);
+    border-top-color: var(--magenta);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ─── Graph Page ─────────────────────────────────────────────────────── */
+
+.search-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid #333;
+    border-radius: var(--border-radius);
+    padding: 0.7rem 1rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.search-input:focus { border-color: var(--magenta); }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    background: var(--bg-secondary);
+    color: var(--magenta);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+}
+
+td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+tr:hover td { background: rgba(255,255,255,0.03); }
+
+.confidence-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.conf-high { background: rgba(0, 205, 102, 0.2); color: var(--green); }
+.conf-med  { background: rgba(255, 215, 0, 0.2); color: var(--gold); }
+.conf-low  { background: rgba(255, 68, 68, 0.2); color: var(--red); }
+
+/* ─── Learn Page ─────────────────────────────────────────────────────── */
+
+.card-container {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.flashcard {
+    background: var(--bg-secondary);
+    border: 1px solid #333;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.flashcard:hover { border-color: var(--magenta); }
+
+.flashcard-front {
+    font-size: 1.15rem;
+    line-height: 1.7;
+}
+
+.flashcard-back {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--green);
+}
+
+.flashcard-meta {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+}
+
+.rating-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.25rem;
+}
+
+.rating-buttons .btn {
+    min-width: 80px;
+}
+
+.card-progress {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.card-nav {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* ─── Stats ──────────────────────────────────────────────────────────── */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--magenta);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+/* ─── Status Page ────────────────────────────────────────────────────── */
+
+.status-ok { color: var(--green); font-weight: 600; }
+.status-err { color: var(--red); font-weight: 600; }
+.status-warn { color: var(--gold); font-weight: 600; }
+
+/* ─── Empty state ────────────────────────────────────────────────────── */
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+}
+
+.empty-state p {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* ─── Error ──────────────────────────────────────────────────────────── */
+
+.error-msg {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid var(--red);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    color: var(--red);
+    margin: 1rem 0;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    nav { padding: 0 1rem; gap: 1rem; }
+    main { padding: 1.5rem 1rem; }
+    .ask-input-row { flex-direction: column; }
+    .rating-buttons { flex-wrap: wrap; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+}

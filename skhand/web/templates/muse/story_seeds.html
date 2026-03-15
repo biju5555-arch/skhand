@@ -1,0 +1,155 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "story_seeds" %}
+
+{% block title %}Story Seeds — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Story Seeds</h1>
+    <p>Plant a theme, harvest story ideas rooted in world mythology</p>
+</div>
+
+<div x-data="storySeeds()">
+    <div class="muse-form">
+        <div>
+            <label>Theme</label>
+            <input type="text" x-model="form.theme" placeholder="e.g., forbidden knowledge, the price of immortality, when gods die...">
+        </div>
+
+        <div>
+            <label>Traditions to Draw From (optional)</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="Vedic" x-model="form.traditions"> Vedic/Hindu</label>
+                <label><input type="checkbox" value="Greek" x-model="form.traditions"> Greek</label>
+                <label><input type="checkbox" value="Norse" x-model="form.traditions"> Norse</label>
+                <label><input type="checkbox" value="Egyptian" x-model="form.traditions"> Egyptian</label>
+                <label><input type="checkbox" value="Mesopotamian" x-model="form.traditions"> Mesopotamian</label>
+                <label><input type="checkbox" value="Celtic" x-model="form.traditions"> Celtic</label>
+                <label><input type="checkbox" value="West African" x-model="form.traditions"> West African</label>
+                <label><input type="checkbox" value="Buddhist" x-model="form.traditions"> Buddhist</label>
+                <label><input type="checkbox" value="Sufi" x-model="form.traditions"> Sufi</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Mood</label>
+                <select x-model="form.mood">
+                    <option value="epic">Epic</option>
+                    <option value="dark">Dark / Gothic</option>
+                    <option value="lyrical">Lyrical / Poetic</option>
+                    <option value="tragic">Tragic</option>
+                    <option value="mysterious">Mysterious</option>
+                    <option value="hopeful">Hopeful / Luminous</option>
+                    <option value="surreal">Surreal / Dreamlike</option>
+                </select>
+            </div>
+            <div>
+                <label>Number of Seeds</label>
+                <select x-model="form.count">
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Quality</label>
+            <select x-model="form.quality">
+                <option value="fast">Fast (Haiku)</option>
+                <option value="deep">Deep (Sonnet)</option>
+            </select>
+        </div>
+
+        <button class="btn-muse" @click="generate()" :disabled="loading || !form.theme.trim()">
+            <span x-show="!loading">Generate Seeds</span>
+            <span x-show="loading">Planting seeds...</span>
+        </button>
+    </div>
+
+    <div x-show="loading" class="muse-loading">
+        <div class="spinner-muse"></div>
+        <span>Drawing from the deep well of myth...</span>
+    </div>
+
+    <div x-show="error" class="error-msg" x-text="error"></div>
+
+    <template x-if="seeds && seeds.length">
+        <div class="muse-result">
+            <h2>Story Seeds</h2>
+            <template x-for="(seed, i) in seeds" :key="i">
+                <div class="seed-card">
+                    <h4 x-text="seed.title"></h4>
+                    <p x-text="seed.premise"></p>
+                    <p><strong>Key tension:</strong> <span x-text="seed.key_tension"></span></p>
+                    <p class="opening-line" x-text="'\"' + seed.opening_line + '\"'"></p>
+                    <div class="tag-list">
+                        <template x-for="t in (seed.traditions_used || [])" :key="t">
+                            <span class="tag" x-text="t"></span>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="copyAll()">Copy All</button>
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="downloadAll()">Download .md</button>
+            </div>
+        </div>
+    </template>
+</div>
+{% endblock %}
+
+{% block muse_scripts %}
+<script>
+function storySeeds() {
+    return {
+        form: {
+            theme: '',
+            traditions: [],
+            mood: 'epic',
+            count: 3,
+            quality: 'fast',
+        },
+        loading: false,
+        error: '',
+        seeds: null,
+
+        async generate() {
+            this.loading = true;
+            this.error = '';
+            this.seeds = null;
+            try {
+                const data = await Muse.post('/api/muse/inspire', {
+                    ...this.form,
+                    count: parseInt(this.form.count),
+                });
+                this.seeds = data.seeds || [];
+                Muse.saveToHistory('seeds', this.seeds);
+            } catch (err) {
+                this.error = err.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        copyAll() {
+            if (!this.seeds) return;
+            const text = this.seeds.map((s, i) =>
+                `## ${i + 1}. ${s.title}\n${s.premise}\n\n**Tension:** ${s.key_tension}\n\n> "${s.opening_line}"\n\nTraditions: ${(s.traditions_used || []).join(', ')}`
+            ).join('\n\n---\n\n');
+            Muse.copyToClipboard(text);
+        },
+
+        downloadAll() {
+            if (!this.seeds) return;
+            const text = `# Story Seeds: ${this.form.theme}\n\n` + this.seeds.map((s, i) =>
+                `## ${i + 1}. ${s.title}\n${s.premise}\n\n**Tension:** ${s.key_tension}\n\n> "${s.opening_line}"\n\nTraditions: ${(s.traditions_used || []).join(', ')}`
+            ).join('\n\n---\n\n');
+            Muse.downloadFile(text, `story-seeds-${this.form.theme.toLowerCase().replace(/\s+/g, '-')}.md`);
+        }
+    };
+}
+</script>
+{% endblock %}

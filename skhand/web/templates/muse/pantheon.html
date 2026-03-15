@@ -1,0 +1,55 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "pantheon" %}
+
+{% block title %}Deity Pantheon — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Indo-European Deity Pantheon</h1>
+    <p>{{ pantheon|length }} deity cognate sets — tracing divine archetypes across civilizations through linguistics and function</p>
+</div>
+
+<div class="muse-grid">
+    {% for deity in pantheon %}
+    <div class="muse-card" style="border-left-color: var(--muse-indigo);" x-data="{ expanded: false }" @click="expanded = !expanded">
+        <h3>{{ deity.proto_ie_name }}</h3>
+        <div class="count" style="margin-bottom: 0.5rem;">{{ deity.reconstructed_meaning }}</div>
+        <p style="font-size: 0.85rem; color: var(--muse-amber);">{{ deity.function }}</p>
+
+        <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {% if deity.vedic and deity.vedic.name %}
+            <span class="tradition-tag tag-vedic">{{ deity.vedic.name }}</span>
+            {% endif %}
+            {% if deity.greek and deity.greek.name %}
+            <span class="tradition-tag tag-greek">{{ deity.greek.name }}</span>
+            {% endif %}
+            {% if deity.norse and deity.norse.name %}
+            <span class="tradition-tag tag-norse">{{ deity.norse.name }}</span>
+            {% endif %}
+            {% if deity.roman and deity.roman.name %}
+            <span class="tradition-tag tag-egyptian">{{ deity.roman.name }}</span>
+            {% endif %}
+            {% if deity.celtic and deity.celtic.name %}
+            <span class="tradition-tag tag-celtic">{{ deity.celtic.name }}</span>
+            {% endif %}
+        </div>
+
+        <div x-show="expanded" x-transition style="margin-top: 1rem; font-size: 0.9rem;">
+            <p><strong>Etymology:</strong> {{ deity.etymological_root }}</p>
+
+            {% if deity.vedic and deity.vedic.role %}
+            <p style="margin-top: 0.5rem;"><span style="color: var(--t-vedic);">Vedic — {{ deity.vedic.name }}:</span> {{ deity.vedic.role[:200] }}</p>
+            {% endif %}
+            {% if deity.greek and deity.greek.role %}
+            <p><span style="color: var(--t-greek);">Greek — {{ deity.greek.name }}:</span> {{ deity.greek.role[:200] }}</p>
+            {% endif %}
+            {% if deity.norse and deity.norse.role %}
+            <p><span style="color: var(--t-norse);">Norse — {{ deity.norse.name }}:</span> {{ deity.norse.role[:200] }}</p>
+            {% endif %}
+
+            <p style="margin-top: 0.75rem; color: var(--text-secondary); font-style: italic;">{{ deity.analysis[:300] }}{% if deity.analysis|length > 300 %}...{% endif %}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

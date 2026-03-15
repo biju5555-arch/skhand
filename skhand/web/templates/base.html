@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Skhand{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">स्कन्ध <span>Skhand</span></a>
+        <a href="/" {% if active == "ask" %}class="active"{% endif %}>Ask</a>
+        <a href="/graph" {% if active == "graph" %}class="active"{% endif %}>Graph</a>
+        <a href="/learn" {% if active == "learn" %}class="active"{% endif %}>Learn</a>
+        <a href="/muse" {% if active == "muse" %}class="active"{% endif %}>Muse</a>
+        <a href="/status" {% if active == "status" %}class="active"{% endif %}>Status</a>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

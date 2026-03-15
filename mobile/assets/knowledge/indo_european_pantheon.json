@@ -1,0 +1,317 @@
+{
+  "title": "Indo-European Pantheon: Deity Cognates and Trifunctional Analysis",
+  "description": "A comprehensive mapping of deity cognates across Indo-European traditions, grounded in Georges Dumezil's trifunctional hypothesis (sovereignty, war, fertility) and informed by comparative linguistics and reconstructed Proto-Indo-European theology. Each entry traces a divine archetype from its reconstructed PIE root through its reflexes in Vedic, Greek, Roman, Norse, and Celtic traditions, noting both phonological continuities and functional shifts that occurred as daughter cultures diverged from the common heritage over millennia.",
+  "methodology": "Cognate identifications rely on established sound correspondences (Grimm's Law, Grassmann's Law, the laryngeal theory) and functional parallels documented in the Rig Veda, Homeric corpus, Roman sacral calendars, Eddic literature, and insular Celtic sources. Dumezil's tripartite schema (F1: magico-juridical sovereignty, F2: martial force, F3: fertility/production) provides the organizing framework, though we note critiques by Belier, Lincoln, and others where applicable.",
+  "dumezil_trifunctional_hypothesis": {
+    "first_function": "Magico-juridical sovereignty, further divided into the contractual-rational (Mitra/Apollo) and the terrible-magical (Varuna/Odin) aspects",
+    "second_function": "Martial force, physical valor, and the defense of cosmic order through combat (Indra/Thor/Mars)",
+    "third_function": "Fertility, abundance, health, sensual pleasure, and the productive base of society (Ashvins/Freyr/Quirinus)"
+  },
+  "deity_mappings": [
+    {
+      "proto_ie_name": "*Dyeus Phter",
+      "reconstructed_meaning": "Sky Father, the luminous daylight sky personified",
+      "etymological_root": "*dyeu- (to shine, sky, day) + *phter (father)",
+      "function": "F1 - Sovereignty: supreme sky deity and father of the gods",
+      "vedic": {
+        "name": "Dyaus Pitar",
+        "sources": ["Rig Veda 1.89.4", "Rig Veda 4.1.10"],
+        "role": "Ancient sky father, paired with Prithvi Mata (Earth Mother); largely eclipsed by Indra and Varuna in the Vedic period but preserved in formulaic invocations",
+        "epithets": ["Dyaus Pitar", "Div"]
+      },
+      "greek": {
+        "name": "Zeus Pater",
+        "sources": ["Iliad", "Theogony", "Homeric Hymns"],
+        "role": "Supreme Olympian, ruler of gods and men, wielder of the thunderbolt, upholder of xenia and oaths",
+        "epithets": ["Zeus Pater", "Kronides", "Nepheligereta (cloud-gatherer)"]
+      },
+      "roman": {
+        "name": "Jupiter (Iuppiter)",
+        "sources": ["Fasti of Ovid", "Aeneid", "Varro De Lingua Latina"],
+        "role": "Supreme state deity, guardian of law and oaths, head of the Capitoline Triad",
+        "epithets": ["Iuppiter Optimus Maximus", "Diespiter"]
+      },
+      "norse": {
+        "name": "Tyr (Proto-Norse *Tiwaz)",
+        "sources": ["Prose Edda", "Poetic Edda (Hymiskvida)"],
+        "role": "God of law, justice, and martial honor. Originally the supreme sky god (*Tiwaz < *Dyeus), later subordinated to Odin in the Norse reorganization of the pantheon",
+        "epithets": ["Tyr", "Tiw (Old English)"]
+      },
+      "celtic": {
+        "name": "Possible reflex in Gaulish Dis Pater (per Caesar) or the Dagda",
+        "sources": ["Caesar De Bello Gallico 6.18", "Lebor Gabala Erenn"],
+        "role": "Caesar reports the Gauls claimed descent from Dis Pater; the Irish Dagda ('Good God') may represent a parallel sovereign-father figure",
+        "epithets": ["Dagda Mor", "Eochaid Ollathair"]
+      },
+      "analysis": "The *Dyeus Phter cognate set is the most securely established in comparative IE mythology. The phonological correspondences (Dyaus/Zeus/Dius/Tiwaz) are textbook examples of regular sound change. Functionally, a remarkable divergence occurred: while Greek Zeus and Roman Jupiter retained supreme sovereignty, Vedic Dyaus was eclipsed early, and Norse *Tiwaz ceded supremacy to Odin, retaining only juridical and martial functions. This suggests that pantheon reorganization under cultural pressure can override inherited structures."
+    },
+    {
+      "proto_ie_name": "*Hewsos",
+      "reconstructed_meaning": "The Dawn Goddess, personification of the morning light",
+      "etymological_root": "*hewes- / *aus- (to shine, dawn, east)",
+      "function": "Cosmological - the daily renewal of light, often associated with F3 themes of beauty and desire",
+      "vedic": {
+        "name": "Ushas",
+        "sources": ["Rig Veda 1.48", "Rig Veda 1.92", "Rig Veda 7.77"],
+        "role": "Goddess of the dawn, among the most celebrated deities of the Rig Veda with over 20 dedicated hymns. She drives away darkness, awakens all creatures, and is praised for her beauty and generosity",
+        "epithets": ["Ushas", "Daughter of Heaven (Divo Duhita)"]
+      },
+      "greek": {
+        "name": "Eos",
+        "sources": ["Odyssey 2.1", "Theogony 371-382", "Homeric Hymn to Aphrodite"],
+        "role": "Titaness of the dawn, rosy-fingered (rhododaktylos), who opens the gates of heaven each morning. Known for her passionate abductions of mortal youths (Tithonus, Cephalus, Orion)",
+        "epithets": ["Eos Rhododaktylos", "Erigenia (early-born)"]
+      },
+      "roman": {
+        "name": "Aurora",
+        "sources": ["Ovid Metamorphoses", "Virgil Aeneid"],
+        "role": "Goddess of the dawn, largely modeled on Greek Eos in literary sources. Her name preserves the PIE etymology most transparently",
+        "epithets": ["Aurora", "Mater Matuta (archaic Italic form)"]
+      },
+      "norse": {
+        "name": "No direct personified reflex; possible echo in Sol (Sunna) or the concept of Dagr (Day)",
+        "sources": ["Prose Edda Gylfaginning"],
+        "role": "Norse tradition does not preserve a distinct dawn goddess, though the broader solar mythology (Sol chased by the wolf Skoll) retains elements of the cosmic light cycle",
+        "epithets": []
+      },
+      "celtic": {
+        "name": "Brigid / Brigantia",
+        "sources": ["Cormac's Glossary", "Sanas Cormaic"],
+        "role": "While not a direct phonological cognate, Brigid ('exalted one') shares functional attributes with the dawn goddess as a deity of fire, light, poetry, and renewal. The Imbolc festival celebrates her as a bringer of returning light",
+        "epithets": ["Brigid", "Brigantia (Brythonic)"]
+      },
+      "analysis": "Ushas-Eos-Aurora represents one of the most poetically rich cognate sets. The Rig Vedic hymns to Ushas and Homer's formulaic 'rosy-fingered Dawn' likely reflect inherited poetic formulas (*Hewsos the Daughter of the Sky). The myth of the Dawn Goddess who takes mortal lovers (Ushas and Surya, Eos and Tithonus) may also be inherited, as analyzed by West (2007). The absence of a Norse dawn goddess is notable and may reflect the northern latitude's different relationship with dawn phenomena."
+    },
+    {
+      "proto_ie_name": "*Perkwunos",
+      "reconstructed_meaning": "The Striker, the Thunder God who wields the weapon against the serpent/chaos",
+      "etymological_root": "*perkwu- (oak, striking) or *per- (to strike)",
+      "function": "F2 - Warrior function: cosmic champion who defends order against chaos, slays the dragon/serpent",
+      "vedic": {
+        "name": "Indra / Parjanya",
+        "sources": ["Rig Veda 1.32 (Vrtra myth)", "Rig Veda 2.12", "Rig Veda 5.83 (Parjanya)"],
+        "role": "King of the gods in the Rig Veda, wielder of the vajra (thunderbolt), slayer of the cosmic serpent Vrtra who had imprisoned the waters. Parjanya is the rain god whose name is the closer phonological cognate to *Perkwunos",
+        "epithets": ["Indra Vritrahan (Vrtra-slayer)", "Parjanya", "Shakra"]
+      },
+      "greek": {
+        "name": "Zeus (in his thunderer aspect) / Heracles (as dragon-slayer)",
+        "sources": ["Theogony (Typhonomachy)", "Iliad (thunderbolt scenes)"],
+        "role": "Zeus as thunderer splits the *Perkwunos function with Heracles, whose labors (especially slaying the Hydra) echo the dragon-slaying myth. The Greek tradition merged the thunder-god into the sky-father role",
+        "epithets": ["Zeus Keraunos", "Heracles Alexikakos"]
+      },
+      "roman": {
+        "name": "Jupiter (as Tonans) / Hercules",
+        "sources": ["Livy Ab Urbe Condita", "Ovid Fasti"],
+        "role": "Jupiter Tonans ('the Thunderer') and Hercules preserve the dual reflex of sky-sovereignty and dragon-slaying champion",
+        "epithets": ["Jupiter Tonans", "Jupiter Elicius"]
+      },
+      "norse": {
+        "name": "Thor (Thorr / Thunar)",
+        "sources": ["Prose Edda", "Poetic Edda (Thrymskvida, Hymiskvida)", "Adam of Bremen"],
+        "role": "God of thunder, wielder of Mjolnir, protector of Midgard, slayer of the Midgard Serpent Jormungandr. Thor is the most popular deity among common Norse people and preserves the *Perkwunos function most purely of any IE tradition",
+        "epithets": ["Thor", "Asa-Thor", "Oku-Thor", "Vingthor"]
+      },
+      "celtic": {
+        "name": "Taranis",
+        "sources": ["Lucan Pharsalia 1.446", "Gaulish inscriptions and wheel-god iconography"],
+        "role": "Gaulish thunder god known from inscriptions and classical references. Associated with the wheel symbol (solar/thunder wheel). Name derives from Celtic *toranos (thunder)",
+        "epithets": ["Taranis", "Jupiter Taranis (interpretatio romana)"]
+      },
+      "analysis": "The thunder-god who slays the cosmic serpent is perhaps the most widely attested IE myth (Watkins 1995, 'How to Kill a Dragon'). The Indra-Vrtra, Thor-Jormungandr, and Zeus-Typhon combats share deep structural parallels: a champion of order uses a special weapon to defeat a serpentine creature of chaos, thereby releasing blocked cosmic forces (waters, fertility). In Baltic tradition, Perkunas preserves the name most faithfully. Notably, the Norse tradition kept the thunder-god (Thor) and sovereignty-god (Odin) as separate figures, while Greek and Roman merged them into Zeus/Jupiter."
+    },
+    {
+      "proto_ie_name": "*Werunos / *Welnos",
+      "reconstructed_meaning": "The Binder, the Terrible Sovereign who oversees cosmic law (rta) through magical bonds",
+      "etymological_root": "*wer- (to cover, bind) or *wel- (to see, related to seer-sovereignty)",
+      "function": "F1a - The magical-terrible aspect of sovereignty (as opposed to the contractual-rational aspect)",
+      "vedic": {
+        "name": "Varuna",
+        "sources": ["Rig Veda 1.25", "Rig Veda 5.85", "Rig Veda 7.86-89"],
+        "role": "Guardian of Rta (cosmic order), lord of the waters and the night sky, sovereign who binds transgressors with his nooses (pasha). Paired with Mitra in the sovereign dyad. In later Vedic literature, demoted to lord of the western ocean",
+        "epithets": ["Varuna Asura", "Ritasya Gopah (guardian of Rta)"]
+      },
+      "greek": {
+        "name": "Ouranos (Uranus)",
+        "sources": ["Hesiod Theogony 126-210"],
+        "role": "Primordial sky god, father of the Titans. His castration by Kronos may preserve an ancient myth of the 'terrible sovereign' overthrown. The phonological correspondence Varuna/Ouranos has been debated but remains influential",
+        "epithets": ["Ouranos Asteroen (starry)"]
+      },
+      "roman": {
+        "name": "No direct reflex; Neptune may share some aquatic functions",
+        "sources": [],
+        "role": "The Varuna function was absorbed into Jupiter's domain in Roman religion. Some scholars see traces in the archaic Vediovis",
+        "epithets": []
+      },
+      "norse": {
+        "name": "Odin (in his magical-sovereign aspect)",
+        "sources": ["Prose Edda", "Havamal", "Voluspa"],
+        "role": "Odin as the magical sovereign, lord of the runes, master of seidr, one-eyed seer who sacrificed for wisdom. Dumezil argued Odin represents the terrible-magical sovereign (*Werunos reflex) while Tyr represents the juridical (*Mitra reflex). Odin's association with the hanged, with battle-magic, and with the dead parallels Varuna's binding nooses and terrifying omniscience",
+        "epithets": ["Allfather", "Grimnir", "Gangleri", "Hanga-god (god of the hanged)"]
+      },
+      "celtic": {
+        "name": "Lugh / Nuada",
+        "sources": ["Cath Maige Tuired", "Lebor Gabala Erenn"],
+        "role": "Nuada Airgetlam (Silver Hand) as sovereign king and Lugh Samildanach (many-skilled) together may reflect aspects of the sovereign function. Nuada's loss and restoration of his hand echoes Tyr's loss of his hand to Fenrir",
+        "epithets": ["Nuada Airgetlam", "Lugh Lamhfhada"]
+      },
+      "analysis": "The Varuna-Odin parallel is central to Dumezil's reconstruction of IE sovereignty. Both are terrifying, magical sovereigns associated with binding (Varuna's pasha, Odin's war-fetters), sacrifice (Varuna oversees rituals, Odin hangs himself on Yggdrasil), one-eye symbolism (Varuna is sometimes one-eyed in later texts, Odin famously so), and the dead. Both govern through esoteric knowledge rather than brute force. The Varuna-Ouranos phonological connection remains contested (Beekes argues against it), but the functional parallel between Varuna and Odin is widely accepted even by scholars skeptical of Dumezil's broader framework."
+    },
+    {
+      "proto_ie_name": "*Mitroh",
+      "reconstructed_meaning": "The Ally, the Contract, the rational-benevolent aspect of sovereignty",
+      "etymological_root": "*mei- (to bind, exchange) -- related to contract, alliance, measure",
+      "function": "F1b - The contractual-rational aspect of sovereignty, complementing the terrible-magical sovereign",
+      "vedic": {
+        "name": "Mitra",
+        "sources": ["Rig Veda 3.59", "Rig Veda 5.65 (Mitra-Varuna hymns)"],
+        "role": "God of contracts, alliances, and the benevolent face of sovereignty. Always paired with Varuna as Mitra-Varuna, governing the dual aspects of cosmic order: the friendly daylight (Mitra) and the stern night (Varuna). Associated with Rta from its orderly, contractual dimension",
+        "epithets": ["Mitra", "Friend of Man"]
+      },
+      "greek": {
+        "name": "Apollo (functionally) / Themis",
+        "sources": ["Homeric Hymn to Apollo", "Iliad", "Pindar"],
+        "role": "Apollo as god of law, prophecy, rational order, and measured harmony. Themis as personified divine law. Neither is a direct phonological cognate, but Apollo's function as the rational, luminous deity of order parallels Mitra. Some scholars connect Mitra to Greek Metra (measure)",
+        "epithets": ["Apollo Nomios", "Phoibos (radiant)"]
+      },
+      "roman": {
+        "name": "Dius Fidius / Fides",
+        "sources": ["Varro", "Cicero De Natura Deorum"],
+        "role": "Dius Fidius was the Roman god of oaths and good faith, functionally equivalent to Mitra as the divine guarantor of contracts. Fides (personified Faith/Trust) is the abstract deification of the same concept",
+        "epithets": ["Dius Fidius", "Semo Sancus"]
+      },
+      "norse": {
+        "name": "Tyr (in his juridical aspect)",
+        "sources": ["Prose Edda", "Sigrdrifa's Prayer (Sigrdrifumal)"],
+        "role": "Tyr as the god of the Thing (assembly), of oaths and legal proceedings. His sacrifice of his hand to bind Fenrir represents the contractual sovereign who upholds law even at personal cost. Dumezil identified Tyr as the Norse Mitra-reflex to Odin's Varuna-reflex",
+        "epithets": ["Tyr", "Irminsul (possibly)"]
+      },
+      "celtic": {
+        "name": "Nuada (juridical king) / Bres (failed contract-king)",
+        "sources": ["Cath Maige Tuired"],
+        "role": "The Irish myth of Nuada and Bres may reflect the Mitra function: legitimate sovereignty requires both physical wholeness (Nuada loses his hand) and just governance (Bres fails as a stingy, unjust king). The dyad of legitimate vs illegitimate sovereignty echoes the Mitra-Varuna tension",
+        "epithets": []
+      },
+      "analysis": "The Mitra-Varuna dyad is Dumezil's signature contribution. In Vedic religion, the pairing is explicit and ritually enacted. In Norse, Dumezil argued Tyr-Odin preserves the same bipartite sovereignty: Tyr (law, oaths, the assembly) vs Odin (magic, ecstasy, the dead). The parallel extends to Roman religion where Dius Fidius-Jupiter mirrors Mitra-Varuna. Critics (Belier 1991) argue the dyad is overextended, but the structural parallel between the two faces of sovereignty -- rational-contractual and magical-terrible -- recurs independently across IE cultures with striking regularity."
+    },
+    {
+      "proto_ie_name": "*Hekwoneh / *Ashwinau",
+      "reconstructed_meaning": "The Divine Twins, youthful horsemen associated with dawn, rescue, and healing",
+      "etymological_root": "*ekwo- (horse) -- the 'horse-possessors' or divine horsemen",
+      "function": "F3 - Fertility, healing, rescue; the twin sons of the Sky Father who attend the Dawn Goddess",
+      "vedic": {
+        "name": "Ashvins (Nasatya and Dasra)",
+        "sources": ["Rig Veda 1.3", "Rig Veda 1.116-120", "Rig Veda 10.39-40"],
+        "role": "Divine twin horsemen, physicians of the gods, rescuers of the distressed. They arrive at dawn in a golden chariot, bringing healing, fertility, and aid. Sons of Surya (Sun) or Dyaus. Over 50 Rig Vedic hymns celebrate their miraculous rescues",
+        "epithets": ["Ashvins", "Nasatya", "Dasra", "Divasputra (sons of heaven)"]
+      },
+      "greek": {
+        "name": "Dioskouroi (Kastor and Polydeukes / Castor and Pollux)",
+        "sources": ["Homeric Hymn 33", "Pindar Nemean 10", "Iliad 3.236-244"],
+        "role": "Divine twin sons of Zeus, patrons of sailors and horsemen, saviors in distress. Kastor the horse-tamer and Polydeukes the boxer. One mortal, one immortal -- they alternate between Olympus and Hades. Worshipped as Soteres (saviors) throughout the Greek world",
+        "epithets": ["Dioskouroi", "Tyndaridai", "Soteres (saviors)"]
+      },
+      "roman": {
+        "name": "Castor and Pollux",
+        "sources": ["Livy (Battle of Lake Regillus)", "Cicero De Natura Deorum"],
+        "role": "Adopted from Greek cult but became deeply important in Roman state religion. Appeared miraculously at the Battle of Lake Regillus (496 BCE). Their temple in the Forum was among Rome's most prominent",
+        "epithets": ["Castores", "Gemini"]
+      },
+      "norse": {
+        "name": "Freyr and possibly Njord-Freyr dyad; also Hengest and Horsa (legendary founders)",
+        "sources": ["Prose Edda", "Bede Historia Ecclesiastica"],
+        "role": "Norse divine twins are less clearly preserved. The legendary Anglo-Saxon founders Hengest and Horsa ('stallion and horse') are likely euhemerized divine twins. The Vanir pair Freyr/Freyja may represent a twin-pair reflex, and the Alcis mentioned by Tacitus among the Germanic Naharvali were explicitly identified as a Castor-and-Pollux type twin cult",
+        "epithets": ["Alcis (Tacitus Germania 43)"]
+      },
+      "celtic": {
+        "name": "Maponos / Mabon, and possibly the horse-goddess Epona as a related figure",
+        "sources": ["Gaulish inscriptions", "Mabinogion (Mabon ap Modron)"],
+        "role": "Celtic twin myths are fragmentary. The Welsh Mabon (divine youth) and the widely-attested horse-goddess Epona may preserve elements of the divine twins / horse-associated youth complex. Irish tradition has various twin and horse-birth motifs (Macha's twins)",
+        "epithets": ["Maponos", "Apollo Maponos (interpretatio)"]
+      },
+      "analysis": "The Divine Twins are among the most securely reconstructed IE mythological figures (Ward 1968, Puhvel 1987). The Ashvins-Dioskouroi parallel is comprehensive: both are twin horsemen, sons of the sky, associated with dawn, healing, rescue at sea, and mortal-immortal asymmetry. The horse etymology (*ekwo-) connects to the consistent equine association across traditions. The IE myth likely featured the Twins as suitors or companions of the Dawn Goddess (*Hewsos) and as embodiments of the Third Function -- representing the life-sustaining, healing, youthful vigor that complements sovereignty and war."
+    },
+    {
+      "proto_ie_name": "*Sehmno- / *Medhyo-",
+      "reconstructed_meaning": "The Sacred Drink, the divine intoxicant that grants immortality, poetic inspiration, or ecstatic vision",
+      "etymological_root": "*seu- (to press, extract juice) for Soma; *medhu- (mead, honey-drink) for the Norse reflex",
+      "function": "Cross-functional: connects F1 (sovereign ritual), F2 (warrior berserker fury), and F3 (vitality and healing)",
+      "vedic": {
+        "name": "Soma (Avestan: Haoma)",
+        "sources": ["Rig Veda 9 (entire mandala)", "Rig Veda 8.48", "Yasna 9-11 (Avestan)"],
+        "role": "Deified sacred plant and the intoxicating ritual drink pressed from it. Soma is simultaneously a god, a plant, and a ritual substance. The entire ninth mandala of the Rig Veda is devoted to Soma Pavamana (self-purifying Soma). Soma grants immortality, poetic vision, and martial vigor. Indra drinks vast quantities before his cosmic battles",
+        "epithets": ["Soma Pavamana", "Amrita (immortal nectar)", "Indu"]
+      },
+      "greek": {
+        "name": "Ambrosia and Nektar",
+        "sources": ["Iliad 5.340", "Odyssey 5.93", "Homeric Hymn to Demeter"],
+        "role": "The food and drink of the gods that confers immortality. While not a deity, ambrosia/nectar functionally parallels Soma as the divine substance of immortality. The Eleusinian kykeon (ritual drink) may preserve a more direct parallel to Soma ritual",
+        "epithets": ["Ambrosia (a-mbrotos, 'immortal')", "Nektar"]
+      },
+      "roman": {
+        "name": "No direct reflex; Bacchus/Liber and wine ritual partially overlap",
+        "sources": ["Livy on Bacchanalia"],
+        "role": "Roman religion lacked a direct Soma cognate but the ecstatic cult of Bacchus/Liber and the ritual importance of wine in Roman sacrifice preserve the concept of the divine intoxicant",
+        "epithets": []
+      },
+      "norse": {
+        "name": "The Mead of Poetry (Odrerir)",
+        "sources": ["Prose Edda Skaldskaparmal", "Havamal 104-110"],
+        "role": "The mead brewed from the blood of Kvasir (the wisest being, created from the mixed saliva of the Aesir and Vanir) by the dwarfs Fjalar and Galar. Odin steals it through a complex quest involving shape-shifting, seduction, and flight as an eagle. The mead grants poetic inspiration and wisdom. The myth structurally parallels the Vedic myth of the Soma-bringing eagle (Rig Veda 4.26-27)",
+        "epithets": ["Odrerir", "Son", "Bodn"]
+      },
+      "celtic": {
+        "name": "The Cauldron of the Dagda / Cauldron of Inspiration (Awen)",
+        "sources": ["Hanes Taliesin", "Mabinogion (Branwen)"],
+        "role": "Welsh tradition preserves the Cauldron of Ceridwen from which Gwion Bach accidentally tastes three drops, gaining all knowledge and poetic inspiration. Irish tradition has the Dagda's cauldron of plenty. Both may reflect the IE sacred drink complex transposed into cauldron mythology",
+        "epithets": ["Awen (poetic inspiration)", "Pair Dadeni"]
+      },
+      "analysis": "The Soma-Mead complex is a remarkable case of mythological cognation. The Vedic myth of the eagle (or Indra as eagle) stealing Soma from a mountain fortress and the Norse myth of Odin as eagle stealing the Mead of Poetry are structurally identical (analyzed exhaustively by Kuhn 1859 and confirmed by subsequent scholarship). Both involve: (1) a precious drink conferring wisdom/immortality, (2) guarded in a remote/fortified location, (3) obtained through trickery and theft, (4) transported by an eagle, (5) some of the drink spilled during the flight. The Indo-Iranian Soma-Haoma correspondence proves the ritual drink goes back at least to Proto-Indo-Iranian times (ca. 2000 BCE), and the Norse parallels suggest an even deeper PIE heritage."
+    },
+    {
+      "proto_ie_name": "*Yemoh and *Monuh",
+      "reconstructed_meaning": "The Primordial Twin and the First Man -- cosmic sacrifice that creates the world",
+      "etymological_root": "*yem- (twin) and *mon- / *manu- (man, to think)",
+      "function": "Cosmogonic: the sacrifice of the primordial being from whose body the world and social order are created",
+      "vedic": {
+        "name": "Yama and Manu",
+        "sources": ["Rig Veda 10.90 (Purusha Sukta)", "Rig Veda 10.14 (Yama)", "Shatapatha Brahmana"],
+        "role": "Yama is the first mortal who dies and becomes king of the dead. Manu is the first man and progenitor of humanity, survivor of the great flood. The Purusha Sukta describes the cosmic sacrifice of the Primordial Man (Purusha) from whose dismembered body the world, the Vedas, and the four varnas are created. Yama's twin sister is Yami",
+        "epithets": ["Yama Vaivasvata", "Manu Vaivasvata", "Purusha"]
+      },
+      "greek": {
+        "name": "Minos / Prometheus (functional parallels)",
+        "sources": ["Hesiod Works and Days", "Plato Gorgias 524a"],
+        "role": "Minos as judge of the dead parallels Yama as king of the dead (and the name Minos may be cognate with Manu). Prometheus as creator/benefactor of humanity parallels aspects of Manu. Greek cosmogony does not preserve the dismemberment creation myth as clearly, though the Orphic tradition's Phanes/Zagreus may reflect it",
+        "epithets": ["Minos Dikastes (judge)"]
+      },
+      "roman": {
+        "name": "Romulus and Remus (as sacred twins); also Numa (cognate with Manu?)",
+        "sources": ["Livy 1.3-7", "Plutarch Life of Romulus"],
+        "role": "Romulus and Remus as founding twins whose fratricidal sacrifice (Remus killed by Romulus) founds Rome. Dumezil analyzed this as a reflex of the *Yemo myth: the killing of one twin by the other to create social order. Numa Pompilius, the pious second king, may echo *Manu as the wise lawgiver",
+        "epithets": ["Romulus Quirinus"]
+      },
+      "norse": {
+        "name": "Ymir and Ask/Embla",
+        "sources": ["Prose Edda Gylfaginning", "Voluspa 3-4, 17-18"],
+        "role": "Ymir (whose name is cognate with Yama < *Yemoh, 'twin') is the primordial frost giant from whose dismembered body Odin, Vili, and Ve create the world: skull becomes sky, blood becomes sea, flesh becomes earth, bones become mountains. Ask and Embla are the first humans, created from driftwood. The Ymir cosmogony is the closest Norse parallel to the Purusha Sukta",
+        "epithets": ["Ymir", "Aurgelmir", "Buri (first being licked from ice)"]
+      },
+      "celtic": {
+        "name": "No clearly preserved reflex; possible echoes in Irish cosmogonic fragments",
+        "sources": [],
+        "role": "Celtic cosmogonic myths are poorly preserved due to Christianization. Some scholars detect echoes of the dismemberment creation myth in various Irish and Welsh fragments, but the evidence is tenuous",
+        "epithets": []
+      },
+      "analysis": "The *Yemo-*Manu complex is among the most important IE cosmogonic myths (Lincoln 1986, 'Myth, Cosmos, and Society'). The structural parallel between the Purusha Sukta (Rig Veda 10.90) and the Ymir creation account in Gylfaginning is extraordinary: in both, a primordial giant being is sacrificed and dismembered, and from the body parts the physical cosmos and social order are created. The correspondence Yama/Ymir is both phonological (*Yemoh > Yama, *Yumiyaz > Ymir) and functional. Lincoln further connected this to Iranian Gayomart, Chinese Pangu, and argued for a 'Proto-Indo-European creation myth' centered on the first sacrifice. The social dimension -- the Purusha Sukta derives the four varnas from Purusha's body -- suggests that IE cosmogony legitimated social hierarchy through primordial sacrifice."
+    }
+  ],
+  "key_references": [
+    "Dumezil, Georges. 'Mitra-Varuna: An Essay on Two Indo-European Representations of Sovereignty.' 1948.",
+    "West, M.L. 'Indo-European Poetry and Myth.' Oxford University Press, 2007.",
+    "Puhvel, Jaan. 'Comparative Mythology.' Johns Hopkins University Press, 1987.",
+    "Lincoln, Bruce. 'Myth, Cosmos, and Society: Indo-European Themes of Creation and Destruction.' Harvard University Press, 1986.",
+    "Watkins, Calvert. 'How to Kill a Dragon: Aspects of Indo-European Poetics.' Oxford University Press, 1995.",
+    "Mallory, J.P. and Adams, D.Q. 'The Oxford Introduction to Proto-Indo-European and the Proto-Indo-European World.' Oxford University Press, 2006.",
+    "Ward, Donald. 'The Divine Twins: An Indo-European Myth in Germanic Tradition.' University of California Press, 1968."
+  ]
+}

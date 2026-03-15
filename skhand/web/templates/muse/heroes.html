@@ -1,0 +1,32 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "heroes" %}
+
+{% block title %}Epic Heroes — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Epic Heroes of the World</h1>
+    <p>{{ heroes|length }} heroes from across civilizations — each a doorway to an entire mythology</p>
+</div>
+
+<div class="muse-grid">
+    {% for hero in heroes %}
+    <a href="/muse/heroes/{{ hero.name | urlencode }}" class="muse-card" data-tradition="{{ hero.tradition }}">
+        <span class="tradition-tag
+            {% if 'Mesopotamian' in hero.tradition %}tag-mesopotamian
+            {% elif 'Hindu' in hero.tradition or 'Indian' in hero.tradition %}tag-vedic
+            {% elif 'Greek' in hero.tradition %}tag-greek
+            {% elif 'Norse' in hero.tradition %}tag-norse
+            {% elif 'Mande' in hero.tradition or 'African' in hero.tradition %}tag-african
+            {% elif 'Finnish' in hero.tradition %}tag-vedic
+            {% elif 'Celtic' in hero.tradition or 'Irish' in hero.tradition %}tag-celtic
+            {% else %}tag-vedic{% endif %}">{{ hero.tradition }}</span>
+        <h3>{{ hero.name }}</h3>
+        <p>{{ hero.quest[:180] }}{% if hero.quest|length > 180 %}...{% endif %}</p>
+        <div class="count">
+            {% if hero.key_weapon %}Weapon: {{ hero.key_weapon[:50] }}{% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

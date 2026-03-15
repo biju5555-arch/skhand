@@ -1,0 +1,170 @@
+{
+  "title": "Creation Narratives of the World: A Comparative Taxonomy of Cosmogonic Myths",
+  "description": "Every known human civilization has produced narratives accounting for the origin of the cosmos, the earth, humanity, and the conditions of mortal existence. These creation myths are not naive pre-scientific speculations but sophisticated symbolic systems that encode cosmological, metaphysical, and anthropological insights. Comparative mythology, from Max Muller and James George Frazer through Mircea Eliade, Joseph Campbell, and contemporary scholars like Michael Witzel, has identified recurring patterns and typologies across unrelated traditions. This file catalogues twelve major creation narratives organized by a six-fold taxonomy of cosmogonic types.",
+  "taxonomy": [
+    {
+      "type": "ex_nihilo",
+      "description": "Creation from nothing: a supreme being or principle brings the cosmos into existence from absolute nothingness, without pre-existing material. This type emphasizes the radical sovereignty and transcendence of the creator.",
+      "examples": ["Genesis (Judeo-Christian)", "Quranic creation", "Some Polynesian myths"]
+    },
+    {
+      "type": "cosmic_egg",
+      "description": "The cosmos originates from a primordial egg (or seed, or womb) that contains all potential reality in compressed form. The egg splits or hatches, releasing the differentiated cosmos.",
+      "examples": ["Hiranyagarbha (Vedic)", "Pan Gu (Chinese)", "Orphic cosmogony (Greek)", "Kalevala (Finnish)"]
+    },
+    {
+      "type": "world_parents",
+      "description": "The cosmos emerges from the separation of two primordial parents (typically Sky Father and Earth Mother) who are locked in a primal embrace. Creation requires their violent separation, often by a divine child.",
+      "examples": ["Rangi and Papa (Maori)", "Geb and Nut (Egyptian)", "An and Ki (Sumerian)"]
+    },
+    {
+      "type": "sacrifice_or_dismemberment",
+      "description": "The cosmos is created from the body of a primordial being who is sacrificed or dismembered. The parts of the body become the features of the world (mountains, rivers, sky, etc.). This type encodes the idea that creation requires sacrifice.",
+      "examples": ["Purusha Sukta (Vedic)", "Ymir (Norse)", "Tiamat (Mesopotamian)", "Pan Gu (Chinese, also cosmic egg)"]
+    },
+    {
+      "type": "emergence",
+      "description": "Humanity and the cosmos emerge from a lower world or series of lower worlds, ascending through successive levels to the present surface world. Common in indigenous American traditions.",
+      "examples": ["Hopi emergence", "Navajo emergence", "Zuni creation", "Pueblo traditions"]
+    },
+    {
+      "type": "earth_diver",
+      "description": "A being (often an animal or bird) dives into the primordial waters to retrieve a small piece of mud or earth from the bottom, which then expands to become the world. Common in Central Asian, Siberian, and Native American traditions.",
+      "examples": ["Cheyenne creation", "Romanian creation", "Siberian-Uralic myths", "Iroquois creation (Sky Woman)"]
+    }
+  ],
+  "myths": [
+    {
+      "id": "vedic_purusha",
+      "tradition": "Vedic Hinduism",
+      "source_text": "Purusha Sukta (Rigveda 10.90, c. 1200-1000 BCE), one of the latest hymns in the Rigveda. Also elaborated in the Shatapatha Brahmana and the Bhagavata Purana.",
+      "type": "sacrifice_or_dismemberment",
+      "summary": "The cosmic giant Purusha (the Primeval Man), a being with a thousand heads, a thousand eyes, and a thousand feet, who pervades the entire universe and extends beyond it by ten fingers' breadth, is sacrificed by the gods in the first ritual act. From his dismembered body, the cosmos and the social order emerge simultaneously. His mouth becomes the Brahmins (priestly class), his arms the Kshatriyas (warrior class), his thighs the Vaishyas (merchant class), and his feet the Shudras (servant class). From his mind comes the moon, from his eye the sun, from his breath the wind, from his navel the atmosphere, from his head the sky, from his feet the earth.",
+      "primordial_state": "Purusha alone exists, pervading everything. Three-quarters of Purusha is immortal in heaven; one-quarter manifests as the created world. There is an implicit pre-existing realm of the gods who perform the sacrifice.",
+      "creative_agent": "The gods (devas) perform the sacrifice, with Purusha himself as both the offering and the offerer. The act is self-referential: the cosmic sacrifice is the archetype of all subsequent Vedic sacrificial rituals.",
+      "method_of_creation": "Sacrificial dismemberment (yajna). The cosmic order is produced through the paradigmatic ritual act, establishing sacrifice as the fundamental mechanism sustaining the universe.",
+      "first_beings": "The four varnas (social classes) emerge from Purusha's body parts, along with the animals, the Vedic hymns and meters, and the elements of the natural world. Creation is simultaneously cosmological and sociological."
+    },
+    {
+      "id": "vedic_nasadiya",
+      "tradition": "Vedic Hinduism",
+      "source_text": "Nasadiya Sukta (Rigveda 10.129, c. 1200-1000 BCE), also known as the Hymn of Creation or the Hymn of Non-Being. Often considered the most philosophically sophisticated text in the Rigveda.",
+      "type": "ex_nihilo",
+      "summary": "The hymn begins with a state prior to both existence and non-existence: 'There was neither being (sat) nor non-being (asat). There was neither the realm of space nor the sky beyond. What stirred? Where? In whose protection?' In this primordial void, there was neither death nor immortality, neither day nor night. Only 'That One' (tad ekam) breathed breathlessly by its own power. From desire (kama) -- the first seed of mind -- a creative impulse arose, and the sages, searching with wisdom in their hearts, found the bond of being in non-being. The hymn ends with radical agnosticism: 'Who really knows? Who shall here declare it? Whence was it born, whence this creation? The gods came later than this creation; who then knows whence it has arisen? He from whom this creation arose -- perhaps he made it, or perhaps he did not. The one who surveys it from the highest heaven -- he alone knows, or perhaps even he does not know.'",
+      "primordial_state": "A state beyond the categories of existence and non-existence, an undifferentiated plenitude/void prior to all distinctions. Neither darkness nor light, neither death nor immortality.",
+      "creative_agent": "Tad Ekam ('That One'), an indefinite, unnamed principle that breathes without breath. The hymn deliberately refuses to identify this principle with any known deity.",
+      "method_of_creation": "Desire (kama) as the primordial creative impulse; the emergence of being from a pre-ontological state through an internal stirring. Remarkably, the hymn questions whether even the creator knows the origins of creation.",
+      "first_beings": "Not specified. The gods themselves are said to have arisen after creation, making them creatures rather than creators."
+    },
+    {
+      "id": "mesopotamian_enuma_elish",
+      "tradition": "Mesopotamian (Babylonian)",
+      "source_text": "Enuma Elish ('When on High'), a Babylonian creation epic inscribed on seven tablets, dating to the Old Babylonian period (c. 18th century BCE) with roots possibly extending to Sumerian antecedents. Discovered in the library of Ashurbanipal at Nineveh (7th century BCE). Recited annually during the Akitu (New Year) festival in Babylon.",
+      "type": "sacrifice_or_dismemberment",
+      "summary": "Before heaven and earth were named, only the primordial waters existed: Apsu (sweet water, male) and Tiamat (salt water, female), whose mingling produced the first gods. The younger gods' noise disturbed Apsu, who plotted to destroy them. Ea (Enki) killed Apsu, but Tiamat, enraged, created eleven monstrous creatures and appointed Kingu as their leader. The young gods, terrified, appealed to Marduk, who agreed to fight Tiamat on condition that he be made supreme king of the gods. Marduk defeated Tiamat in single combat, splitting her body in two: from one half he made the sky, from the other the earth. He established the celestial order, created humanity from the blood of Kingu to serve the gods, and built Babylon as his earthly dwelling. The epic concludes with the gods proclaiming Marduk's fifty names of power.",
+      "primordial_state": "Undifferentiated primordial waters (Apsu and Tiamat commingled). No sky, no earth, no gods. 'When on high heaven had not been named, and below firm ground had not been called by name.'",
+      "creative_agent": "Marduk, patron god of Babylon, who rises to supremacy through his victory over Tiamat. The creation of the world is a political act establishing divine sovereignty.",
+      "method_of_creation": "Cosmogonic combat (theomachy/Chaoskampf) followed by dismemberment of the defeated chaos-monster. The cosmos is created from the body of the vanquished enemy, and humanity from the blood of the rebellious god Kingu.",
+      "first_beings": "Humans (lullu), created from the blood of Kingu mixed with clay, are created specifically to perform the labor of the gods -- to build temples, offer sacrifices, and relieve the gods of toil."
+    },
+    {
+      "id": "egyptian_atum",
+      "tradition": "Ancient Egyptian (Heliopolitan cosmogony)",
+      "source_text": "The Pyramid Texts (c. 2400-2300 BCE), especially Utterances 527, 587, and 600; the Coffin Texts (c. 2100-1650 BCE); the Book of the Dead. The Heliopolitan system (centered on the cult of Atum-Re at Heliopolis/Iunu) is the oldest and most influential Egyptian cosmogony, though other traditions (Memphite, Hermopolitan, Theban) coexisted.",
+      "type": "ex_nihilo",
+      "summary": "In the beginning, only Nun existed -- the infinite, dark, motionless primordial ocean of chaos. From Nun, the self-created god Atum ('the Complete One') emerged, standing upon the primeval mound (benben). Through an act of masturbation (or, in some versions, sneezing and spitting), Atum produced the first divine pair: Shu (air/dryness) and Tefnut (moisture). Shu and Tefnut generated Geb (earth) and Nut (sky). Shu separated Geb and Nut, lifting the sky above the earth. Geb and Nut produced Osiris, Isis, Seth, and Nephthys -- the Ennead (group of nine gods) of Heliopolis. Humanity arose from the tears (remit) of Atum, a pun on the Egyptian word for 'people' (remet).",
+      "primordial_state": "Nun -- the infinite, formless, dark primordial ocean. Nun is not destroyed by creation but continues to exist at the margins of the cosmos, threatening to return (recalling the annual Nile flood).",
+      "creative_agent": "Atum, the self-created (kheper djesef) god who brings himself into existence from Nun by his own will. In the Memphite theology, Ptah creates through divine speech (hu) and thought (sia), anticipating the Logos concept.",
+      "method_of_creation": "Self-generation and emanation: Atum produces the first gods from his own body. In the Memphite variant, Ptah creates by conceiving all things in his heart (thought) and bringing them into being through his tongue (speech) -- creation by word.",
+      "first_beings": "Shu and Tefnut (air and moisture), the first differentiation within the primordial unity of Atum. Humanity arises later as a byproduct (from tears) or, in some traditions, is deliberately created to serve the gods."
+    },
+    {
+      "id": "greek_theogony",
+      "tradition": "Ancient Greek",
+      "source_text": "Hesiod, Theogony (c. 700 BCE); fragments of the Orphic cosmogonies (various dates); Plato, Timaeus (c. 360 BCE, a philosophical cosmogony); Ovid, Metamorphoses (c. 8 CE, Roman adaptation). Hesiod's Theogony is the primary source for the standard Greek cosmogonic narrative.",
+      "type": "world_parents",
+      "summary": "In the beginning was Chaos (Khaos) -- not disorder but a yawning gap or void. From Chaos emerged Gaia (Earth), Tartarus (the underworld), and Eros (desire/creative force). Gaia produced Ouranos (Sky) from herself and then mated with him, producing the twelve Titans, three Cyclopes, and three Hecatoncheires (Hundred-Handers). Ouranos, hating his offspring, imprisoned them within Gaia. Gaia conspired with the youngest Titan, Kronos, who castrated Ouranos with an adamantine sickle, separating Sky from Earth. From Ouranos's blood and severed genitals sprang the Giants, the Erinyes (Furies), and Aphrodite. Kronos then ruled during a Golden Age but swallowed his children to prevent a prophecy of his overthrow. Zeus, saved by his mother Rhea, defeated Kronos and the Titans in the Titanomachy, established the Olympian order, and assigned domains to the gods. Prometheus created humans from clay and stole fire for them, incurring Zeus's punishment.",
+      "primordial_state": "Chaos (Khaos) -- a primordial void or gap, not a state of disorder but an undifferentiated openness from which the first entities spontaneously emerged.",
+      "creative_agent": "No single creator. The cosmos unfolds through spontaneous emergence (Chaos, Gaia, Eros), sexual generation (Gaia and Ouranos), and violent succession (Kronos castrates Ouranos; Zeus overthrows Kronos). Creation is a process of conflict and succession rather than a single creative act.",
+      "method_of_creation": "Spontaneous emergence from Chaos; sexual procreation between primordial beings; violent separation of Sky and Earth; dynastic succession through combat (theomachies).",
+      "first_beings": "Chaos, Gaia, Tartarus, Eros -- the primordial entities. Humans are created later by Prometheus from clay, or in some traditions simply emerge from the earth (autochthony)."
+    },
+    {
+      "id": "norse_ginnungagap",
+      "tradition": "Norse / Old Germanic",
+      "source_text": "The Prose Edda (Snorri Sturluson, c. 1220 CE), especially Gylfaginning; the Poetic Edda (compiled c. 13th century from older oral traditions), especially Voluspa (The Seeress's Prophecy) and Vafthrudnismal. The Voluspa is our oldest and most authoritative source.",
+      "type": "sacrifice_or_dismemberment",
+      "summary": "Before the creation of the world, there existed only Ginnungagap -- a vast, yawning void. To the north lay Niflheim, a realm of ice, fog, and cold; to the south lay Muspelheim, a realm of fire and heat. When the icy rivers (Elivagar) of Niflheim met the sparks and heat of Muspelheim in Ginnungagap, the ice melted and from the drops emerged Ymir, the primordial frost giant, and Audhumla, the primeval cow. Audhumla nourished Ymir with her milk and licked the salty ice blocks, gradually uncovering Buri, the first god. Buri's grandson was Odin, who with his brothers Vili and Ve slew Ymir. From Ymir's body they created the cosmos: his blood became the seas, his flesh the earth, his bones the mountains, his skull the sky (held up by four dwarves), his brains the clouds, and his eyebrows the wall of Midgard (the human realm). Odin then created the first humans, Ask and Embla, from two trees (or logs) found on the seashore, giving them breath, consciousness, and warmth.",
+      "primordial_state": "Ginnungagap -- the 'yawning void' or 'charged void' between the realms of primal ice (Niflheim) and primal fire (Muspelheim). The interaction of these elemental opposites generates the first life.",
+      "creative_agent": "Odin and his brothers (Vili and Ve), who slay the primordial giant Ymir and fashion the cosmos from his body. Odin is the chief creator and the giver of human consciousness.",
+      "method_of_creation": "Cosmogonic sacrifice and dismemberment of the primordial giant (closely paralleling the Vedic Purusha Sukta, suggesting a common Proto-Indo-European origin). The cosmos is literally the body of the slain giant. Humans are created from trees, animated by divine gifts.",
+      "first_beings": "Ymir (first giant), Audhumla (primeval cow), Buri (first god). The first humans are Ask (ash tree, male) and Embla (elm tree, female)."
+    },
+    {
+      "id": "chinese_pan_gu",
+      "tradition": "Chinese",
+      "source_text": "The myth of Pan Gu first appears in the Sanwu Liji (Historical Record of the Three Sovereign Divinities and the Five Gods) by Xu Zheng (c. 220 CE, Three Kingdoms period), though it likely preserves much older oral traditions, possibly of southern Chinese or Miao/Hmong origin. Also elaborated in the Shu Yi Ji (c. 6th century CE).",
+      "type": "cosmic_egg",
+      "summary": "In the beginning, the universe was a formless chaos resembling a cosmic egg. Within this egg, the primordial being Pan Gu slept for eighteen thousand years. When he awoke, he separated the light, pure elements (yang) from the heavy, turbid elements (yin): the yang elements rose to form the sky (tian), and the yin elements sank to form the earth (di). Pan Gu stood between them, growing ten feet each day as the sky rose higher and the earth grew thicker, for another eighteen thousand years, until sky and earth were firmly separated. Exhausted, Pan Gu died, and his body became the world: his breath became the wind and clouds, his voice the thunder, his left eye the sun, his right eye the moon, his body the mountains, his blood the rivers, his hair the stars, his skin the soil, his sweat the rain, and the parasites on his body became human beings.",
+      "primordial_state": "Hundun -- primordial chaos, an undifferentiated cosmic egg containing all potentiality in compressed form.",
+      "creative_agent": "Pan Gu, who emerges within the cosmic egg and separates yin from yang through his own growth, then creates the world through his death and bodily transformation.",
+      "method_of_creation": "Separation of primordial unity into complementary opposites (yin and yang), followed by sacrificial bodily transformation (the world as the body of the cosmic being).",
+      "first_beings": "Pan Gu himself; in later elaborations, the goddess Nuwa creates humans from yellow clay (nobles) and from mud splashed by a rope dragged through wet clay (commoners)."
+    },
+    {
+      "id": "japanese_kojiki",
+      "tradition": "Japanese (Shinto)",
+      "source_text": "Kojiki (Record of Ancient Matters, 712 CE), compiled by O no Yasumaro from oral traditions narrated by Hieda no Are; Nihon Shoki (Chronicles of Japan, 720 CE). These are the foundational texts of Japanese mythology and Shinto theology.",
+      "type": "world_parents",
+      "summary": "In the beginning, heaven and earth were not yet separated, and the cosmos was like an egg containing chaos. The pure and clear elements rose to become Takamagahara (the High Plain of Heaven), where the first three kami (divine beings) spontaneously appeared: Ame-no-Minakanushi, Takamimusubi, and Kamimusubi. Five more generations of celestial kami followed. The final pair, Izanagi (He Who Invites) and Izanami (She Who Invites), were commanded to create the terrestrial world. Standing on the Floating Bridge of Heaven, they stirred the primordial brine with a jeweled spear (Ame-no-Nuhoko). The drops that fell from the spear formed the first island, Onogoro. Izanagi and Izanami descended, performed a marriage ritual, and through sexual union produced the islands of Japan and numerous kami of nature (seas, rivers, mountains, winds, trees). When Izanami died giving birth to the fire god Kagutsuchi, Izanagi descended to Yomi (the underworld) to retrieve her, but she had already eaten the food of the dead. His horrified flight and subsequent purification produced the three most important kami: Amaterasu (sun goddess) from his left eye, Tsukuyomi (moon god) from his right eye, and Susanoo (storm god) from his nose.",
+      "primordial_state": "An undifferentiated chaos resembling an egg, from which pure elements rise (heaven) and heavy elements sink (earth).",
+      "creative_agent": "Izanagi and Izanami, the divine couple who create the physical world through both craft (stirring the primordial brine) and procreation (sexual union producing islands and kami).",
+      "method_of_creation": "A combination of spontaneous generation (the first kami), physical crafting (stirring the brine with a spear), and sexual procreation (producing islands and nature kami through conjugal union).",
+      "first_beings": "The three primordial kami of Takamagahara. Humans are the descendants of the kami, particularly of Amaterasu through the imperial line, grounding the Japanese emperor's divine authority."
+    },
+    {
+      "id": "mayan_popol_vuh",
+      "tradition": "Maya (K'iche' Maya)",
+      "source_text": "Popol Vuh (Book of the Community / Book of Counsel), transcribed in alphabetic K'iche' Maya c. 1554-1558 from earlier hieroglyphic and oral sources. The oldest surviving manuscript is the Chichicastenango manuscript, copied by Francisco Ximenez c. 1701-1715. Now recognized as one of the most important works of pre-Columbian American literature.",
+      "type": "ex_nihilo",
+      "summary": "Before creation, only the calm sea and the vast sky existed in darkness and silence. The creator deities -- Tepeu (Sovereign) and Gucumatz (Quetzal Serpent, equivalent to Quetzalcoatl) -- existed in the primordial waters, hidden under green and blue feathers, glowing with light. Through dialogue and thought, they conceived the creation of the earth, which rose from the waters like a mist. They created animals but were dissatisfied because animals could not speak or worship. They attempted to create humans three times: first from mud (which dissolved), then from wood (which lacked souls and were destroyed in a flood), and finally -- successfully -- from maize (corn) dough. The maize people could see and know everything, but the gods limited their vision so they would not rival the gods themselves. Interwoven with the creation narrative is the epic of the Hero Twins, Hunahpu and Xbalanque, who descend to Xibalba (the underworld), defeat the Lords of Death, and are reborn as the sun and moon.",
+      "primordial_state": "Calm primordial sea under an empty sky. Silence, stillness, darkness. Only water and sky existed, with the creators floating in the waters in contemplation.",
+      "creative_agent": "Tepeu and Gucumatz (and associated deities: Heart of Sky/Huracan). Creation occurs through divine speech, thought, and dialogue -- a word-centered cosmogony.",
+      "method_of_creation": "Creation by divine word and thought ('Let it be done!'), followed by iterative attempts to create proper beings. The creation of humans is a trial-and-error process, emphasizing that the cosmos is purposefully designed to produce beings capable of gratitude and worship.",
+      "first_beings": "Animals (created first but unable to speak); mud people (dissolved); wooden people (destroyed in a great flood for lacking souls); maize people (the successful fourth creation, ancestors of the K'iche' Maya)."
+    },
+    {
+      "id": "biblical_genesis",
+      "tradition": "Judeo-Christian",
+      "source_text": "Genesis 1-3 (Hebrew Bible / Old Testament). Scholars identify two distinct creation accounts: the Priestly source (Genesis 1:1-2:3, c. 6th-5th century BCE) and the Yahwist source (Genesis 2:4-3:24, c. 10th-9th century BCE). The Priestly account is structured around the seven-day creation framework; the Yahwist account focuses on the creation of Adam, Eve, and the Garden of Eden.",
+      "type": "ex_nihilo",
+      "summary": "In the Priestly account, God (Elohim) creates the cosmos through divine speech over six days: Day 1: light separated from darkness; Day 2: the firmament (raqia) separating upper and lower waters; Day 3: dry land and vegetation; Day 4: sun, moon, and stars; Day 5: sea creatures and birds; Day 6: land animals and humanity (male and female together, in God's image -- tselem Elohim). God rests on the seventh day, sanctifying the Sabbath. In the Yahwist account, YHWH God forms Adam (ha-adam) from the dust of the ground (ha-adamah) and breathes life into his nostrils. He plants the Garden of Eden, creates animals as potential companions for Adam, and finally creates Eve (Havva) from Adam's rib. The serpent tempts Eve to eat from the Tree of Knowledge of Good and Evil; both eat, gaining moral knowledge but losing immortality. They are expelled from Eden.",
+      "primordial_state": "The Priestly account: 'The earth was formless and void (tohu va-vohu), and darkness was upon the face of the deep (tehom), and the spirit of God (ruach Elohim) hovered over the face of the waters.' The Yahwist account: a dry, barren landscape before rain and cultivation.",
+      "creative_agent": "God (Elohim / YHWH), the sole, transcendent creator who creates by sovereign will and divine speech ('Let there be ...').",
+      "method_of_creation": "Creation by divine fiat (word/command): 'And God said, let there be light, and there was light.' The Yahwist account adds manual craftsmanship: God 'forms' (yatsar) Adam from clay like a potter. The theological tradition (creatio ex nihilo) was fully articulated by the 2nd century CE (2 Maccabees 7:28).",
+      "first_beings": "Light is the first created entity. Humanity (adam) is created last, as the culmination and purpose of creation, in the 'image and likeness' of God (imago Dei), with dominion over all other creatures."
+    },
+    {
+      "id": "finnish_kalevala",
+      "tradition": "Finnish / Finno-Ugric",
+      "source_text": "Kalevala, compiled by Elias Lonnrot from Finnish and Karelian oral poetry (first edition 1835, expanded edition 1849). The creation narrative appears in the first rune (canto). The oral traditions underlying the Kalevala are of considerable antiquity, with some elements dating to the Finno-Ugric period (possibly 2000-1000 BCE).",
+      "type": "cosmic_egg",
+      "summary": "Ilmatar, the Virgin Spirit of the Air, descends from the heavens to rest upon the primordial waters, where she floats for seven hundred years. A teal (or goldeneye duck) searching for a nesting place settles on Ilmatar's knee, which rises above the waves, and lays six golden eggs and one iron egg. The heat of the eggs scorches Ilmatar's knee, and she jerks it, sending the eggs tumbling into the water and breaking. From the fragments, the cosmos forms: the lower half of an egg becomes the earth, the upper half the sky, the yolk the sun, the white the moon, and the speckled fragments the stars and clouds. Ilmatar then shapes the coastlines, headlands, bays, and ocean depths by moving her body through the waters. Her son Vainamoinen, the eternal sage, is born after gestating for thirty years in her womb upon the sea.",
+      "primordial_state": "Primordial waters with Ilmatar floating upon them. No land, no sky, no celestial bodies. An empty, featureless waterscape.",
+      "creative_agent": "Ilmatar (Spirit of the Air) provides the conditions for creation; the teal provides the cosmic egg; the cosmos forms from the broken egg through a natural process. No single supreme creator -- creation is collaborative and partly accidental.",
+      "method_of_creation": "Cosmic egg broken and transformed into the elements of the cosmos. Ilmatar sculpts the landscape through physical movement. Creation combines the cosmic egg motif with earth-shaping by a maternal figure.",
+      "first_beings": "Vainamoinen, the eternal sage, born from Ilmatar -- a shamanic culture hero who becomes the first singer and the wielder of word-magic (the power of sacred song)."
+    },
+    {
+      "id": "west_african_yoruba",
+      "tradition": "Yoruba (West Africa, primarily Nigeria and Benin)",
+      "source_text": "Oral traditions transmitted through the Ifa divination corpus (Odu Ifa), comprising 256 chapters of sacred verses. Recorded by ethnographers including Samuel Johnson (The History of the Yorubas, 1897), Leo Frobenius, and E. Bolaji Idowu (Olodumare: God in Yoruba Belief, 1962). Variants exist across Yoruba sub-groups.",
+      "type": "earth_diver",
+      "summary": "In the beginning, there was only the sky above and a vast expanse of water and marshy wasteland below. Olodumare (also Olorun), the Supreme Being, dwelt in the sky with the orishas (divine beings). Olodumare instructed Obatala (the arch-divinity, sculptor of human bodies) to descend and create solid land. Orunmila (the orisha of wisdom and divination) advised Obatala on the necessary implements: a golden chain to descend from the sky, a snail shell filled with sand, a white hen, a black cat, and a palm nut. Obatala descended the chain, poured the sand upon the watery surface, and placed the hen upon it. The hen scratched and scattered the sand in all directions, forming dry land. Obatala planted the palm nut, which grew into a palm tree. He named the place Ife (meaning 'wide' or 'expansion') -- the sacred city of Ile-Ife. Obatala then sculpted human figures from clay, and Olodumare breathed life into them. In one variant, Obatala became intoxicated on palm wine while sculpting, producing imperfect forms -- the origin of physical disabilities -- and thereafter he became the patron and protector of those born with disabilities.",
+      "primordial_state": "Sky above, watery chaos below. The orishas dwell in the sky realm with Olodumare. No solid ground, no terrestrial life.",
+      "creative_agent": "Olodumare (Supreme Being) commands and empowers; Obatala (arch-divinity) executes the creation of land and sculpts human bodies; Olodumare breathes in the life force (emi). Creation is collaborative and hierarchical.",
+      "method_of_creation": "Earth-diver variant: sand poured from the sky onto the waters, then scattered by the hen to form land. Humans are sculpted from clay and animated by divine breath. The process combines craft (sculpture), natural agency (the hen), and divine inspiration (breath of life).",
+      "first_beings": "The first humans, sculpted by Obatala at Ile-Ife. The city of Ile-Ife is the sacred center of the Yoruba world, the omphalos from which all creation spreads."
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "story_architect" %}
+
+{% block title %}Story Architect — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Story Architect</h1>
+    <p>Transform a premise into a structured outline built on mythological patterns</p>
+</div>
+
+<div x-data="storyArchitect()">
+    <div class="muse-form">
+        <div>
+            <label>Premise</label>
+            <textarea x-model="form.premise" placeholder="Describe your story idea in 2-3 sentences. What happens? Who is involved? What's at stake?"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Structure</label>
+                <select x-model="form.structure">
+                    <option value="hero_journey">Hero's Journey (Campbell)</option>
+                    <option value="three_act">Three-Act Structure</option>
+                    <option value="five_act">Five-Act (Shakespearean)</option>
+                    <option value="mythic_cycle">Mythic Cycle (death-rebirth)</option>
+                    <option value="quest">Quest Narrative</option>
+                </select>
+            </div>
+            <div>
+                <label>Hero Type</label>
+                <select x-model="form.hero_type">
+                    <option value="reluctant">Reluctant Hero</option>
+                    <option value="chosen">Chosen One</option>
+                    <option value="trickster">Trickster</option>
+                    <option value="tragic">Tragic Hero</option>
+                    <option value="anti-hero">Anti-Hero</option>
+                    <option value="sage">Sage / Seeker</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Mythological Traditions</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="Vedic" x-model="form.traditions"> Vedic/Hindu</label>
+                <label><input type="checkbox" value="Greek" x-model="form.traditions"> Greek</label>
+                <label><input type="checkbox" value="Norse" x-model="form.traditions"> Norse</label>
+                <label><input type="checkbox" value="Egyptian" x-model="form.traditions"> Egyptian</label>
+                <label><input type="checkbox" value="Mesopotamian" x-model="form.traditions"> Mesopotamian</label>
+                <label><input type="checkbox" value="Celtic" x-model="form.traditions"> Celtic</label>
+                <label><input type="checkbox" value="West African" x-model="form.traditions"> West African</label>
+            </div>
+        </div>
+
+        <div>
+            <label>Quality</label>
+            <select x-model="form.quality">
+                <option value="fast">Fast (Haiku)</option>
+                <option value="deep">Deep (Sonnet)</option>
+            </select>
+        </div>
+
+        <button class="btn-muse" @click="architect()" :disabled="loading || form.premise.length < 10">
+            <span x-show="!loading">Architect Story</span>
+            <span x-show="loading">Structuring the myth...</span>
+        </button>
+    </div>
+
+    <div x-show="loading" class="muse-loading">
+        <div class="spinner-muse"></div>
+        <span>Mapping your story onto ancient patterns...</span>
+    </div>
+
+    <div x-show="error" class="error-msg" x-text="error"></div>
+
+    <template x-if="result">
+        <div class="muse-result">
+            <h2 x-text="result.title"></h2>
+            <p style="font-style: italic; color: var(--muse-teal);" x-text="result.logline"></p>
+
+            <template x-for="(act, i) in (result.acts || [])" :key="i">
+                <div style="margin-top: 1.5rem;">
+                    <h3 x-text="act.name"></h3>
+                    <p style="color: var(--muse-amber); font-size: 0.85rem;" x-text="'Mythological parallel: ' + (act.mythological_parallel || '')"></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <template x-for="beat in (act.beats || [])" :key="beat">
+                            <li style="color: var(--text-primary); margin-bottom: 0.3rem;" x-text="beat"></li>
+                        </template>
+                    </ul>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;" x-text="'Emotional arc: ' + (act.emotional_arc || '')"></p>
+                </div>
+            </template>
+
+            <div style="margin-top: 1.5rem;">
+                <h3>Mythological Parallels</h3>
+                <div class="tag-list">
+                    <template x-for="p in (result.mythological_parallels || [])" :key="p">
+                        <span class="tag" x-text="p"></span>
+                    </template>
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <h3>Themes</h3>
+                <div class="tag-list">
+                    <template x-for="t in (result.themes || [])" :key="t">
+                        <span class="tag" style="background: rgba(20,184,166,0.15); color: var(--muse-teal);" x-text="t"></span>
+                    </template>
+                </div>
+            </div>
+
+            <template x-if="result.key_symbols">
+                <div style="margin-top: 1rem;">
+                    <h3>Key Symbols</h3>
+                    <div class="tag-list">
+                        <template x-for="s in (result.key_symbols || [])" :key="s">
+                            <span class="tag" style="background: rgba(245,158,11,0.15); color: var(--muse-amber);" x-text="s"></span>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="copyOutline()">Copy to Clipboard</button>
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="downloadOutline()">Download .md</button>
+            </div>
+        </div>
+    </template>
+</div>
+{% endblock %}
+
+{% block muse_scripts %}
+<script>
+function storyArchitect() {
+    return {
+        form: {
+            premise: '',
+            structure: 'hero_journey',
+            hero_type: 'reluctant',
+            traditions: [],
+            quality: 'fast',
+        },
+        loading: false,
+        error: '',
+        result: null,
+
+        async architect() {
+            this.loading = true;
+            this.error = '';
+            this.result = null;
+            try {
+                const data = await Muse.post('/api/muse/story/architect', this.form);
+                this.result = data.outline || data;
+                Muse.saveToHistory('outline', this.result);
+            } catch (err) {
+                this.error = err.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        copyOutline() {
+            if (!this.result) return;
+            const r = this.result;
+            let text = `# ${r.title}\n\n*${r.logline}*\n\n`;
+            for (const act of (r.acts || [])) {
+                text += `## ${act.name}\n*${act.mythological_parallel || ''}*\n\n`;
+                for (const beat of (act.beats || [])) {
+                    text += `- ${beat}\n`;
+                }
+                text += `\n*Emotional arc: ${act.emotional_arc || ''}*\n\n`;
+            }
+            text += `\n## Themes\n${(r.themes || []).join(', ')}\n\n## Mythological Parallels\n${(r.mythological_parallels || []).join(', ')}`;
+            Muse.copyToClipboard(text);
+        },
+
+        downloadOutline() {
+            if (!this.result) return;
+            const r = this.result;
+            let text = `# ${r.title}\n\n*${r.logline}*\n\n`;
+            for (const act of (r.acts || [])) {
+                text += `## ${act.name}\n*${act.mythological_parallel || ''}*\n\n`;
+                for (const beat of (act.beats || [])) {
+                    text += `- ${beat}\n`;
+                }
+                text += `\n*Emotional arc: ${act.emotional_arc || ''}*\n\n`;
+            }
+            Muse.downloadFile(text, `outline-${r.title.toLowerCase().replace(/\s+/g, '-')}.md`);
+        }
+    };
+}
+</script>
+{% endblock %}

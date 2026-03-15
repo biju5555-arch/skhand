@@ -1,0 +1,175 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "world_builder" %}
+
+{% block title %}World Builder — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>World Builder</h1>
+    <p>Select mythological foundations and generate an original fictional world</p>
+</div>
+
+<div x-data="worldBuilder()">
+    <div class="muse-form">
+        <div>
+            <label>Creation Type</label>
+            <select x-model="form.creation_type">
+                <option value="ex_nihilo">Ex Nihilo — From Nothing</option>
+                <option value="cosmic_egg">Cosmic Egg — World Hatches</option>
+                <option value="world_parents">World Parents — Sky & Earth Separated</option>
+                <option value="sacrifice_or_dismemberment">Sacrifice — From a Cosmic Being's Body</option>
+                <option value="emergence">Emergence — Rising Through Worlds</option>
+                <option value="earth_diver">Earth Diver — Retrieved From the Deep</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Pantheon Traditions (select multiple)</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="Vedic" x-model="form.pantheon_traditions"> Vedic/Hindu</label>
+                <label><input type="checkbox" value="Greek" x-model="form.pantheon_traditions"> Greek</label>
+                <label><input type="checkbox" value="Norse" x-model="form.pantheon_traditions"> Norse</label>
+                <label><input type="checkbox" value="Egyptian" x-model="form.pantheon_traditions"> Egyptian</label>
+                <label><input type="checkbox" value="Mesopotamian" x-model="form.pantheon_traditions"> Mesopotamian</label>
+                <label><input type="checkbox" value="Celtic" x-model="form.pantheon_traditions"> Celtic</label>
+                <label><input type="checkbox" value="Chinese" x-model="form.pantheon_traditions"> Chinese</label>
+                <label><input type="checkbox" value="West African" x-model="form.pantheon_traditions"> West African</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Ethical Framework</label>
+                <select x-model="form.ethics">
+                    {% for f in ethics %}
+                    <option value="{{ f.name }}">{{ f.name }} ({{ f.tradition }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>Time System</label>
+                <select x-model="form.time_system">
+                    <option value="cyclical">Cyclical — Eternal Return</option>
+                    <option value="linear">Linear — Beginning to End</option>
+                    <option value="spiral">Spiral — Cycles with Progress</option>
+                    <option value="static">Static — Eternal Present</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Eschatology</label>
+                <select x-model="form.eschatology">
+                    <option value="renewal">Renewal — Destruction then Rebirth</option>
+                    <option value="final_judgment">Final Judgment — One Ending</option>
+                    <option value="entropy">Entropy — Slow Decay</option>
+                    <option value="transformation">Transformation — Becoming Something New</option>
+                    <option value="maintenance">Maintenance — Must Be Actively Sustained</option>
+                </select>
+            </div>
+            <div>
+                <label>Quality</label>
+                <select x-model="form.quality">
+                    <option value="fast">Fast (Haiku) — Quick exploration</option>
+                    <option value="deep">Deep (Sonnet) — Investment-grade</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn-muse" @click="build()" :disabled="loading">
+            <span x-show="!loading">Build World</span>
+            <span x-show="loading">Generating world...</span>
+        </button>
+    </div>
+
+    <div x-show="loading" class="muse-loading">
+        <div class="spinner-muse"></div>
+        <span>Weaving mythologies into a new world...</span>
+    </div>
+
+    <div x-show="error" class="error-msg" x-text="error"></div>
+
+    <template x-if="result">
+        <div class="muse-result">
+            <h2 x-text="result.name"></h2>
+
+            <h3>Creation Story</h3>
+            <p x-text="result.creation_story"></p>
+
+            <h3>Cosmology</h3>
+            <p x-text="result.cosmology"></p>
+
+            <h3>The Pantheon</h3>
+            <p x-text="result.pantheon_summary"></p>
+
+            <h3>Moral Framework</h3>
+            <p x-text="result.moral_framework"></p>
+
+            <h3>Time & Fate</h3>
+            <p x-text="result.time_and_fate"></p>
+
+            <h3>End of the World</h3>
+            <p x-text="result.end_of_world"></p>
+
+            <div class="tag-list" style="margin-top: 1rem;">
+                <template x-for="t in (result.traditions_drawn_from || [])" :key="t">
+                    <span class="tag" x-text="t"></span>
+                </template>
+            </div>
+
+            <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="copyWorld()">Copy to Clipboard</button>
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="downloadWorld()">Download .md</button>
+            </div>
+        </div>
+    </template>
+</div>
+{% endblock %}
+
+{% block muse_scripts %}
+<script>
+function worldBuilder() {
+    return {
+        form: {
+            creation_type: 'cosmic_egg',
+            pantheon_traditions: [],
+            ethics: 'Dharma (Svadharma and Sanatana Dharma)',
+            time_system: 'cyclical',
+            eschatology: 'renewal',
+            quality: 'fast',
+        },
+        loading: false,
+        error: '',
+        result: null,
+
+        async build() {
+            this.loading = true;
+            this.error = '';
+            this.result = null;
+            try {
+                const data = await Muse.post('/api/muse/world/build', this.form);
+                this.result = data.world || data;
+                Muse.saveToHistory('world', this.result);
+            } catch (err) {
+                this.error = err.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        copyWorld() {
+            if (!this.result) return;
+            const text = `# ${this.result.name}\n\n## Creation Story\n${this.result.creation_story}\n\n## Cosmology\n${this.result.cosmology}\n\n## Pantheon\n${this.result.pantheon_summary}\n\n## Moral Framework\n${this.result.moral_framework}\n\n## Time & Fate\n${this.result.time_and_fate}\n\n## End of the World\n${this.result.end_of_world}`;
+            Muse.copyToClipboard(text);
+        },
+
+        downloadWorld() {
+            if (!this.result) return;
+            const text = `# ${this.result.name}\n\n## Creation Story\n${this.result.creation_story}\n\n## Cosmology\n${this.result.cosmology}\n\n## Pantheon\n${this.result.pantheon_summary}\n\n## Moral Framework\n${this.result.moral_framework}\n\n## Time & Fate\n${this.result.time_and_fate}\n\n## End of the World\n${this.result.end_of_world}`;
+            Muse.downloadFile(text, `world-${this.result.name.toLowerCase().replace(/\s+/g, '-')}.md`);
+        }
+    };
+}
+</script>
+{% endblock %}

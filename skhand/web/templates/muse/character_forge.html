@@ -1,0 +1,180 @@
+{% extends "muse/base.html" %}
+{% set muse_active = "character_forge" %}
+
+{% block title %}Character Forge — Writer's Muse{% endblock %}
+
+{% block muse_content %}
+<div class="muse-header">
+    <h1>Character Forge</h1>
+    <p>Forge an original character from mythological archetypes and cross-cultural traditions</p>
+</div>
+
+<div x-data="characterForge()" x-init="init()">
+    <div class="muse-form">
+        <div>
+            <label>Archetype / Inspiration</label>
+            <input type="text" x-model="form.archetype" placeholder="e.g., trickster, reluctant hero, divine smith, exiled prince...">
+        </div>
+
+        <div>
+            <label>Traditions to Draw From</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="Vedic" x-model="form.traditions"> Vedic/Hindu</label>
+                <label><input type="checkbox" value="Greek" x-model="form.traditions"> Greek</label>
+                <label><input type="checkbox" value="Norse" x-model="form.traditions"> Norse</label>
+                <label><input type="checkbox" value="Egyptian" x-model="form.traditions"> Egyptian</label>
+                <label><input type="checkbox" value="Mesopotamian" x-model="form.traditions"> Mesopotamian</label>
+                <label><input type="checkbox" value="Celtic" x-model="form.traditions"> Celtic</label>
+                <label><input type="checkbox" value="West African" x-model="form.traditions"> West African</label>
+                <label><input type="checkbox" value="Chinese" x-model="form.traditions"> Chinese</label>
+                <label><input type="checkbox" value="Japanese" x-model="form.traditions"> Japanese</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Role</label>
+                <select x-model="form.role">
+                    <option value="protagonist">Protagonist</option>
+                    <option value="antagonist">Antagonist</option>
+                    <option value="mentor">Mentor</option>
+                    <option value="trickster">Trickster</option>
+                    <option value="companion">Companion</option>
+                    <option value="guardian">Guardian / Threshold Figure</option>
+                </select>
+            </div>
+            <div>
+                <label>Era</label>
+                <select x-model="form.era">
+                    <option value="mythic">Mythic / Primordial</option>
+                    <option value="ancient">Ancient (Bronze/Iron Age)</option>
+                    <option value="medieval">Medieval</option>
+                    <option value="modern">Modern Reimagining</option>
+                    <option value="far_future">Far Future / Sci-fi Myth</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Desired Traits (comma-separated)</label>
+            <input type="text" x-model="traitsInput" placeholder="e.g., haunted, eloquent, scarred, cunning, compassionate">
+        </div>
+
+        <div>
+            <label>Quality</label>
+            <select x-model="form.quality">
+                <option value="fast">Fast (Haiku)</option>
+                <option value="deep">Deep (Sonnet)</option>
+            </select>
+        </div>
+
+        <button class="btn-muse" @click="forge()" :disabled="loading || !form.archetype.trim()">
+            <span x-show="!loading">Forge Character</span>
+            <span x-show="loading">Forging...</span>
+        </button>
+    </div>
+
+    <div x-show="loading" class="muse-loading">
+        <div class="spinner-muse"></div>
+        <span>Drawing from the world's mythologies...</span>
+    </div>
+
+    <div x-show="error" class="error-msg" x-text="error"></div>
+
+    <template x-if="result">
+        <div class="muse-result">
+            <h2><span x-text="result.name"></span> <span style="color: var(--text-muted); font-weight: 400; font-size: 0.9rem;" x-text="'— ' + result.epithet"></span></h2>
+
+            <h3>Origin</h3>
+            <p x-text="result.origin"></p>
+
+            <h3>Appearance</h3>
+            <p x-text="result.appearance"></p>
+
+            <h3>Personality</h3>
+            <p x-text="result.personality"></p>
+
+            <h3>Weapon or Tool</h3>
+            <p x-text="result.weapon_or_tool"></p>
+
+            <h3>Companion</h3>
+            <p x-text="result.companion"></p>
+
+            <h3>Inner Conflict</h3>
+            <p x-text="result.inner_conflict"></p>
+
+            <h3>The Quest</h3>
+            <p x-text="result.quest"></p>
+
+            <div class="tag-list" style="margin-top: 1rem;">
+                <template x-for="t in (result.traditions_drawn_from || [])" :key="t">
+                    <span class="tag" x-text="t"></span>
+                </template>
+            </div>
+
+            <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="copyCharacter()">Copy to Clipboard</button>
+                <button class="btn-muse btn-muse-sm btn-muse-outline" @click="downloadCharacter()">Download .md</button>
+            </div>
+        </div>
+    </template>
+</div>
+{% endblock %}
+
+{% block muse_scripts %}
+<script>
+function characterForge() {
+    return {
+        form: {
+            archetype: '',
+            traditions: [],
+            role: 'protagonist',
+            era: 'mythic',
+            traits: [],
+            quality: 'fast',
+        },
+        traitsInput: '',
+        loading: false,
+        error: '',
+        result: null,
+
+        init() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('archetype')) {
+                this.form.archetype = params.get('archetype');
+            }
+        },
+
+        async forge() {
+            this.form.traits = this.traitsInput.split(',').map(s => s.trim()).filter(Boolean);
+            this.loading = true;
+            this.error = '';
+            this.result = null;
+            try {
+                const data = await Muse.post('/api/muse/character/forge', this.form);
+                this.result = data.character || data;
+                Muse.saveToHistory('character', this.result);
+            } catch (err) {
+                this.error = err.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        copyCharacter() {
+            if (!this.result) return;
+            const r = this.result;
+            const text = `# ${r.name} — ${r.epithet}\n\n## Origin\n${r.origin}\n\n## Appearance\n${r.appearance}\n\n## Personality\n${r.personality}\n\n## Weapon/Tool\n${r.weapon_or_tool}\n\n## Companion\n${r.companion}\n\n## Inner Conflict\n${r.inner_conflict}\n\n## Quest\n${r.quest}`;
+            Muse.copyToClipboard(text);
+        },
+
+        downloadCharacter() {
+            if (!this.result) return;
+            const r = this.result;
+            const text = `# ${r.name} — ${r.epithet}\n\n## Origin\n${r.origin}\n\n## Appearance\n${r.appearance}\n\n## Personality\n${r.personality}\n\n## Weapon/Tool\n${r.weapon_or_tool}\n\n## Companion\n${r.companion}\n\n## Inner Conflict\n${r.inner_conflict}\n\n## Quest\n${r.quest}`;
+            Muse.downloadFile(text, `character-${r.name.toLowerCase().replace(/\s+/g, '-')}.md`);
+        }
+    };
+}
+</script>
+{% endblock %}

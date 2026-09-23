@@ -1,5 +1,7 @@
 # Riverbend Village
 
+Visuals are an original blocky style inspired by cube-building games — not affiliated with Minecraft.
+
 A charming single-file browser game for children ages 8–12. Help a small village solve a dry-season water shortage by exploring, listening to villagers, building water systems, testing over 7 days, and improving your design.
 
 ## How to open

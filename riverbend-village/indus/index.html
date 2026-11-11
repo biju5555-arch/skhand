@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Riverbend: Indus Valley</title>
+<link rel="icon" href="data:,">
+<!-- riverbend-indus-v1-climate-migration -->
+<style>
+
+:root {
+  --sky: #7ec8e8; --grass: #5aad4a; --grass-dark: #4a943c; --dirt: #8b6a45;
+  --water: #3a9fd0; --water-deep: #2a7aaa; --panel: #fffef5;
+  --panel-border: #6b5344; --ink: #2a2a2a; --ink-soft: #5a5a5a;
+  --accent: #3d9cdb; --accent-dark: #2a6fa0; --good: #4caf70; --warn: #e8a838;
+  --bad: #e07060; --purple: #8b7bc8; --shadow: rgba(42,42,42,0.2);
+  --radius: 6px;
+  --font: "Segoe UI", system-ui, -apple-system, "Courier New", monospace, sans-serif;
+  --chunk: 3px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%; font-family: var(--font); color: var(--ink);
+  background: linear-gradient(180deg, #6bb8e0 0%, #8fd47a 55%, #6bb85a 100%);
+  overflow: hidden; -webkit-tap-highlight-color: transparent; user-select: none;
+}
+button {
+  font-family: inherit; cursor: pointer; border: none; border-radius: var(--radius);
+  font-size: 15px; font-weight: 700; padding: 12px 18px;
+  border: var(--chunk) solid var(--panel-border);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+  min-height: 44px;
+}
+button:active { transform: scale(0.96) translateY(2px); }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 4px 0 var(--accent-dark);
+}
+.btn-primary:hover { background: #52b0e8; }
+.btn-secondary {
+  background: #fffef5; color: var(--ink);
+  box-shadow: 0 4px 0 #a09080;
+}
+.btn-good {
+  background: var(--good); color: #fff;
+  box-shadow: 0 4px 0 #3a8f58;
+}
+.btn-ghost {
+  background: transparent; color: var(--ink-soft);
+  border: var(--chunk) dashed var(--panel-border);
+  box-shadow: none;
+}
+.btn-sm { padding: 8px 14px; font-size: 13px; min-height: 40px; }
+.btn-block { width: 100%; text-align: left; margin-bottom: 8px; }
+#app {
+  display: grid; grid-template-rows: auto 1fr auto; height: 100%;
+  max-width: 1100px; margin: 0 auto; position: relative;
+}
+#resource-bar {
+  display: flex; flex-wrap: wrap; gap: 6px 8px; padding: 10px 12px;
+  background: var(--panel); border-bottom: 4px solid var(--panel-border);
+  align-items: center; z-index: 20;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+}
+.res {
+  display: flex; align-items: center; gap: 4px; background: #efe6d4;
+  padding: 6px 10px; border-radius: 4px; font-size: 13px; font-weight: 700;
+  border: 2px solid #c4b090;
+}
+.res .ico { font-size: 16px; }
+.res label { color: var(--ink-soft); font-weight: 600; font-size: 11px; }
+#res-listen { min-width: 132px; }
+#listen-bar {
+  width: 64px; height: 10px; background: #d8d0c0; border: 2px solid #a09080;
+  border-radius: 2px; overflow: hidden;
+}
+#listen-bar > span { display: block; height: 100%; background: #5a9ad0; width: 0%; transition: width 0.3s; }
+#phase-label {
+  margin-left: auto; background: var(--purple); color: #fff;
+  padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 800;
+  border: 2px solid #5a4a88; box-shadow: 0 3px 0 #5a4a88;
+}
+#main { position: relative; overflow: hidden; min-height: 0; }
+#village-wrap {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; padding: 8px;
+}
+#village-canvas {
+  max-width: 100%; max-height: 100%; border-radius: 8px;
+  box-shadow: 0 0 0 4px var(--panel-border), 0 10px 28px var(--shadow);
+  cursor: pointer; touch-action: manipulation; background: var(--grass);
+  image-rendering: pixelated; image-rendering: crisp-edges;
+}
+#build-bar {
+  background: var(--panel); border-top: 4px solid var(--panel-border);
+  padding: 10px 12px; z-index: 20;
+  box-shadow: 0 -4px 0 rgba(0,0,0,0.06);
+}
+#build-bar h3 {
+  font-size: 13px; color: var(--ink-soft); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-weight: 700;
+}
+#build-cards {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.build-card {
+  flex: 0 0 auto; width: 122px; background: #fff;
+  border: 3px solid var(--panel-border); border-radius: 4px;
+  padding: 10px 8px; text-align: center; cursor: pointer;
+  box-shadow: 0 3px 0 #a09080;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.build-card:hover, .build-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 3px 0 var(--accent-dark), 0 0 0 3px rgba(61,156,219,0.3);
+  transform: translateY(-2px);
+}
+.build-card.disabled { opacity: 0.45; pointer-events: none; }
+.build-card .bico { font-size: 28px; line-height: 1.2; }
+.build-card .bname { font-size: 12px; font-weight: 800; margin: 2px 0; }
+.build-card .bcost { font-size: 11px; color: var(--ink-soft); font-weight: 600; }
+.build-card .bhint { font-size: 10px; color: var(--accent-dark); margin-top: 2px; line-height: 1.2; }
+#action-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+#connect-hint { font-size: 12px; color: var(--accent-dark); font-weight: 700; display: none; }
+#connect-hint.on { display: block; }
+#side-btns {
+  position: absolute; right: 10px; top: 10px; display: flex;
+  flex-direction: column; gap: 8px; z-index: 25;
+}
+#side-btns button {
+  box-shadow: 0 4px 0 #a09080; background: var(--panel);
+  border: 3px solid var(--panel-border); font-size: 13px; padding: 10px 12px;
+  border-radius: 4px; min-height: 44px;
+}
+#btn-leader.has-news {
+  background: #fff4d0; border-color: #c48820;
+  box-shadow: 0 4px 0 #c48820;
+}
+.overlay {
+  position: absolute; inset: 0; background: rgba(30,40,50,0.5); z-index: 40;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.overlay.open { opacity: 1; pointer-events: auto; }
+.panel {
+  background: var(--panel); border-radius: var(--radius);
+  border: 4px solid var(--panel-border); box-shadow: 0 8px 0 rgba(0,0,0,0.15), 0 16px 40px rgba(0,0,0,0.2);
+  max-width: 520px; width: 100%; max-height: 90%; overflow-y: auto; padding: 20px 22px;
+}
+.panel h2 { font-size: 22px; margin-bottom: 10px; color: var(--accent-dark); font-weight: 800; }
+.panel h3 { font-size: 16px; margin: 14px 0 6px; font-weight: 800; }
+.panel p, .panel li { font-size: 15px; line-height: 1.5; margin-bottom: 8px; }
+.panel ul { padding-left: 20px; margin-bottom: 10px; }
+.panel .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.villager-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+.villager-avatar {
+  width: 56px; height: 56px; border-radius: 6px; display: flex;
+  align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0;
+  border: 3px solid var(--panel-border); box-shadow: 0 3px 0 #a09080;
+}
+.tooltip-box {
+  position: absolute; z-index: 50; background: #2a2a2a; color: #fff;
+  padding: 8px 12px; border-radius: 4px; font-size: 12px; max-width: 220px;
+  pointer-events: none; display: none; line-height: 1.4;
+  border: 2px solid #555;
+}
+.tooltip-box.show { display: block; }
+#sim-panel .day-row {
+  display: flex; align-items: center; gap: 10px; margin: 10px 0;
+  padding: 12px; background: #e8f4fa; border-radius: 4px;
+  border: 3px solid #a0c8e0;
+}
+#sim-log {
+  max-height: 180px; overflow-y: auto; font-size: 13px; background: #f4eee0;
+  padding: 10px; border-radius: 4px; margin-top: 8px;
+  border: 2px solid #d4c4a8;
+}
+#sim-log .log-line { margin-bottom: 6px; padding-left: 6px; border-left: 4px solid var(--accent); }
+.metric {
+  display: grid; grid-template-columns: 120px 1fr 40px; gap: 8px;
+  align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: 600;
+}
+.meter { height: 16px; background: #d8d0c0; border-radius: 2px; overflow: hidden; border: 2px solid #a09080; }
+.meter > span { display: block; height: 100%; border-radius: 0; transition: width 0.4s; }
+.reflect-q { margin: 12px 0; }
+.reflect-q label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 8px 14px; background: #e8f0f8; border: 3px solid #b0c8d8;
+  border-radius: 4px; font-size: 13px; cursor: pointer; font-weight: 600;
+  min-height: 40px;
+}
+.chip.picked { border-color: var(--accent); background: #c8e4f8; box-shadow: 0 2px 0 var(--accent-dark); }
+.reflect-q textarea {
+  width: 100%; min-height: 48px; border: 3px solid var(--panel-border);
+  border-radius: 4px; padding: 10px; font-family: inherit; font-size: 14px; resize: vertical;
+}
+.badge-big {
+  text-align: center; padding: 16px; background: linear-gradient(135deg, #fff8d0, #e0f8d8);
+  border-radius: 4px; margin: 12px 0; border: 4px solid var(--good);
+  box-shadow: 0 4px 0 #3a8f58;
+}
+.badge-big .star { font-size: 48px; }
+.toast {
+  position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%);
+  background: #2a2a2a; color: #fff; padding: 12px 18px; border-radius: 4px;
+  font-size: 14px; z-index: 60; opacity: 0; pointer-events: none;
+  transition: opacity 0.25s; max-width: 90%; text-align: center;
+  border: 3px solid #555; font-weight: 600;
+}
+.toast.show { opacity: 1; }
+#parent-panel .record, .record {
+  font-size: 13px; background: #efe6d4; padding: 10px; border-radius: 4px;
+  white-space: pre-wrap; max-height: 200px; overflow-y: auto;
+  border: 2px solid #c4b090;
+}
+.guess-row {
+  display: flex; align-items: center; gap: 8px; margin: 10px 0; flex-wrap: wrap;
+}
+.guess-row .glabel { width: 72px; font-weight: 800; font-size: 14px; }
+.listen-box {
+  background: #e8f4fa; border: 3px solid #a0c8e0; border-radius: 4px;
+  padding: 10px 12px; margin: 8px 0 12px; font-size: 13px;
+}
+.listen-box .lmeter { height: 14px; background: #d8d0c0; border: 2px solid #a09080; border-radius: 2px; overflow: hidden; margin: 6px 0; }
+.listen-box .lmeter > span { display: block; height: 100%; background: #5a9ad0; }
+.dispute-side {
+  background: #f0f6fa; border: 3px solid #b0c8d8; border-radius: 4px;
+  padding: 10px 12px; margin: 8px 0;
+}
+.dispute-side strong { display: block; margin-bottom: 4px; }
+.power-card {
+  border: 3px solid var(--panel-border); border-radius: 4px;
+  padding: 12px; margin: 8px 0; background: #fff;
+}
+.power-card.owned { border-color: var(--good); background: #e8f8e8; }
+.power-card h4 { margin: 0 0 4px; font-size: 15px; }
+.power-card p { font-size: 13px; margin-bottom: 8px; }
+.tradeoff {
+  background: #fff4d8; border: 3px solid #e8a838; border-radius: 4px;
+  padding: 10px 12px; margin: 10px 0; font-weight: 700; font-size: 14px;
+}
+.guess-result {
+  font-size: 13px; margin: 6px 0; padding: 8px 10px; background: #efe6d4;
+  border-radius: 4px; font-weight: 600;
+}
+.guess-result.correct { background: #e0f4e8; border-left: 4px solid var(--good); }
+.guess-result.miss { background: #f8eee0; border-left: 4px solid var(--warn); }
+.meet-row {
+  display: flex; gap: 10px; align-items: flex-start; margin: 8px 0;
+  padding: 8px; background: #f4eee0; border-radius: 4px; border: 2px solid #d4c4a8;
+}
+.meet-row .ma { width: 44px; height: 44px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 2px solid var(--panel-border); flex-shrink: 0; }
+a.btn-primary, a.btn-secondary, a.btn-good {
+  display: inline-block; text-decoration: none; line-height: 1.2; text-align: center;
+}
+@media (max-width: 600px) {
+  .res label { display: none; }
+  #res-listen label { display: none; }
+  .build-card { width: 104px; }
+  #side-btns button { font-size: 12px; padding: 8px 10px; }
+  .panel { padding: 14px; }
+}
+
+body.indus-theme {
+  background: linear-gradient(180deg, #7eb8d4 0%, #c8b878 52%, #7aaa70 100%);
+}
+.city-stat {
+  background: #f4eee0; border: 2px solid #d4c4a8; border-radius: 4px;
+  padding: 8px 10px; margin: 6px 0; font-size: 13px;
+}
+.city-stat strong { display: block; margin-bottom: 2px; font-size: 14px; }
+.fact-real {
+  background: #e8f4fa; border: 3px solid #a0c8e0; border-radius: 4px;
+  padding: 10px 12px; margin: 8px 0;
+}
+.fact-imagined {
+  background: #fff4d8; border: 3px solid #e8a838; border-radius: 4px;
+  padding: 10px 12px; margin: 8px 0;
+}
+.migrate-choice {
+  display: block; width: 100%; text-align: left; margin-bottom: 8px;
+}
+.tiny-note { font-size: 12px; color: var(--ink-soft); }
+#res-rain, #res-river { min-width: 118px; }
+.clim-bar {
+  width: 58px; height: 10px; background: #d8d0c0; border: 2px solid #a09080;
+  border-radius: 2px; overflow: hidden;
+}
+.clim-bar > span { display: block; height: 100%; width: 0%; transition: width 0.3s; }
+#rain-fill { background: #5a9ad0; }
+#river-fill { background: #2a7aaa; }
+.left-hint {
+  position: absolute; left: 10px; top: 10px; z-index: 25;
+}
+.left-hint a {
+  display: inline-block; background: var(--panel); color: var(--ink);
+  border: 3px solid var(--panel-border); border-radius: 4px;
+  padding: 8px 12px; font-size: 12px; font-weight: 700;
+  text-decoration: none; box-shadow: 0 4px 0 #a09080; min-height: 40px;
+  line-height: 22px;
+}
+.season-log-title { font-weight: 800; margin-top: 6px; }
+
+</style>
+
+</head>
+<body class="indus-theme">
+
+<div id="app">
+  <header id="resource-bar" aria-label="Council resources">
+    <div class="res" title="Bricks for building"><span class="ico">🧱</span><label>Bricks</label><span class="val" id="r-bricks">6</span></div>
+    <div class="res" title="Workers who can help this season"><span class="ico">👷</span><label>Workers</label><span class="val" id="r-workers">5</span></div>
+    <div class="res" id="res-rain" title="How strong the monsoon rains are this season">
+      <span class="ico">🌧️</span><label>Rain</label>
+      <div class="clim-bar" aria-hidden="true"><span id="rain-fill"></span></div>
+      <span class="val" id="r-rain">85</span>
+    </div>
+    <div class="res" id="res-river" title="How full the great river is this season">
+      <span class="ico">🌊</span><label>River</label>
+      <div class="clim-bar" aria-hidden="true"><span id="river-fill"></span></div>
+      <span class="val" id="r-river">88</span>
+    </div>
+    <div class="res" title="Food stored across the cities"><span class="ico">🌾</span><label>Food</label><span class="val" id="r-food">60</span></div>
+    <div class="res" title="Trust among the cities"><span class="ico">🤝</span><label>Trust</label><span class="val" id="r-trust">62</span></div>
+    <div class="res" title="Trust Points earned by settling disagreements fairly"><span class="ico">🌟</span><label>Trust Pts</label><span class="val" id="r-trustpts">0</span></div>
+    <div class="res" id="res-listen" title="How sure is our forecast? Listening to people fills this meter.">
+      <span class="ico">👂</span><label>Listening</label>
+      <div id="listen-bar" aria-hidden="true"><span id="listen-fill"></span></div>
+      <span class="val" id="r-listen">0%</span>
+    </div>
+    <span id="phase-label">Welcome</span>
+  </header>
+
+  <div id="main">
+    <div id="village-wrap">
+      <canvas id="village-canvas" width="720" height="520" aria-label="Indus Valley council map"></canvas>
+    </div>
+    <div class="left-hint">
+      <a id="link-back-side" href="../">← Back to Riverbend</a>
+    </div>
+    <div id="side-btns">
+      <button type="button" id="btn-needs" title="City needs board">📋 Needs</button>
+      <button type="button" id="btn-leader" title="Trust points and council powers">🌟 Council</button>
+      <button type="button" id="btn-how" title="How this level works">❓ How it works</button>
+      <button type="button" id="btn-facts" title="What is real history, and what is imagined">📖 Real or imagined?</button>
+      <button type="button" id="btn-parent" title="For parents and educators">👨‍👩‍👧 Parent</button>
+      <button type="button" id="btn-finish" title="Finish for today">🌙 Finish</button>
+    </div>
+    <div id="toast" class="toast" role="status"></div>
+    <div id="tooltip" class="tooltip-box"></div>
+
+    <div id="overlay-intro" class="overlay open">
+      <div class="panel" role="dialog" aria-labelledby="intro-title">
+        <h2 id="intro-title">🏺 Riverbend: Indus Valley</h2>
+        <p>Long ago, in a land of rivers, planned brick cities, and busy docks, the rains began to weaken and a great river began to shrink.</p>
+        <p>You are a young <strong>council helper</strong>. Three cities — and small villages to the east — need a careful plan.</p>
+        <p><strong>Help families stay safe and fed.</strong> Watch the rain and river meters, and plan ahead. When a city cannot support everyone, moving can be a wise, normal choice — not a failure. Welcome people well. Guess what the dry seasons will do, then see what happens.</p>
+        <p>💡 Look at where each city sits. The land shapes how people think about water.</p>
+        <p class="tiny-note">This level is inspired by real Indus Valley cities, but the people, events, and numbers are imagined. It is a thinking tool, not a forecast of history.</p>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="btn-start">Start Exploring ▶</button>
+          <a class="btn-secondary" id="link-back-intro" href="../">← Back to Riverbend</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-dialogue" class="overlay">
+      <div class="panel" role="dialog" aria-labelledby="dlg-name">
+        <div class="villager-row">
+          <div class="villager-avatar" id="dlg-avatar">🙂</div>
+          <div>
+            <h2 id="dlg-name" style="margin-bottom:2px">Name</h2>
+            <p id="dlg-role" style="color:var(--ink-soft);font-size:13px;margin:0"></p>
+          </div>
+        </div>
+        <p id="dlg-text" style="font-size:16px;background:#f0f6fa;padding:12px;border-radius:10px;border-left:4px solid var(--accent)"></p>
+        <p id="dlg-need" style="font-size:13px;color:var(--ink-soft)"></p>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="btn-dlg-close">Got it!</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-needs" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>📋 City Needs Board</h2>
+        <div id="needs-cities"></div>
+        <ul id="needs-list"></ul>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-needs-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-how" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>❓ How the Indus Council Works</h2>
+        <p>You will guide the cities through <strong>6 seasons</strong> as the monsoon weakens and the river shrinks.</p>
+        <ul>
+          <li>🗺️ The land shapes each city: River City trusts the big river and its wells. Dry-Land City catches rare rain in reservoirs. The Coastal Trade City looks to its dock. The East Villages have room to welcome people.</li>
+          <li>🌧️ Watch the <strong>Rain</strong> and <strong>River</strong> meters. They show the dry seasons coming, so you can plan ahead.</li>
+          <li>🧱 Each season you have limited <strong>bricks</strong> and <strong>workers</strong>. Choose carefully — you cannot do everything at once.</li>
+          <li>👂 Talking to people fills the listening meter and makes your forecast surer.</li>
+          <li>🚶 If a city cannot support everyone, you may plan a move. Moving is a careful, normal choice, not a failure.</li>
+          <li>⚖️ When people disagree, hear both sides. Fair, win-win ideas earn the most Trust Points. Newcomers who are welcomed well can become helpers.</li>
+          <li>🔮 Before the last dry seasons, guess whether River City's water, food, and Trust will go up, stay the same, or go down. Then check your guess.</li>
+        </ul>
+        <p>There is no single winning score. The report tells the story of how families fared, how fair the moves were, and what the cities left behind.</p>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-how-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-facts" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>📖 Real or imagined?</h2>
+        <p>This game mixes real history with an imagined story, so you can practice planning. Here is what is what.</p>
+        <div class="fact-real">
+          <h3 style="margin-top:0">✅ Real history (said carefully)</h3>
+          <ul>
+            <li>Cities like <strong>Harappa</strong> and <strong>Mohenjo-daro</strong> were carefully planned, with brick drains and many wells.</li>
+            <li><strong>Dholavira</strong> built large stone reservoirs to catch rare rain.</li>
+            <li><strong>Lothal</strong> had a dock-like basin. Some researchers debate exactly how it was used.</li>
+            <li>Indus cities traded with faraway places, including <strong>Mesopotamia</strong>.</li>
+            <li>The Indus script has <strong>not been deciphered</strong>, so we do not invent real inscriptions here.</li>
+            <li>Few clear signs of large-scale war or royal palaces have been found so far. Historians still discuss how the cities were led.</li>
+            <li>The cities declined over many centuries. Many researchers link this to weaker monsoons and rivers that shifted or dried, with people moving toward smaller settlements east and south.</li>
+          </ul>
+        </div>
+        <div class="fact-imagined">
+          <h3 style="margin-top:0">✏️ Imagined in this game</h3>
+          <p>The characters, the council, the six seasons, the exact numbers, and the events you play are imagined. They are inspired by real patterns, but they are not a true story of any one year, and they are not a forecast of history or of the future.</p>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-facts-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-parent" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>👨‍👩‍👧 Parent / Educator Notes</h2>
+        <h3>Today's challenge</h3>
+        <p>Climate change, a shrinking river, adaptation, and migration as a dignified human response — planned with care and fair welcome.</p>
+        <h3>Skills practiced</h3>
+        <p>Systems thinking · Climate adaptation · Empathy for migrants · Fair conflict resolution · Hypothesis testing · Perspective-taking · Planning ahead</p>
+        <p>Kids connect geography to people's needs, watch climate meters, choose tradeoffs with limited bricks and workers, plan moves when a city cannot support everyone, and test a guess before the driest seasons.</p>
+        <h3>Discussion prompts</h3>
+        <ul>
+          <li>How did the land of each city change what people needed?</li>
+          <li>Why might a family move when a river shrinks? How can a move be planned with care?</li>
+          <li>What made a welcome feel fair to both the hosts and the newcomers?</li>
+          <li>What did you guess would happen in the dry seasons, and why?</li>
+          <li>What did the cities leave behind that could help people later?</li>
+        </ul>
+        <h3>Important</h3>
+        <p>This is a <strong>thinking tool</strong>, not a historical forecast and not a prediction of real-world events. Characters and events are fictional. Migration is treated with respect and dignity. There is no violence, and there are no ads, purchases, or multiplayer.</p>
+        <h3>Child's design record</h3>
+        <div class="record" id="parent-record">No seasons have been run yet. After the report, outcomes and reflections appear here.</div>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-parent-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-place" class="overlay">
+      <div class="panel" role="dialog">
+        <h2 id="place-title">Place</h2>
+        <p id="place-desc"></p>
+        <div id="place-stats"></div>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-place-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-leader" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>🌟 Trust &amp; Council Powers</h2>
+        <p>Settle disagreements fairly to earn <strong>Trust Points</strong>. Spend them on powers that help the cities.</p>
+        <p><strong>Trust Points: <span id="leader-pts">0</span></strong> · City Trust: <span id="leader-trust">62</span></p>
+        <div id="leader-disputes"></div>
+        <h3>Council powers</h3>
+        <div class="power-card" id="power-meeting">
+          <h4>📣 Council Meeting · 2 points</h4>
+          <p>Call the cities together. You learn each person's home, need, and idea — and your forecast gets more sure.</p>
+          <button type="button" class="btn-primary btn-sm" id="btn-power-meeting">Hold a Council Meeting</button>
+        </div>
+        <div class="power-card" id="power-hands">
+          <h4>🧱 Extra Bricks &amp; Hands · 2 points</h4>
+          <p>Neighbors pitch in. You get <strong>+3 bricks</strong> and <strong>+2 workers</strong>.</p>
+          <button type="button" class="btn-primary btn-sm" id="btn-power-hands">Ask for Extra Hands</button>
+        </div>
+        <div class="power-card" id="power-welcome">
+          <h4>🤝 Fair Welcome Plan · 3 points</h4>
+          <p>The cities agree to share fairly and welcome newcomers with care. Dry seasons waste less water, and moving families find a kinder start.</p>
+          <button type="button" class="btn-primary btn-sm" id="btn-power-welcome">Start a Fair Welcome Plan</button>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-leader-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-meeting" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>📣 Council Meeting</h2>
+        <p>Everyone shares where they live and what they need.</p>
+        <div id="meeting-list"></div>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="btn-meeting-close">Thanks, everyone!</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-dispute" class="overlay">
+      <div class="panel" role="dialog">
+        <h2 id="dispute-title">A disagreement</h2>
+        <p id="dispute-intro">Two people see the problem differently. Hear both sides, then choose a fix.</p>
+        <div id="dispute-sides"></div>
+        <h3>What will you do?</h3>
+        <div id="dispute-options"></div>
+      </div>
+    </div>
+
+    <div id="overlay-migrate" class="overlay">
+      <div class="panel" role="dialog" style="max-width:560px">
+        <h2 id="migrate-title">🚶 A careful move</h2>
+        <p id="migrate-intro"></p>
+        <div id="migrate-status"></div>
+        <h3>Where should the families go?</h3>
+        <div id="migrate-options"></div>
+      </div>
+    </div>
+
+    <div id="overlay-predict" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>🔮 What's your guess?</h2>
+        <p>The last two seasons will be the driest. Guess what will happen to each of these.</p>
+        <div id="predict-listen" class="listen-box"></div>
+        <div id="predict-guesses"></div>
+        <div class="actions">
+          <button type="button" class="btn-good" id="btn-predict-run" disabled>▶ Begin the dry seasons</button>
+          <button type="button" class="btn-secondary" id="btn-predict-back">Go back</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-sim" class="overlay">
+      <div class="panel" role="dialog" id="sim-panel">
+        <h2 id="sim-title">📅 A new season</h2>
+        <div class="day-row">
+          <span id="sim-day-label" style="font-size:20px;font-weight:700">Season 1</span>
+          <span id="sim-weather" style="font-size:28px">🌧️</span>
+          <span id="sim-weather-name" style="font-weight:600">Strong monsoon</span>
+        </div>
+        <div class="meter" style="height:18px"><span id="sim-progress" style="width:0%;background:var(--accent)"></span></div>
+        <div id="sim-log" aria-live="polite"></div>
+        <div class="actions">
+          <button type="button" class="btn-secondary btn-sm" id="btn-sim-slow">🐢 Slow</button>
+          <button type="button" class="btn-secondary btn-sm" id="btn-sim-skip">⏭ Skip to end</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-report" class="overlay">
+      <div class="panel" role="dialog" style="max-width:560px">
+        <h2>📊 Council Report</h2>
+        <p id="report-story"></p>
+        <div id="report-tradeoff" class="tradeoff" style="display:none"></div>
+        <div id="report-listen" style="font-size:13px;margin:8px 0;color:var(--ink-soft)"></div>
+        <h3>Your guesses</h3>
+        <div id="report-guesses"></div>
+        <div id="report-metrics"></div>
+        <div id="report-legacy" style="font-size:14px;margin:10px 0"></div>
+        <div id="report-badge" style="display:none" class="badge-big">
+          <div class="star">🏅</div>
+          <strong>Indus Council Helper</strong>
+          <p style="margin:6px 0 0;font-size:14px">You planned ahead, treated moving families with care, and helped the cities adapt.</p>
+        </div>
+        <h3>Reflection</h3>
+        <div class="reflect-q">
+          <label>1. What worked well?</label>
+          <div class="chips" id="rq1"></div>
+        </div>
+        <div class="reflect-q">
+          <label>2. Who benefited most?</label>
+          <div class="chips" id="rq2"></div>
+        </div>
+        <div class="reflect-q">
+          <label>3. What would you try differently next time?</label>
+          <textarea id="rq3" placeholder="Write your idea…" maxlength="200"></textarea>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-restart">🔄 Start Again</button>
+          <button type="button" class="btn-good" id="btn-end-day">✨ Finish for Today</button>
+          <a class="btn-secondary" id="link-back-report" href="../">← Back to Riverbend</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-end" class="overlay">
+      <div class="panel" role="dialog" style="text-align:center">
+        <h2>🌙 Rest Well, Council Helper</h2>
+        <p id="end-msg">The cities are resting for today. Come back another time to try a new plan.</p>
+        <div class="actions" style="justify-content:center">
+          <button type="button" class="btn-primary" id="btn-play-again">Play Again</button>
+          <a class="btn-secondary" id="link-back-end" href="../">← Back to Riverbend</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="build-bar">
+    <h3>
+      <span>🛠️ City Plans</span>
+      <span style="margin-left:auto;font-weight:500;font-size:12px" id="build-mode-label">Select a plan, then click a city</span>
+    </h3>
+    <div id="build-cards"></div>
+    <div id="action-row">
+      <button type="button" class="btn-secondary btn-sm" id="btn-remove">🗑️ Undo Last Plan</button>
+      <button type="button" class="btn-good" id="btn-run">▶ Begin Season</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var INDUS_VERSION = "indus-v1-climate-migration";
+
+  const SEASONS = [
+    { name: "Strong monsoon", rain: 85, river: 88, icon: "🌧️", note: "The rains are still strong. A good time to build ahead." },
+    { name: "A little less rain", rain: 70, river: 74, icon: "🌦️", note: "The monsoon is a little weaker. The river is still full enough." },
+    { name: "A drier season", rain: 52, river: 55, icon: "🌤️", note: "Less rain falls. The river is shrinking. Some families may need a new home." },
+    { name: "Weak rains", rain: 38, river: 40, icon: "☀️", note: "Rains are weak. Stored water and sharing matter more than ever." },
+    { name: "Very little rain", rain: 24, river: 26, icon: "☀️", note: "The monsoon is very weak. The river is low. Careful plans keep people safe." },
+    { name: "The driest season", rain: 16, river: 14, icon: "🏜️", note: "The driest season. This is when earlier plans really show." }
+  ];
+
+  const ACTIONS = [
+    { id: "reservoir", name: "Expand Reservoir", costB: 3, costW: 2, icon: "🪨💧", benefit: "Catches rare rain", hint: "Best in Dry-Land City", best: "dry", global: false },
+    { id: "well", name: "Dig a Well", costB: 2, costW: 2, icon: "🕳️", benefit: "More drinking water", hint: "Helps any city", best: null, global: false },
+    { id: "grain", name: "Grain Store", costB: 2, costW: 1, icon: "🌾🏠", benefit: "Saves food for dry seasons", hint: "Helps any city", best: null, global: false },
+    { id: "hardy", name: "Hardy Crops", costB: 1, costW: 2, icon: "🌱", benefit: "Crops that need less water", hint: "A smart change for dry land", best: "dry", global: false },
+    { id: "drains", name: "Repair Drains", costB: 2, costW: 1, icon: "🧱", benefit: "Less waste, healthier streets", hint: "Best in River City", best: "river", global: false },
+    { id: "share", name: "Share Water", costB: 2, costW: 2, icon: "🤝💧", benefit: "Cities share stored water", hint: "Helps every city a little", best: null, global: true },
+    { id: "trade", name: "Open Trade Route", costB: 2, costW: 2, icon: "⛵", benefit: "Dock boats bring food", hint: "Starts at the Coastal City", best: "coast", global: true }
+  ];
+
+  const CITY_DEFS = [
+    {
+      id: "river", name: "River City", short: "in River City, beside the big river",
+      placeDesc: "A big, planned brick city with straight streets, drains, and many wells — inspired by cities like Harappa and Mohenjo-daro. People here are used to a strong river. They may be slow to believe it could shrink, unless you listen and plan ahead.",
+      view: "Trusts the river and its wells. Needs drain repairs and worries when the river gets low.",
+      houseColor: "#c47858", cx: 330, cy: 295, r: 88,
+      families: 12, capacity: 14, water: 78, food: 70,
+      wells: 2, reservoirs: 0, grain: 0, hardy: false, drains: false
+    },
+    {
+      id: "dry", name: "Dry-Land City", short: "in Dry-Land City, where rain is rare",
+      placeDesc: "A city in a dry land with stone reservoirs that catch rare rain — inspired by Dholavira. People here already save every drop. They want bigger reservoirs, and they worry if too many new families arrive before more water is stored.",
+      view: "Saves every drop of rare rain. Wants reservoirs and fair shares.",
+      houseColor: "#c4b070", cx: 165, cy: 135, r: 72,
+      families: 6, capacity: 8, water: 55, food: 58,
+      wells: 0, reservoirs: 1, grain: 0, hardy: false, drains: false
+    },
+    {
+      id: "coast", name: "Coastal Trade City", short: "in the Coastal Trade City, by the dock",
+      placeDesc: "A coastal city with a dock for boats — inspired by Lothal. People here look to trade when rains fail. Boats can bring food and goods, and traders have friends in faraway places.",
+      view: "Looks to the dock and to trade when local rains are weak.",
+      houseColor: "#7eafc8", cx: 355, cy: 445, r: 72,
+      families: 6, capacity: 8, water: 48, food: 62,
+      wells: 1, reservoirs: 0, grain: 0, hardy: false, drains: false
+    },
+    {
+      id: "east", name: "East Villages", short: "in the East Villages, where there is room",
+      placeDesc: "Smaller villages to the east. They have more room than the big cities, modest wells, and open fields. Families can be welcomed here if a river city gets too dry — if wells and fields are shared fairly.",
+      view: "Has room to welcome people, and wants a fair sharing of wells and fields.",
+      houseColor: "#c8a068", cx: 585, cy: 150, r: 72,
+      families: 4, capacity: 10, water: 42, food: 48,
+      wells: 1, reservoirs: 0, grain: 0, hardy: false, drains: false
+    }
+  ];
+
+  const PEOPLE_DEFS = [
+    {
+      id: "mira", name: "Drain Keeper Mira", role: "Looks after drains and wells", emoji: "👷", color: "#e8b898",
+      cityId: "river", x: 380, y: 270,
+      line: "I live in River City, right beside the big river. Our brick drains and wells have always been our pride. I still hope the river will stay — but I am starting to worry.",
+      need: "Wants the drains repaired and the wells kept healthy if the river shrinks."
+    },
+    {
+      id: "noor", name: "Reservoir Keeper Noor", role: "Looks after stone reservoirs", emoji: "🪨", color: "#d4c878",
+      cityId: "dry", x: 200, y: 118,
+      line: "I live in Dry-Land City, where rain is rare. We catch every drop in our stone reservoirs. If the monsoon weakens, we will need bigger reservoirs — and fair shares.",
+      need: "Wants to expand the reservoirs and share water fairly when rains are weak."
+    },
+    {
+      id: "sami", name: "Farmer Sami", role: "Grows food in the dry fields", emoji: "🌾", color: "#8bc98a",
+      cityId: "dry", x: 115, y: 168,
+      line: "I farm near Dry-Land City. Our soil is thirsty. Crops that need less water could feed us when the rains fade — and I can teach that know-how to others.",
+      need: "Wants hardy crops that need less water, and grain stores for dry seasons."
+    },
+    {
+      id: "lila", name: "Dock Trader Lila", role: "Trades from the coastal dock", emoji: "⛵", color: "#7eb8d8",
+      cityId: "coast", x: 410, y: 428,
+      line: "I live in the Coastal Trade City by the dock. When rains fail, boats can still bring food and goods. Trade friends far away can help — if we keep the dock busy.",
+      need: "Wants a trade route so the dock can bring food when local rains are weak."
+    },
+    {
+      id: "priya", name: "Village Host Priya", role: "Welcomes people in the east", emoji: "🏡", color: "#d8b070",
+      cityId: "east", x: 605, y: 155,
+      line: "I live in the small East Villages. We have room, and we can welcome families if the river cities get too dry. I only ask that we share wells and fields fairly, and learn from each other.",
+      need: "Has room for newcomers, and wants a fair welcome that helps both sides."
+    }
+  ];
+
+  const ASHA_DEF = {
+    id: "asha", name: "Potter Asha", role: "Potter and newcomer", emoji: "🏺", color: "#e0a0c0",
+    cityId: "east", x: 545, y: 175,
+    line: "We moved with care. I bring pottery skill, and my neighbors bring farming know-how, bead-making, and trade friends. We want to help, not just take a share.",
+    need: "Wants a fair welcome, and a chance to help the new city."
+  };
+
+  const POWER_COST = { meeting: 2, hands: 2, welcome: 3 };
+  const ASHA_POS = { river: [280, 250], dry: [140, 100], coast: [300, 430], east: [545, 175] };
+
+  const state = {
+    phase: "intro",
+    season: 0,
+    bricks: 6,
+    workers: 5,
+    trust: 62,
+    trustPoints: 0,
+    rain: SEASONS[0].rain,
+    river: SEASONS[0].river,
+    cities: [],
+    people: [],
+    talkedTo: new Set(),
+    inspected: new Set(),
+    knownNeeds: new Set(),
+    selectedAction: null,
+    actionLog: [],
+    powers: { meeting: false, hands: false, welcome: false },
+    flags: { shareWater: false, tradeRoute: false, schedule: false, nudgeReservoir: false, favorRiver: false, favorDry: false },
+    disputes: [],
+    disputeTrustDelta: 0,
+    disputeEffects: {},
+    guesses: { water: null, food: null, trust: null },
+    predictSnap: null,
+    simSpeed: 1,
+    skipSim: false,
+    lastReport: null,
+    reflection: { q1: null, q2: null, q3: "" },
+    animT: 0,
+    disputeLock: false,
+    migrated: false,
+    familiesMoved: 0,
+    movePlan: [],
+    newcomersHelping: false,
+    helperWorkers: 0,
+    skills: [],
+    ashaVisible: false,
+    helpNeededLast: 0,
+    helpNeededMax: 0,
+    seasonLogs: []
+  };
+
+  const canvas = document.getElementById("village-canvas");
+  const ctx = canvas.getContext("2d");
+  const $ = function (id) { return document.getElementById(id); };
+
+  function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+  function cityById(id) {
+    return state.cities.find(function (c) { return c.id === id; });
+  }
+  function personById(id) {
+    return state.people.find(function (p) { return p.id === id; });
+  }
+  function visiblePeople() {
+    return state.people.filter(function (p) { return p.id !== "asha" || state.ashaVisible; });
+  }
+  function listeningPct() {
+    if (state.powers.meeting) return 100;
+    var n = PEOPLE_DEFS.length;
+    return clamp(state.talkedTo.size * Math.round(100 / n), 0, 100);
+  }
+  function totalFamilies() {
+    return state.cities.reduce(function (s, c) { return s + c.families; }, 0);
+  }
+  function avgFood() {
+    var s = state.cities.reduce(function (a, c) { return a + c.food; }, 0);
+    return s / state.cities.length;
+  }
+  function avgWater() {
+    var s = state.cities.reduce(function (a, c) { return a + c.water; }, 0);
+    return s / state.cities.length;
+  }
+
+  function toast(msg, ms) {
+    ms = ms || 2200;
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.classList.remove("show"); }, ms);
+  }
+
+  function setPhase(p) {
+    state.phase = p;
+    var labels = {
+      intro: "Welcome",
+      explore: "Explore",
+      plan: "Plan · Season " + (state.season + 1) + " of 6",
+      simulate: "Season running…",
+      migrate: "A careful move",
+      predict: "Your guess",
+      report: "Report",
+      end: "Resting"
+    };
+    $("phase-label").textContent = labels[p] || p;
+    updateRunButton();
+  }
+
+  function updateRunButton() {
+    var btn = $("btn-run");
+    var can = (state.phase === "plan" || state.phase === "explore") && state.season <= 4;
+    btn.disabled = !can;
+    if (state.season >= 4 && state.season <= 5 && (state.phase === "plan" || state.phase === "explore")) {
+      btn.textContent = "▶ Guess, then begin the dry seasons";
+    } else {
+      btn.textContent = "▶ Begin Season";
+    }
+  }
+
+  function updateResourcesUI() {
+    $("r-bricks").textContent = state.bricks;
+    $("r-workers").textContent = state.workers;
+    $("r-rain").textContent = Math.round(state.rain);
+    $("r-river").textContent = Math.round(state.river);
+    $("rain-fill").style.width = clamp(state.rain, 0, 100) + "%";
+    $("river-fill").style.width = clamp(state.river, 0, 100) + "%";
+    $("r-food").textContent = Math.round(avgFood());
+    $("r-trust").textContent = Math.round(state.trust);
+    $("r-trustpts").textContent = state.trustPoints;
+    $("r-listen").textContent = listeningPct() + "%";
+    $("listen-fill").style.width = listeningPct() + "%";
+    updateLeaderBtn();
+    updateRunButton();
+  }
+
+  function updateLeaderBtn() {
+    var btn = $("btn-leader");
+    if (nextOfferableDispute() && (state.phase === "explore" || state.phase === "plan")) {
+      btn.textContent = "🌟 Council !";
+      btn.classList.add("has-news");
+    } else {
+      btn.textContent = "🌟 Council";
+      btn.classList.remove("has-news");
+    }
+  }
+
+  function openOverlay(id) {
+    document.querySelectorAll(".overlay").forEach(function (el) {
+      if (el.id !== id) el.classList.remove("open");
+    });
+    $(id).classList.add("open");
+  }
+  function closeOverlays() {
+    document.querySelectorAll(".overlay").forEach(function (el) { el.classList.remove("open"); });
+  }
+  function anyOverlayOpen() {
+    return !!document.querySelector(".overlay.open");
+  }
+
+  function actionAllowed(act, city) {
+    if (act.global) {
+      if (act.id === "share" && state.flags.shareWater) return "The cities already share water.";
+      if (act.id === "trade" && state.flags.tradeRoute) return "A trade route is already open.";
+      return null;
+    }
+    if (!city) return "Click a city to place this plan.";
+    if (act.id === "reservoir" && city.reservoirs >= 3) return city.name + " already has as many reservoirs as it can hold.";
+    if (act.id === "well" && city.wells >= 3) return city.name + " already has plenty of wells.";
+    if (act.id === "grain" && city.grain >= 1) return city.name + " already has a grain store.";
+    if (act.id === "hardy" && city.hardy) return city.name + " already grows hardy crops.";
+    if (act.id === "drains" && city.drains) return city.name + " already has repaired drains.";
+    return null;
+  }
+
+  function renderActionCards() {
+    var wrap = $("build-cards");
+    wrap.innerHTML = "";
+    ACTIONS.forEach(function (b) {
+      var card = document.createElement("div");
+      var locked = actionAllowed(b, b.global ? state.cities[0] : null) && b.global;
+      var poor = state.bricks < b.costB || state.workers < b.costW;
+      card.className = "build-card" + (state.selectedAction === b.id ? " selected" : "");
+      if (poor || locked) card.classList.add("disabled");
+      card.setAttribute("data-action", b.id);
+      card.innerHTML = '<div class="bico">' + b.icon + '</div><div class="bname">' + b.name + '</div><div class="bcost">' + b.costB + " 🧱 · " + b.costW + ' 👷</div><div class="bhint">' + b.benefit + "</div>";
+      card.title = b.name + "\n" + b.benefit + "\n" + b.hint;
+      card.addEventListener("click", function () {
+        if (state.phase !== "plan" && state.phase !== "explore") return;
+        if (state.season > 4) return;
+        if (poor) { toast("Not enough bricks or workers this season."); return; }
+        if (b.global) {
+          var why = actionAllowed(b, null);
+          if (why) { toast(why); return; }
+          applyAction(b, b.id === "trade" ? cityById("coast") : null);
+          return;
+        }
+        state.selectedAction = state.selectedAction === b.id ? null : b.id;
+        $("build-mode-label").textContent = state.selectedAction
+          ? ("Placing: " + b.name + " — click a city")
+          : "Select a plan, then click a city";
+        renderActionCards();
+      });
+      wrap.appendChild(card);
+    });
+  }
+
+  function applyAction(act, city) {
+    if (state.phase !== "plan" && state.phase !== "explore") return;
+    if (state.bricks < act.costB || state.workers < act.costW) {
+      toast("Not enough bricks or workers this season.");
+      return;
+    }
+    var why = actionAllowed(act, city);
+    if (why) { toast(why); return; }
+
+    state.bricks -= act.costB;
+    state.workers -= act.costW;
+
+    var tip = "";
+    if (act.id === "reservoir") {
+      city.reservoirs += 1;
+      city.capacity += 1;
+      city.water = clamp(city.water + 8, 0, 100);
+      tip = act.best && city.id !== act.best ? " It will help, though Dry-Land City catches rare rain best." : " Great place to catch rain!";
+    } else if (act.id === "well") {
+      city.wells += 1;
+      city.water = clamp(city.water + 10, 0, 100);
+      tip = " A new well for " + city.name + ".";
+    } else if (act.id === "grain") {
+      city.grain += 1;
+      city.food = clamp(city.food + 8, 0, 100);
+      tip = " Food can be saved for drier seasons.";
+    } else if (act.id === "hardy") {
+      city.hardy = true;
+      tip = act.best && city.id !== act.best ? " Hardy crops can grow here too." : " Perfect for thirsty soil!";
+    } else if (act.id === "drains") {
+      city.drains = true;
+      city.water = clamp(city.water + 4, 0, 100);
+      tip = city.id === "river" ? " River City's planned streets will waste less water." : " Drains help this city too.";
+    } else if (act.id === "share") {
+      state.flags.shareWater = true;
+      tip = " The cities will share stored water each season.";
+    } else if (act.id === "trade") {
+      state.flags.tradeRoute = true;
+      cityById("coast").capacity += 2;
+      cityById("coast").food = clamp(cityById("coast").food + 8, 0, 100);
+      tip = " Boats from the dock can bring food when rains are weak.";
+    }
+
+    state.actionLog.push({ id: act.id, cityId: city ? city.id : null, costB: act.costB, costW: act.costW, season: state.season });
+    state.selectedAction = null;
+    $("build-mode-label").textContent = "Select a plan, then click a city";
+    updateResourcesUI();
+    renderActionCards();
+    refreshNeeds();
+    toast("Planned: " + act.name + (city ? " in " + city.name : "") + "." + tip, 2800);
+    if (state.phase === "explore") maybeEnterPlan();
+  }
+
+  function undoLast() {
+    var last = state.actionLog[state.actionLog.length - 1];
+    if (!last || last.season !== state.season) {
+      toast("Nothing to undo from this season's plans.");
+      return;
+    }
+    state.actionLog.pop();
+    state.bricks += last.costB;
+    state.workers += last.costW;
+    var city = last.cityId ? cityById(last.cityId) : null;
+    if (last.id === "reservoir" && city) { city.reservoirs = Math.max(0, city.reservoirs - 1); city.capacity = Math.max(city.families, city.capacity - 1); city.water = clamp(city.water - 8, 0, 100); }
+    else if (last.id === "well" && city) { city.wells = Math.max(0, city.wells - 1); city.water = clamp(city.water - 10, 0, 100); }
+    else if (last.id === "grain" && city) { city.grain = Math.max(0, city.grain - 1); city.food = clamp(city.food - 8, 0, 100); }
+    else if (last.id === "hardy" && city) { city.hardy = false; }
+    else if (last.id === "drains" && city) { city.drains = false; city.water = clamp(city.water - 4, 0, 100); }
+    else if (last.id === "share") { state.flags.shareWater = false; }
+    else if (last.id === "trade") {
+      state.flags.tradeRoute = false;
+      var coast = cityById("coast");
+      coast.capacity = Math.max(coast.families, coast.capacity - 2);
+      coast.food = clamp(coast.food - 8, 0, 100);
+    }
+    var b = ACTIONS.find(function (a) { return a.id === last.id; });
+    updateResourcesUI();
+    renderActionCards();
+    refreshNeeds();
+    toast("Undid " + (b ? b.name : "plan") + ". Bricks and workers returned.");
+  }
+
+  function cityStatLine(c) {
+    var bits = [c.families + " families", "room for " + c.capacity, "water " + Math.round(c.water), "food " + Math.round(c.food)];
+    if (c.wells) bits.push(c.wells + " well" + (c.wells > 1 ? "s" : ""));
+    if (c.reservoirs) bits.push(c.reservoirs + " reservoir" + (c.reservoirs > 1 ? "s" : ""));
+    if (c.grain) bits.push("grain store");
+    if (c.hardy) bits.push("hardy crops");
+    if (c.drains) bits.push("repaired drains");
+    return bits.join(" · ");
+  }
+
+  function refreshNeeds() {
+    var box = $("needs-cities");
+    box.innerHTML = state.cities.map(function (c) {
+      return '<div class="city-stat"><strong>' + c.name + "</strong>" + cityStatLine(c) + "</div>";
+    }).join("");
+    var items = [];
+    items.push("You are planning Season " + (Math.min(state.season, 5) + 1) + " of 6. " + SEASONS[Math.min(state.season, 5)].note);
+    items.push("Rain and river outlook: " + SEASONS.map(function (s, i) {
+      return (i + 1) + " " + s.name + " (rain " + s.rain + ", river " + s.river + ")";
+    }).join("; ") + ".");
+    if (state.flags.shareWater) items.push("✓ Cities share stored water.");
+    if (state.flags.tradeRoute) items.push("✓ A trade route is open at the dock.");
+    if (state.powers.welcome) items.push("✓ A Fair Welcome Plan is in place.");
+    if (state.newcomersHelping) items.push("✓ Newcomers are helpers — they add extra workers and skills.");
+    visiblePeople().forEach(function (v) {
+      var c = cityById(v.cityId);
+      if (state.talkedTo.has(v.id)) {
+        items.push("✓ Heard " + v.name + " (" + c.name + '): "' + v.line + '"');
+      } else if (state.powers.meeting || state.knownNeeds.has(v.id)) {
+        items.push("○ " + v.name + " lives " + c.short + " — visit them!");
+      } else {
+        items.push("○ Talk to " + v.name + " (" + v.role + ") — find out how their land shapes their needs.");
+      }
+    });
+    $("needs-list").innerHTML = items.map(function (t) { return "<li>" + t + "</li>"; }).join("");
+  }
+
+  function initGame() {
+    state.season = 0;
+    state.bricks = 6;
+    state.workers = 5;
+    state.trust = 62;
+    state.trustPoints = 0;
+    state.rain = SEASONS[0].rain;
+    state.river = SEASONS[0].river;
+    state.cities = CITY_DEFS.map(function (c) {
+      return {
+        id: c.id, name: c.name, short: c.short, placeDesc: c.placeDesc, view: c.view,
+        houseColor: c.houseColor, cx: c.cx, cy: c.cy, r: c.r,
+        families: c.families, capacity: c.capacity, water: c.water, food: c.food,
+        wells: c.wells, reservoirs: c.reservoirs, grain: c.grain, hardy: c.hardy, drains: c.drains,
+        atRisk: 0
+      };
+    });
+    state.people = PEOPLE_DEFS.map(function (p) {
+      return {
+        id: p.id, name: p.name, role: p.role, emoji: p.emoji, color: p.color,
+        cityId: p.cityId, x: p.x, y: p.y, line: p.line, need: p.need
+      };
+    });
+    state.people.push({
+      id: ASHA_DEF.id, name: ASHA_DEF.name, role: ASHA_DEF.role, emoji: ASHA_DEF.emoji,
+      color: ASHA_DEF.color, cityId: ASHA_DEF.cityId, x: ASHA_DEF.x, y: ASHA_DEF.y,
+      line: ASHA_DEF.line, need: ASHA_DEF.need
+    });
+    state.talkedTo = new Set();
+    state.inspected = new Set();
+    state.knownNeeds = new Set();
+    state.selectedAction = null;
+    state.actionLog = [];
+    state.powers = { meeting: false, hands: false, welcome: false };
+    state.flags = { shareWater: false, tradeRoute: false, schedule: false, nudgeReservoir: false, favorRiver: false, favorDry: false };
+    state.disputeTrustDelta = 0;
+    state.disputeEffects = {};
+    state.guesses = { water: null, food: null, trust: null };
+    state.predictSnap = null;
+    state.lastReport = null;
+    state.reflection = { q1: null, q2: null, q3: "" };
+    state.disputeLock = false;
+    state.migrated = false;
+    state.familiesMoved = 0;
+    state.movePlan = [];
+    state.newcomersHelping = false;
+    state.helperWorkers = 0;
+    state.skills = [];
+    state.ashaVisible = false;
+    state.helpNeededLast = 0;
+    state.helpNeededMax = 0;
+    state.seasonLogs = [];
+    state.disputes = generateDisputes();
+  }
+
+  function generateDisputes() {
+    return [
+      {
+        id: "river_share",
+        title: "Who should the shrinking river help first?",
+        intro: "Drain Keeper Mira lives in River City. Reservoir Keeper Noor lives in Dry-Land City. The river is starting to shrink, and they disagree about how to share it.",
+        aId: "mira",
+        bId: "noor",
+        aLine: "River City's wells depend on this river. If we send too much away, our families will feel the shortage first.",
+        bLine: "We already live with rare rain. A sharing plan — and a bigger reservoir — would help Dry-Land City without emptying the river.",
+        resolved: null,
+        offerAfterSeason: 1,
+        options: [
+          { id: "share_and_build", kind: "winwin", label: "Share river water and help expand the Dry-Land reservoir", hint: "Both cities get a fairer share, and reservoirs become a team project.", pts: 3, effect: "nudge_reservoir_share" },
+          { id: "schedule", kind: "winwin", label: "Set a fair water schedule", hint: "River wells take a morning turn; Dry-Land City gets an evening share.", pts: 3, effect: "schedule" },
+          { id: "keep_river", kind: "winner", label: "Keep most river water for River City", hint: "River City feels safer, but Dry-Land City may feel left out.", pts: 1, effect: "favor_river" },
+          { id: "send_dry", kind: "winner", label: "Send a large share to Dry-Land City", hint: "Dry-Land City is glad, but River City may worry about its wells.", pts: 1, effect: "favor_dry" },
+          { id: "ignore", kind: "ignore", label: "Leave it for now", hint: "The disagreement stays, and Trust slips a little.", pts: 0, effect: "ignore" }
+        ]
+      },
+      {
+        id: "welcome",
+        title: "How should we welcome newcomers?",
+        intro: "Moving families have arrived. Hosts worry about sharing wells and fields. Newcomers bring skills that can help.",
+        aId: "priya",
+        bId: "asha",
+        aLine: "We have room, and we want to help. I just worry our wells and fields will not stretch far enough if we are not careful.",
+        bLine: "We moved with care. I bring pottery skill, and my neighbors bring farming know-how, bead-making, and trade friends. Let us help, not just take a share.",
+        resolved: null,
+        offerAfterSeason: 99,
+        options: [
+          { id: "share_skills", kind: "winwin", label: "Share wells and fields, and let newcomers teach their skills", hint: "Hosts feel respected, and newcomers become helpers.", pts: 3, effect: "helpers" },
+          { id: "build_together", kind: "winwin", label: "Work together on a grain store and a fair harvest", hint: "Both sides gain food security and a reason to cooperate.", pts: 3, effect: "helpers_grain" },
+          { id: "hosts_first", kind: "winner", label: "Let hosts keep the first share of wells and fields", hint: "Hosts feel safer, but newcomers may feel less welcome.", pts: 1, effect: "favor_hosts" },
+          { id: "newcomers_full", kind: "winner", label: "Give newcomers a full share right away", hint: "Newcomers feel welcome, but hosts may worry about their wells.", pts: 1, effect: "favor_newcomers" },
+          { id: "ignore", kind: "ignore", label: "Leave it for now", hint: "The disagreement stays, and Trust slips a little.", pts: 0, effect: "ignore" }
+        ]
+      }
+    ];
+  }
+
+  function nextOfferableDispute() {
+    if (state.phase !== "explore" && state.phase !== "plan") return null;
+    return state.disputes.find(function (d) {
+      if (d.resolved) return false;
+      if (d.id === "welcome") return false;
+      if (d.offerAfterSeason > state.season) return false;
+      var talkedParty = state.talkedTo.has(d.aId) || state.talkedTo.has(d.bId);
+      return talkedParty || state.talkedTo.size >= 2;
+    }) || null;
+  }
+
+  function maybeOfferDispute(delay) {
+    if (state.disputeLock) return;
+    delay = delay == null ? 500 : delay;
+    clearTimeout(maybeOfferDispute._t);
+    maybeOfferDispute._t = setTimeout(function () {
+      if (anyOverlayOpen()) return;
+      if (state.phase !== "explore" && state.phase !== "plan") return;
+      var next = nextOfferableDispute();
+      if (next) openDispute(next);
+    }, delay);
+  }
+
+  function openDispute(d) {
+    state.disputeLock = true;
+    var a = personById(d.aId);
+    var b = personById(d.bId);
+    var aCity = a ? cityById(a.cityId) : null;
+    var bCity = b ? cityById(b.cityId) : null;
+    $("dispute-title").textContent = "⚖️ " + d.title;
+    $("dispute-intro").textContent = d.intro;
+    $("dispute-sides").innerHTML =
+      '<div class="dispute-side"><strong>' + (a ? a.emoji + " " + a.name : "Someone") + (aCity ? " · " + aCity.name : "") + "</strong><p>\"" + d.aLine + "\"</p></div>" +
+      '<div class="dispute-side"><strong>' + (b ? b.emoji + " " + b.name : "Someone") + (bCity ? " · " + bCity.name : "") + "</strong><p>\"" + d.bLine + "\"</p></div>";
+    var box = $("dispute-options");
+    box.innerHTML = "";
+    d.options.forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-block migrate-choice " + (opt.kind === "winwin" ? "btn-good" : opt.kind === "ignore" ? "btn-ghost" : "btn-secondary");
+      btn.textContent = opt.label;
+      btn.setAttribute("data-opt", opt.id);
+      btn.addEventListener("click", function () { resolveDispute(d, opt); });
+      box.appendChild(btn);
+    });
+    openOverlay("overlay-dispute");
+  }
+
+  function resolveDispute(d, opt) {
+    d.resolved = opt.id;
+    d.resolvedKind = opt.kind;
+    d.resolvedLabel = opt.label;
+    if (opt.effect && opt.effect !== "ignore") state.disputeEffects[opt.effect] = true;
+    if (opt.effect === "nudge_reservoir_share") {
+      state.flags.nudgeReservoir = true;
+      state.flags.shareWater = true;
+    }
+    if (opt.effect === "schedule") state.flags.schedule = true;
+    if (opt.effect === "favor_river") state.flags.favorRiver = true;
+    if (opt.effect === "favor_dry") state.flags.favorDry = true;
+    if (opt.effect === "helpers" || opt.effect === "helpers_grain") {
+      state.newcomersHelping = true;
+      state.helperWorkers += 1;
+      state.workers += 1;
+      if (state.skills.indexOf("pottery") < 0) state.skills.push("pottery");
+      if (state.skills.indexOf("farming know-how") < 0) state.skills.push("farming know-how");
+      if (state.skills.indexOf("bead-making") < 0) state.skills.push("bead-making");
+      if (state.skills.indexOf("trade contacts") < 0) state.skills.push("trade contacts");
+      if (opt.effect === "helpers_grain") {
+        var host = cityById((personById("asha") && personById("asha").cityId) || "east");
+        if (host && host.grain < 1) { host.grain = 1; host.food = clamp(host.food + 6, 0, 100); }
+      }
+    }
+
+    if (opt.kind === "winwin") {
+      state.trustPoints += opt.pts;
+      state.disputeTrustDelta += 8;
+      state.trust = clamp(state.trust + 8, 0, 100);
+      toast("A fair fix! You earned " + opt.pts + " Trust Points. " + opt.hint, 3200);
+    } else if (opt.kind === "winner") {
+      state.trustPoints += opt.pts;
+      state.disputeTrustDelta += 2;
+      state.trust = clamp(state.trust + 2, 0, 100);
+      toast("You chose a side and earned " + opt.pts + " Trust Point. " + opt.hint, 3200);
+    } else {
+      state.disputeTrustDelta -= 6;
+      state.trust = clamp(state.trust - 6, 0, 100);
+      toast("The disagreement stays for now. Trust slips a little.", 2800);
+    }
+    state.disputeLock = false;
+    updateResourcesUI();
+    renderActionCards();
+    closeOverlays();
+    maybeOfferDispute(1800);
+  }
+
+  function renderLeaderPanel() {
+    $("leader-pts").textContent = state.trustPoints;
+    $("leader-trust").textContent = Math.round(state.trust);
+    var dhtml = "";
+    var unresolved = state.disputes.filter(function (d) { return !d.resolved && d.id !== "welcome"; });
+    var welcomeOpen = state.disputes.find(function (d) { return d.id === "welcome" && !d.resolved && state.familiesMoved > 0 && state.ashaVisible; });
+    var resolved = state.disputes.filter(function (d) { return d.resolved; });
+    if (unresolved.length || welcomeOpen) {
+      dhtml += "<h3>Open disagreements</h3>";
+      unresolved.forEach(function (d) { dhtml += "<p>• " + d.title + "</p>"; });
+      if (welcomeOpen) dhtml += "<p>• " + welcomeOpen.title + "</p>";
+      if (nextOfferableDispute() || welcomeOpen) {
+        dhtml += '<p><button type="button" class="btn-primary btn-sm" id="btn-open-dispute">Help with a disagreement</button></p>';
+      } else {
+        dhtml += "<p class='tiny-note'>Talk with people (and begin a season) to hear the next disagreement.</p>";
+      }
+    } else {
+      dhtml += "<p>All open disagreements have been heard. Nice work, peacemaker!</p>";
+    }
+    if (resolved.length) {
+      dhtml += "<p style='font-size:13px'>Settled: " + resolved.map(function (d) { return d.title + " (“" + d.resolvedLabel + "”)"; }).join("; ") + "</p>";
+    }
+    $("leader-disputes").innerHTML = dhtml;
+    var openBtn = $("btn-open-dispute");
+    if (openBtn) {
+      openBtn.addEventListener("click", function () {
+        var next = nextOfferableDispute() || welcomeOpen;
+        if (next) openDispute(next);
+      });
+    }
+    ["meeting", "hands", "welcome"].forEach(function (key) {
+      var card = $("power-" + key);
+      var btn = $("btn-power-" + key);
+      if (state.powers[key]) {
+        card.classList.add("owned");
+        btn.disabled = true;
+        btn.textContent = "Already in use";
+      } else {
+        card.classList.remove("owned");
+        btn.disabled = state.trustPoints < POWER_COST[key] || (state.phase !== "explore" && state.phase !== "plan");
+        btn.textContent = btn.getAttribute("data-label") || btn.textContent;
+      }
+    });
+  }
+
+  function usePowerMeeting() {
+    if (state.powers.meeting || state.trustPoints < POWER_COST.meeting) return;
+    if (state.phase !== "explore" && state.phase !== "plan") return;
+    state.trustPoints -= POWER_COST.meeting;
+    state.powers.meeting = true;
+    visiblePeople().forEach(function (v) { state.knownNeeds.add(v.id); });
+    updateResourcesUI();
+    refreshNeeds();
+    var list = $("meeting-list");
+    list.innerHTML = visiblePeople().map(function (v) {
+      var c = cityById(v.cityId);
+      return '<div class="meet-row"><div class="ma" style="background:' + v.color + '">' + v.emoji + "</div><div><strong>" + v.name + "</strong> · " + c.name + "<br><span style='font-size:13px'>" + v.need + "</span></div></div>";
+    }).join("");
+    openOverlay("overlay-meeting");
+    toast("Council Meeting held — you now know everyone's needs!", 2600);
+  }
+
+  function usePowerHands() {
+    if (state.powers.hands || state.trustPoints < POWER_COST.hands) return;
+    if (state.phase !== "explore" && state.phase !== "plan") return;
+    state.trustPoints -= POWER_COST.hands;
+    state.powers.hands = true;
+    state.bricks += 3;
+    state.workers += 2;
+    updateResourcesUI();
+    renderActionCards();
+    renderLeaderPanel();
+    toast("Extra Bricks & Hands! Neighbors brought 3 bricks and 2 workers.", 2600);
+  }
+
+  function usePowerWelcome() {
+    if (state.powers.welcome || state.trustPoints < POWER_COST.welcome) return;
+    if (state.phase !== "explore" && state.phase !== "plan") return;
+    state.trustPoints -= POWER_COST.welcome;
+    state.powers.welcome = true;
+    state.trust = clamp(state.trust + 4, 0, 100);
+    updateResourcesUI();
+    renderLeaderPanel();
+    toast("Fair Welcome Plan is on! Dry seasons will waste less, and moving families will find a kinder start.", 3000);
+  }
+
+  function shadeHex(hex, amt) {
+    var h = hex.replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var r = Math.max(0, Math.min(255, parseInt(h.substr(0, 2), 16) + amt));
+    var g = Math.max(0, Math.min(255, parseInt(h.substr(2, 2), 16) + amt));
+    var b = Math.max(0, Math.min(255, parseInt(h.substr(4, 2), 16) + amt));
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+
+  function drawCube(cx, cy, w, h, depth, color) {
+    depth = depth == null ? Math.max(4, Math.floor(w * 0.28)) : depth;
+    var x0 = cx - w / 2;
+    var y0 = cy - h;
+    ctx.fillStyle = shadeHex(color, -35);
+    ctx.beginPath();
+    ctx.moveTo(x0 + w, y0);
+    ctx.lineTo(x0 + w + depth, y0 - depth);
+    ctx.lineTo(x0 + w + depth, y0 + h - depth);
+    ctx.lineTo(x0 + w, y0 + h);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = shadeHex(color, 45);
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x0 + depth, y0 - depth);
+    ctx.lineTo(x0 + w + depth, y0 - depth);
+    ctx.lineTo(x0 + w, y0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = color;
+    ctx.fillRect(x0, y0, w, h);
+    ctx.strokeStyle = shadeHex(color, -55);
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x0, y0, w, h);
+  }
+
+  function drawFlatBlock(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+    ctx.fillStyle = shadeHex(color, 30);
+    ctx.fillRect(x, y, w, 3);
+    ctx.fillStyle = shadeHex(color, -40);
+    ctx.fillRect(x, y + h - 3, w, 3);
+    ctx.strokeStyle = shadeHex(color, -50);
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x, y, w, h);
+  }
+
+  function drawZoneLabel(x, y, text, color) {
+    ctx.font = "bold 11px sans-serif";
+    ctx.textAlign = "center";
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "rgba(255,254,245,0.9)";
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = color || "#3a3020";
+    ctx.fillText(text, x, y);
+  }
+
+  function drawGround(W, H) {
+    var tile = 24, tx, ty, c;
+    var dry, east, riverC, coast, riverbed;
+    for (ty = 0; ty < H; ty += tile) {
+      for (tx = 0; tx < W; tx += tile) {
+        dry = tx < 300 && ty < 210 && ty > 50;
+        east = tx > 470 && ty < 230 && ty > 50;
+        riverC = tx > 200 && tx < 500 && ty > 200 && ty < 390;
+        coast = ty > 390;
+        riverbed = tx > 40 && tx < 150;
+        if (coast) c = ((tx / tile + ty / tile) % 2 === 0) ? "#c8b878" : "#d4c490";
+        else if (dry) c = ((tx / tile + ty / tile) % 2 === 0) ? "#d2c080" : "#c8b068";
+        else if (east) c = ((tx / tile + ty / tile) % 2 === 0) ? "#7ab848" : "#6aaa40";
+        else if (riverC) c = ((tx / tile + ty / tile) % 2 === 0) ? "#c4a078" : "#d0ac84";
+        else if (riverbed) c = ((tx / tile + ty / tile) % 2 === 0) ? "#b8a878" : "#c4b488";
+        else c = ((tx / tile + ty / tile) % 2 === 0) ? "#b8c868" : "#a8bc5c";
+        ctx.fillStyle = c;
+        ctx.fillRect(tx, ty, tile, tile);
+        ctx.fillStyle = shadeHex(c, 18);
+        ctx.fillRect(tx + 4, ty + 4, 4, 4);
+        ctx.fillStyle = shadeHex(c, -14);
+        ctx.fillRect(tx + 14, ty + 14, 5, 5);
+      }
+    }
+  }
+
+  function drawRiver(W, H) {
+    var pct = clamp(state.river, 0, 100) / 100;
+    var width = 14 + Math.round(pct * 32);
+    var y, wx, c1, c2, shallow;
+    shallow = pct < 0.35;
+    c1 = shallow ? "#7ab0b8" : "#2a8fc0";
+    c2 = shallow ? "#8cbcb8" : "#3aa0d0";
+    for (y = 16; y < H - 8; y += 14) {
+      wx = 70 + Math.sin(y * 0.04 + state.animT) * 5 + (y > 380 ? (y - 380) * 0.15 : 0);
+      drawFlatBlock(wx, y, width, 13, (Math.floor(y / 14) % 2) ? c1 : c2);
+      if (pct > 0.25) {
+        ctx.fillStyle = "rgba(255,255,255,0.35)";
+        ctx.fillRect(wx + 3, y + 2, 7, 3);
+      } else {
+        drawFlatBlock(wx + width, y, 8, 13, "#c8b890");
+      }
+    }
+    drawZoneLabel(70 + width / 2, 48, pct < 0.4 ? "River (low)" : "River", "#1a4a60");
+  }
+
+  function drawSea(W, H) {
+    var y, x;
+    for (y = 470; y < H; y += 14) {
+      for (x = 40; x < 680; x += 28) {
+        drawFlatBlock(x, y, 27, 13, ((x + y) / 14) % 2 ? "#3a9fd0" : "#4ab0e0");
+      }
+    }
+  }
+
+  function drawDryCity() {
+    var c = cityById("dry");
+    var i, j;
+    drawZoneLabel(165, 58, "Dry-Land City", "#6a4a20");
+    for (i = 0; i < 3; i++) {
+      for (j = 0; j < 2; j++) {
+        drawCube(110 + i * 36, 100 + j * 28, 24, 16, 6, i === 1 && j === 0 ? "#d4c8a0" : "#c4b070");
+      }
+    }
+    var res = Math.max(1, c.reservoirs);
+    for (i = 0; i < res; i++) {
+      var rx = 200 + i * 36, ry = 150;
+      drawCube(rx, ry + 8, 32, 10, 6, "#9a8a78");
+      var fill = clamp(c.water, 10, 100) / 100;
+      ctx.fillStyle = "#2a7aaa";
+      ctx.fillRect(rx - 12, ry - 2 - Math.round(10 * fill), 24, Math.round(10 * fill) + 4);
+      ctx.strokeStyle = "#6a5a48";
+      ctx.strokeRect(rx - 14, ry - 14, 28, 18);
+    }
+  }
+
+  function drawRiverCity() {
+    var c = cityById("river");
+    var i, j;
+    drawZoneLabel(360, 208, "River City", "#5a3020");
+    for (i = 0; i < 5; i++) {
+      for (j = 0; j < 3; j++) {
+        drawCube(250 + i * 34, 250 + j * 30, 22, 16, 6, (i + j) % 2 ? "#c47858" : "#d08868");
+      }
+    }
+    var drainColor = c.drains ? "#5a9ad0" : "#6a5a50";
+    for (i = 0; i < 4; i++) {
+      drawFlatBlock(240, 238 + i * 30, 170, 4, drainColor);
+    }
+    var wells = Math.max(2, c.wells);
+    for (i = 0; i < Math.min(wells, 4); i++) {
+      var wx = 260 + i * 40, wy = 360;
+      drawCube(wx, wy, 16, 8, 4, "#9a8a78");
+      ctx.fillStyle = "#2a7aaa";
+      ctx.fillRect(wx - 5, wy - 10, 10, 8);
+    }
+  }
+
+  function drawCoastCity() {
+    drawZoneLabel(400, 398, "Coastal Trade City", "#1a4a60");
+    var i;
+    for (i = 0; i < 4; i++) {
+      drawCube(280 + i * 32, 430, 24, 16, 6, i % 2 ? "#d0b090" : "#c4a480");
+    }
+    drawCube(470, 455, 70, 12, 8, "#8a7a68");
+    drawCube(500, 448, 16, 18, 5, "#c47858");
+    drawCube(455, 470, 28, 10, 6, "#d8c8a0");
+    if (state.flags.tradeRoute) {
+      drawCube(520, 478, 22, 8, 5, "#c07050");
+    }
+    drawZoneLabel(500, 508, "Dock", "#1a4a60");
+  }
+
+  function drawEastVillages() {
+    drawZoneLabel(585, 58, "East Villages", "#3a5020");
+    var spots = [[540, 110], [590, 120], [630, 108], [560, 150], [620, 155]];
+    spots.forEach(function (s, i) {
+      drawCube(s[0], s[1] + 8, 22, 14, 6, i % 2 ? "#d0b078" : "#c4a068");
+      drawCube(s[0], s[1] - 4, 26, 8, 6, "#c45a4a");
+    });
+    drawFlatBlock(510, 170, 140, 16, "#8bc858");
+  }
+
+  function drawHouseSmall(x, y, color) {
+    drawCube(x, y + 8, 22, 14, 6, color);
+    drawCube(x, y - 4, 26, 8, 6, "#c45a4a");
+  }
+
+  function drawClimateBadge(W) {
+    var s = SEASONS[Math.min(state.season, 5)];
+    var bx = W - 78, by = 58;
+    drawCube(bx, by, 130, 48, 8, "#d4c4a0");
+    drawFlatBlock(bx - 58, by - 40, 116, 44, "#fffef5");
+    ctx.strokeStyle = "#6b5344";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(bx - 58, by - 40, 116, 44);
+    ctx.font = "20px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(s.icon, bx - 54, by - 18);
+    ctx.fillStyle = "#2a2a2a";
+    ctx.font = "bold 10px sans-serif";
+    ctx.fillText("Season " + (Math.min(state.season, 5) + 1) + " of 6", bx - 28, by - 22);
+    ctx.font = "9px sans-serif";
+    ctx.fillText(s.name, bx - 28, by - 9);
+    ctx.fillText("Rain " + Math.round(state.rain) + " · River " + Math.round(state.river), bx - 28, by + 3);
+  }
+
+  function drawClouds() {
+    var clouds = [[120, 36, 1], [300, 26, 0.8], [500, 40, 1.05]];
+    var drift = (state.animT * 8) % 40;
+    var dry = state.rain < 40;
+    clouds.forEach(function (cl, idx) {
+      var cx = cl[0] + drift * (idx % 2 ? 0.3 : -0.2);
+      var cy = cl[1];
+      var s = cl[2];
+      var col = dry ? "#e8e0d0" : "#ffffff";
+      drawCube(cx, cy + 8 * s, 28 * s, 12 * s, 6 * s, col);
+      drawCube(cx - 16 * s, cy + 10 * s, 20 * s, 10 * s, 5 * s, dry ? "#e0d8c8" : "#f0f4f8");
+    });
+  }
+
+  function draw() {
+    var W = canvas.width, H = canvas.height;
+    state.animT += 0.02;
+    var skyGrad = ctx.createLinearGradient(0, 0, 0, 90);
+    var drySky = state.rain < 40;
+    skyGrad.addColorStop(0, drySky ? "#c8c0a0" : "#6bb8e8");
+    skyGrad.addColorStop(1, drySky ? "#d8cc98" : "#8ec8e8");
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, W, 90);
+    drawGround(W, H);
+    drawClouds();
+    drawRiver(W, H);
+    drawSea(W, H);
+    drawDryCity();
+    drawEastVillages();
+    drawRiverCity();
+    drawCoastCity();
+    drawClimateBadge(W);
+
+    if (state.selectedAction && (state.phase === "plan" || state.phase === "explore")) {
+      state.cities.forEach(function (c) {
+        var pulse = 0.5 + 0.5 * Math.sin(state.animT * 3);
+        ctx.globalAlpha = 0.25 + pulse * 0.25;
+        ctx.strokeStyle = "#3d9cdb";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([6, 4]);
+        ctx.strokeRect(c.cx - c.r * 0.7, c.cy - c.r * 0.55, c.r * 1.4, c.r * 1.1);
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+      });
+    }
+
+    visiblePeople().forEach(function (v) {
+      var bob = Math.sin(state.animT * 2 + v.x) * 2;
+      drawCube(v.x, v.y + 18 + bob, 28, 10, 5, shadeHex(v.color, -20));
+      ctx.fillStyle = v.color;
+      ctx.fillRect(v.x - 18, v.y - 18 + bob, 36, 36);
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(v.x - 18, v.y - 18 + bob, 36, 36);
+      ctx.strokeStyle = shadeHex(v.color, -40);
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(v.x - 18, v.y - 18 + bob, 36, 36);
+      ctx.font = "20px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(v.emoji, v.x, v.y + bob);
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#2a2a2a";
+      ctx.font = "bold 10px sans-serif";
+      ctx.strokeStyle = "#fffef5";
+      ctx.lineWidth = 3;
+      var label = v.name.split(" ").pop();
+      ctx.strokeText(label, v.x, v.y + 36 + bob);
+      ctx.fillText(label, v.x, v.y + 36 + bob);
+      if (!state.talkedTo.has(v.id) && (state.phase === "explore" || state.phase === "plan")) {
+        drawCube(v.x + 16, v.y - 16 + bob, 12, 12, 3, "#e07060");
+      }
+    });
+
+    if (state.phase === "explore" && state.talkedTo.size < 2) {
+      ctx.fillStyle = "rgba(42,42,42,0.8)";
+      ctx.fillRect(W / 2 - 210, H - 38, 420, 30);
+      ctx.strokeStyle = "#6b5344";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(W / 2 - 210, H - 38, 420, 30);
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 12px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Click people and cities — the land shapes how they think about water!", W / 2, H - 18);
+    }
+  }
+
+  function loop() { draw(); requestAnimationFrame(loop); }
+
+  function canvasPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+  }
+  function dist(ax, ay, x, y) {
+    var dx = ax - x, dy = ay - y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function onCanvasClick(e) {
+    if (state.phase === "simulate" || state.phase === "report" || state.phase === "end" || state.phase === "intro" || state.phase === "predict" || state.phase === "migrate") return;
+    var p = canvasPos(e);
+    var i, v, city, act;
+
+    var people = visiblePeople();
+    for (i = 0; i < people.length; i++) {
+      v = people[i];
+      if (dist(v.x, v.y, p.x, p.y) < 28) { openDialogue(v); return; }
+    }
+    for (i = 0; i < state.cities.length; i++) {
+      city = state.cities[i];
+      if (dist(city.cx, city.cy, p.x, p.y) < city.r) {
+        if (state.selectedAction) {
+          act = ACTIONS.find(function (a) { return a.id === state.selectedAction; });
+          if (act) applyAction(act, city);
+          return;
+        }
+        openCity(city);
+        return;
+      }
+    }
+  }
+
+  function openCity(city) {
+    state.inspected.add(city.id);
+    $("place-title").textContent = city.name;
+    $("place-desc").textContent = city.placeDesc + " " + city.view;
+    $("place-stats").innerHTML = '<div class="city-stat">' + cityStatLine(city) + "</div>";
+    openOverlay("overlay-place");
+    if (state.phase === "explore") maybeEnterPlan();
+  }
+
+  function openDialogue(v) {
+    state.talkedTo.add(v.id);
+    state.knownNeeds.add(v.id);
+    var c = cityById(v.cityId);
+    $("dlg-avatar").textContent = v.emoji;
+    $("dlg-avatar").style.background = v.color;
+    $("dlg-name").textContent = v.name;
+    $("dlg-role").textContent = v.role + " · lives " + (c ? c.short : "");
+    $("dlg-text").textContent = '"' + v.line + '"';
+    $("dlg-need").textContent = "Need: " + v.need;
+    updateResourcesUI();
+    openOverlay("overlay-dialogue");
+    refreshNeeds();
+    if (state.phase === "explore") maybeEnterPlan();
+  }
+
+  function maybeEnterPlan() {
+    if (state.talkedTo.size >= 2 || state.inspected.size >= 2) {
+      if (state.phase === "explore") {
+        setPhase("plan");
+        toast("Ready to plan! Choose a card below, then click a city — or begin the season.", 2800);
+      }
+    }
+  }
+
+  function cityNeedWater(city) {
+    var per = city.hardy ? 4.4 : 5.4;
+    if (state.flags.schedule || state.flags.shareWater || state.powers.welcome) per *= 0.88;
+    return city.families * per;
+  }
+  function cityNeedFood(city) {
+    return city.families * 5;
+  }
+
+  function runSeason(index, logs) {
+    var s = SEASONS[index];
+    state.rain = s.rain;
+    state.river = s.river;
+    var fx = state.flags;
+    var help = 0;
+
+    if (state.helperWorkers && index > 0) {
+      state.workers = clamp(state.workers + state.helperWorkers, 0, 12);
+      if (index === 3 || index === 5) logs.push("Newcomer helpers pitched in with extra workers.");
+    }
+    if (state.skills.indexOf("pottery") >= 0) {
+      if (index === 2 || index === 4) {
+        state.bricks = clamp(state.bricks + 1, 0, 12);
+        logs.push("Potter Asha's skill added an extra brick for the cities.");
+      }
+    }
+
+    state.cities.forEach(function (city) {
+      var income = 0;
+      if (city.id === "river") income += s.river * 0.42 * (city.drains ? 1.12 : 0.88);
+      if (city.id === "coast") income += s.river * 0.08;
+      income += s.rain * (0.07 + city.reservoirs * 0.16);
+      income += city.wells * 7;
+      if (city.id === "dry") income += s.rain * 0.05;
+      if (fx.shareWater) income += 7;
+      if (fx.schedule) income += 3;
+      if (fx.favorRiver && city.id === "river") income += 6;
+      if (fx.favorRiver && city.id === "dry") income -= 5;
+      if (fx.favorDry && city.id === "dry") income += 6;
+      if (fx.favorDry && city.id === "river") income -= 5;
+      if (fx.nudgeReservoir && city.id === "dry" && city.reservoirs >= 2) income += 4;
+
+      if (s.rain < 40) income += city.reservoirs * 6 + city.wells * 2;
+      var needW = cityNeedWater(city);
+      city.water = clamp(city.water * 0.62 + income - needW * 0.28, 0, 100);
+
+      var waterFactor = clamp(city.water / 50, 0.35, 1.15);
+      var produce = city.families * (city.hardy ? 4.4 : 5.1) * waterFactor;
+      if (city.hardy) produce += 2;
+      if (state.skills.indexOf("farming know-how") >= 0 && city.hardy) produce += 3;
+      if (fx.tradeRoute) {
+        if (city.id === "coast") produce += 14 + (state.skills.indexOf("trade contacts") >= 0 ? 4 : 0) + (state.skills.indexOf("bead-making") >= 0 ? 3 : 0);
+        else if (fx.shareWater || state.powers.welcome) produce += 5;
+      }
+      if (city.grain) produce += 4 + (s.rain < 40 ? 6 : 0);
+      if (s.rain < 40 && fx.tradeRoute && (city.id === "coast" || fx.shareWater || state.powers.welcome)) produce += 6;
+      var needF = cityNeedFood(city);
+      var store = city.grain ? 18 : 4;
+      var net = produce - needF;
+      city.food = clamp(city.food * 0.7 + 40 * (produce / Math.max(needF, 1)) * 0.25 + (net > 0 ? Math.min(net, store) * 0.4 : net * 0.8), 0, 100);
+
+      var shortage = 0;
+      if (city.water < 22) shortage = Math.max(shortage, Math.ceil(city.families * (1 - city.water / 36)));
+      if (city.food < 22) shortage = Math.max(shortage, Math.ceil(city.families * (1 - city.food / 36)));
+      city.atRisk = clamp(shortage, 0, Math.max(0, city.families - 1));
+      help += city.atRisk;
+    });
+
+    if (fx.nudgeReservoir) {
+      var dry = cityById("dry");
+      if (dry.reservoirs >= 2 && index === 2) {
+        logs.push("The promised reservoir help is in place — Dry-Land City feels the partnership.");
+        state.trust = clamp(state.trust + 2, 0, 100);
+      } else if (dry.reservoirs < 2 && index === 2) {
+        logs.push("Dry-Land City still hopes for a bigger reservoir, as talked about.");
+        state.trust = clamp(state.trust - 1, 0, 100);
+      }
+    }
+
+    if (cityById("river").drains && index === 0) logs.push("Repaired drains in River City saved water that used to leak away.");
+    if (cityById("dry").reservoirs >= 2) logs.push("Dry-Land City's reservoirs caught precious rain.");
+    else if (s.rain < 50 && cityById("dry").reservoirs < 2) logs.push("Dry-Land City wished for a bigger reservoir as the rains thinned.");
+    if (fx.tradeRoute) logs.push("A trade boat from the Coastal Trade City brought extra food.");
+    if (fx.shareWater) logs.push("Shared water helped drier cities a little.");
+    if (cityById("river").water < 32) logs.push("River City's wells felt the shrinking river.");
+    if (cityById("river").hardy || cityById("dry").hardy) {
+      if (index === 2 || index === 4) logs.push("Hardy crops needed less water and still fed families.");
+    }
+    if (help > 0) {
+      logs.push(help + " famil" + (help === 1 ? "y" : "ies") + " needed extra help this season to stay safe and fed.");
+      state.trust = clamp(state.trust - Math.min(4, help), 0, 100);
+    } else {
+      logs.push("Every family had enough water and food this season.");
+      state.trust = clamp(state.trust + 1, 0, 100);
+    }
+    if (state.powers.welcome) {
+      state.trust = clamp(state.trust + 1, 0, 100);
+      if (index === 3) logs.push("The Fair Welcome Plan kept sharing kind and careful.");
+    }
+    if (state.newcomersHelping && index >= 3) {
+      logs.push("Newcomers helped with skills — pottery, farming know-how, beads, and trade friends.");
+      state.trust = clamp(state.trust + 1, 0, 100);
+    }
+
+    // Seasonal top-up of bricks/workers after seasons 1-4 (indexes 0-3)
+    if (index <= 3) {
+      state.bricks = clamp(state.bricks + 2, 0, 12);
+      state.workers = clamp(state.workers + 2, 0, 12);
+      logs.push("A new season brings 2 more bricks and 2 more workers.");
+    }
+
+    state.helpNeededLast = help;
+    state.helpNeededMax = Math.max(state.helpNeededMax, help);
+    state.trust = clamp(state.trust, 0, 100);
+    return logs;
+  }
+
+  function sleep(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
+
+  function changeDir(start, end) {
+    var d = end - start;
+    if (d > 3) return "up";
+    if (d < -3) return "down";
+    return "same";
+  }
+  function dirWord(d) {
+    return d === "up" ? "Up" : d === "down" ? "Down" : "About the same";
+  }
+
+  async function playSeasons(fromIdx, toIdx, after) {
+    setPhase("simulate");
+    state.skipSim = false;
+    state.simSpeed = 1;
+    openOverlay("overlay-sim");
+    $("sim-log").innerHTML = "";
+    $("sim-title").textContent = fromIdx === toIdx ? "📅 A new season" : "📅 The dry seasons";
+    var allLogs = [];
+    var i, s, logs, unique, line, wait;
+
+    for (i = fromIdx; i <= toIdx; i++) {
+      if (state.skipSim) {
+        while (i <= toIdx) {
+          logs = [];
+          runSeason(i, logs);
+          logs.forEach(function (l) { allLogs.push({ season: i + 1, text: l }); });
+          i++;
+        }
+        break;
+      }
+      s = SEASONS[i];
+      $("sim-day-label").textContent = "Season " + (i + 1) + " of 6";
+      $("sim-weather").textContent = s.icon;
+      $("sim-weather-name").textContent = s.name;
+      $("sim-progress").style.width = ((i - fromIdx + 1) / (toIdx - fromIdx + 1)) * 100 + "%";
+      logs = [];
+      runSeason(i, logs);
+      unique = [];
+      logs.forEach(function (l) { if (unique.indexOf(l) < 0) unique.push(l); });
+      unique.forEach(function (l) {
+        allLogs.push({ season: i + 1, text: l });
+        line = document.createElement("div");
+        line.className = "log-line";
+        line.textContent = "Season " + (i + 1) + ": " + l;
+        $("sim-log").appendChild(line);
+        $("sim-log").scrollTop = $("sim-log").scrollHeight;
+      });
+      updateResourcesUI();
+      wait = state.simSpeed === 0.5 ? 2200 : 1100;
+      await sleep(wait);
+    }
+
+    state.season = toIdx + 1;
+    if (state.season > 5) {
+      state.rain = SEASONS[5].rain;
+      state.river = SEASONS[5].river;
+    } else {
+      state.rain = SEASONS[state.season].rain;
+      state.river = SEASONS[state.season].river;
+    }
+    state.seasonLogs = state.seasonLogs.concat(allLogs);
+    updateResourcesUI();
+    refreshNeeds();
+    renderActionCards();
+    if (after) after(allLogs);
+  }
+
+  function afterEarlySeason() {
+    setPhase("plan");
+    closeOverlays();
+    if (state.season === 3 && !state.migrated) {
+      setTimeout(function () { openMigration(); }, 400);
+      return;
+    }
+    toast("Season complete. Look at the rain and river — drier times are coming. Plan ahead!", 3000);
+    maybeOfferDispute(800);
+  }
+
+  function requestBeginSeason() {
+    if (state.phase !== "plan" && state.phase !== "explore") return;
+    if (state.talkedTo.size < 1 && state.inspected.size < 1) {
+      toast("Talk to a person or look at a city first — inventors begin by noticing.");
+      return;
+    }
+    if (state.season < 4) {
+      var idx = state.season;
+      playSeasons(idx, idx, afterEarlySeason);
+      return;
+    }
+    if (state.season === 4) {
+      openPredict();
+    }
+  }
+
+  function familiesToMoveCount() {
+    var river = cityById("river");
+    var risk = river.atRisk || 0;
+    if (risk <= 0) return 2;
+    return clamp(risk, 2, Math.max(2, river.families - 4));
+  }
+
+  function destRoom(id) {
+    var c = cityById(id);
+    return Math.max(0, c.capacity - c.families);
+  }
+
+  function destHint(id) {
+    var c = cityById(id);
+    var room = destRoom(id);
+    var bits = ["room for " + room + " more", "water " + Math.round(c.water), "food " + Math.round(c.food)];
+    if (id === "dry" && c.reservoirs >= 2) bits.push("reservoirs are strong");
+    if (id === "dry" && c.reservoirs < 2) bits.push("reservoirs are still small");
+    if (id === "coast" && state.flags.tradeRoute) bits.push("trade can bring food");
+    if (id === "coast" && !state.flags.tradeRoute) bits.push("trade route not open yet");
+    if (id === "east") bits.push("the most room");
+    return bits.join(" · ");
+  }
+
+  function openMigration() {
+    state.phase = "migrate";
+    $("phase-label").textContent = "A careful move";
+    var n = familiesToMoveCount();
+    var river = cityById("river");
+    var intro;
+    if ((river.atRisk || 0) <= 0) {
+      intro = "River City is doing all right for now, but some families would feel safer with a little more room and water as drier seasons come. Moving can be a careful, normal choice — not a failure. You may plan a small move, or help them stay.";
+    } else {
+      intro = "River City cannot support everyone as the river shrinks. " + n + " famil" + (n === 1 ? "y" : "ies") + " would be safer and better fed in a place with more room, water, or food. Moving is a careful, normal choice — not a failure.";
+    }
+    $("migrate-intro").textContent = intro;
+    $("migrate-status").innerHTML = state.cities.map(function (c) {
+      return '<div class="city-stat"><strong>' + c.name + "</strong>" + cityStatLine(c) + (c.id !== "river" ? "<br><span class='tiny-note'>" + destHint(c.id) + "</span>" : "") + "</div>";
+    }).join("");
+
+    var box = $("migrate-options");
+    box.innerHTML = "";
+    function addBtn(id, label, hint, handler, disabled) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-block migrate-choice " + (id === "stay" ? "btn-secondary" : "btn-good");
+      btn.id = "btn-migrate-" + id;
+      btn.disabled = !!disabled;
+      btn.textContent = label + (hint ? " — " + hint : "");
+      btn.addEventListener("click", handler);
+      box.appendChild(btn);
+    }
+    addBtn("east", "East Villages", destHint("east") || "has the most room", function () { resolveMigration([{ to: "east", n: n }]); }, destRoom("east") < n);
+    addBtn("dry", "Dry-Land City", destHint("dry"), function () { resolveMigration([{ to: "dry", n: n }]); }, destRoom("dry") < n);
+    addBtn("coast", "Coastal Trade City", destHint("coast"), function () { resolveMigration([{ to: "coast", n: n }]); }, destRoom("coast") < n);
+    var nEast = Math.ceil(n / 2);
+    var nOther = n - nEast;
+    var splitOk = destRoom("east") >= nEast && destRoom("dry") >= nOther;
+    addBtn("split", "Split them between East Villages and Dry-Land City", nEast + " east, " + nOther + " dry-land", function () {
+      resolveMigration([{ to: "east", n: nEast }, { to: "dry", n: nOther }]);
+    }, !splitOk);
+    addBtn("stay", "Help them stay in River City and share what they have", "may be harder if water stays low", function () {
+      resolveMigration([]);
+    }, false);
+    openOverlay("overlay-migrate");
+  }
+
+  function placeAsha(cityId) {
+    var asha = personById("asha");
+    var pos = ASHA_POS[cityId] || ASHA_POS.east;
+    asha.cityId = cityId;
+    asha.x = pos[0];
+    asha.y = pos[1];
+    state.ashaVisible = true;
+    var welcome = state.disputes.find(function (d) { return d.id === "welcome"; });
+    if (welcome) {
+      var hostId = cityId === "dry" ? "noor" : cityId === "coast" ? "lila" : "priya";
+      var host = personById(hostId);
+      welcome.aId = hostId;
+      welcome.bId = "asha";
+      welcome.intro = host.name + " lives in " + cityById(cityId).name + ", where moving families have arrived. Hosts worry about sharing wells and fields. Newcomers bring skills that can help.";
+    }
+  }
+
+  function resolveMigration(plan) {
+    var river = cityById("river");
+    var moved = 0;
+    plan.forEach(function (p) {
+      var dest = cityById(p.to);
+      var n = Math.min(p.n, river.families - 1, destRoom(p.to));
+      if (n <= 0) return;
+      river.families -= n;
+      dest.families += n;
+      dest.water = clamp(dest.water - n * 1.5, 8, 100);
+      dest.food = clamp(dest.food - n * 1.2, 8, 100);
+      river.water = clamp(river.water + n * 1.2, 0, 100);
+      river.food = clamp(river.food + n * 1.0, 0, 100);
+      moved += n;
+      state.movePlan.push({ to: p.to, n: n });
+    });
+    state.familiesMoved = moved;
+    state.migrated = true;
+    if (moved > 0) {
+      var main = state.movePlan[0].to;
+      placeAsha(main);
+      if (state.powers.welcome) {
+        state.trust = clamp(state.trust + 4, 0, 100);
+        toast("A careful move is under way. The Fair Welcome Plan helps the new start feel kinder.", 3200);
+      } else {
+        toast("A careful move is under way. " + moved + " families have a new home. Now comes the welcome.", 3200);
+      }
+    } else {
+      toast("Families will stay in River City and share what they have. Later dry seasons may be harder there.", 3200);
+    }
+    updateResourcesUI();
+    refreshNeeds();
+    closeOverlays();
+    setPhase("plan");
+    if (moved > 0) {
+      setTimeout(function () {
+        var welcome = state.disputes.find(function (d) { return d.id === "welcome" && !d.resolved; });
+        if (welcome && !anyOverlayOpen()) openDispute(welcome);
+      }, 900);
+    } else {
+      maybeOfferDispute(600);
+    }
+  }
+
+  function openPredict() {
+    state.guesses = { water: null, food: null, trust: null };
+    var pct = listeningPct();
+    var heard = Math.min(state.talkedTo.size, PEOPLE_DEFS.length);
+    var hint;
+    if (pct >= 100) hint = "You have heard everyone (or held a Council Meeting). Your forecast can be quite sure.";
+    else if (heard === 0) hint = "You haven't talked to people yet, so this forecast is a wild guess — you can still begin.";
+    else hint = "You've heard " + heard + " of " + PEOPLE_DEFS.length + " city voices. More listening would make this guess surer.";
+    $("predict-listen").innerHTML = "<strong>How sure is our forecast? " + pct + "%</strong><div class='lmeter'><span style='width:" + pct + "%'></span></div><p style='margin:4px 0 0'>" + hint + "</p>";
+    var metrics = [
+      { key: "water", label: "💧 River City water" },
+      { key: "food", label: "🌾 Food stores" },
+      { key: "trust", label: "🤝 Trust" }
+    ];
+    var wrap = $("predict-guesses");
+    wrap.innerHTML = "";
+    metrics.forEach(function (m) {
+      var row = document.createElement("div");
+      row.className = "guess-row";
+      row.setAttribute("data-metric", m.key);
+      var lab = document.createElement("div");
+      lab.className = "glabel";
+      lab.style.width = "150px";
+      lab.textContent = m.label;
+      row.appendChild(lab);
+      var chips = document.createElement("div");
+      chips.className = "chips";
+      ["up", "same", "down"].forEach(function (d) {
+        var c = document.createElement("button");
+        c.type = "button";
+        c.className = "chip";
+        c.setAttribute("data-guess", d);
+        c.textContent = dirWord(d);
+        c.addEventListener("click", function () {
+          state.guesses[m.key] = d;
+          chips.querySelectorAll(".chip").forEach(function (x) { x.classList.remove("picked"); });
+          c.classList.add("picked");
+          var ready = ["water", "food", "trust"].every(function (k) { return state.guesses[k]; });
+          $("btn-predict-run").disabled = !ready;
+        });
+        chips.appendChild(c);
+      });
+      row.appendChild(chips);
+      wrap.appendChild(row);
+    });
+    $("btn-predict-run").disabled = true;
+    setPhase("predict");
+    openOverlay("overlay-predict");
+  }
+
+  function startDrySeasons() {
+    state.predictSnap = {
+      water: cityById("river").water,
+      food: avgFood(),
+      trust: state.trust
+    };
+    playSeasons(4, 5, function (logs) {
+      showReport(logs);
+    });
+  }
+
+  function guessFeedback(label, guess, actual, startVal, endVal) {
+    var ok = guess === actual;
+    var delta = Math.round(endVal - startVal);
+    var move = actual === "same" ? "stayed about the same" : (actual === "up" ? "went up" : "went down");
+    var msg;
+    if (ok) {
+      msg = "You guessed " + label + " would go " + dirWord(guess).toLowerCase() + " — and it " + move + ". Nice thinking!";
+    } else {
+      msg = "You guessed " + label + " would go " + dirWord(guess).toLowerCase() + ", but it " + move + " (" + (delta >= 0 ? "+" : "") + delta + "). That's how planners learn!";
+    }
+    return { ok: ok, msg: msg };
+  }
+
+  function tradeoffSentence() {
+    var river = cityById("river");
+    var dry = cityById("dry");
+    var east = cityById("east");
+    var coast = cityById("coast");
+    if (river.water < 35 && east.food >= 50 && state.familiesMoved > 0) {
+      return "River City's wells ran low, but families who moved found enough to eat in their new home.";
+    }
+    if (dry.food >= 55 && river.water < 32) {
+      return "Dry-Land City kept food coming, but River City felt the shrinking river most.";
+    }
+    if (state.flags.tradeRoute && coast.food >= 55 && river.water < 35) {
+      return "Trade boats brought food to the coast, but the inland river still ran low.";
+    }
+    if (river.water >= 45 && dry.water < 30) {
+      return "River City kept more water, but Dry-Land City stayed thirsty.";
+    }
+    if (state.familiesMoved > 0 && state.newcomersHelping) {
+      return "Moving families were welcomed as helpers, and their skills strengthened the cities.";
+    }
+    if (state.helpNeededLast > 0 && state.flags.tradeRoute) {
+      return "Trade helped some tables, but a few families still needed extra help.";
+    }
+    return "";
+  }
+
+  function legacySentence() {
+    var bits = [];
+    var drains = state.cities.filter(function (c) { return c.drains; }).map(function (c) { return c.name; });
+    var res = state.cities.reduce(function (s, c) { return s + c.reservoirs; }, 0);
+    var grain = state.cities.filter(function (c) { return c.grain; }).map(function (c) { return c.name; });
+    var hardy = state.cities.filter(function (c) { return c.hardy; }).map(function (c) { return c.name; });
+    var wells = state.cities.reduce(function (s, c) { return s + Math.max(0, c.wells - (c.id === "river" ? 2 : c.id === "east" || c.id === "coast" ? 1 : 0)); }, 0);
+    if (drains.length) bits.push("repaired drains in " + drains.join(" and "));
+    if (res > 1) bits.push(res + " reservoirs to catch rare rain");
+    else if (res === 1) bits.push("a reservoir to catch rare rain");
+    if (wells > 0) bits.push(wells + " new well" + (wells > 1 ? "s" : ""));
+    if (grain.length) bits.push("grain stores in " + grain.join(" and "));
+    if (hardy.length) bits.push("hardy crops in " + hardy.join(" and "));
+    if (state.flags.tradeRoute) bits.push("an open trade route at the dock");
+    if (state.flags.shareWater) bits.push("a water-sharing agreement");
+    if (state.skills.length) bits.push("newcomer skills: " + state.skills.join(", "));
+    if (state.familiesMoved > 0) bits.push("new homes for " + state.familiesMoved + " moving families");
+    if (!bits.length) return "The cities left behind the plans they began with, and the lessons of a drier season.";
+    return "The cities left behind " + bits.join("; ") + ".";
+  }
+
+  function friendlyList(names) {
+    if (!names || !names.length) return "";
+    if (names.length === 1) return names[0];
+    if (names.length === 2) return names[0] + " and " + names[1];
+    return names.slice(0, -1).join(", ") + ", and " + names[names.length - 1];
+  }
+
+  function moveFairnessNote() {
+    var welcome = state.disputes.find(function (d) { return d.id === "welcome"; });
+    if (state.familiesMoved <= 0) return "No families moved. Those who stayed shared River City's remaining water and food.";
+    if (!welcome || !welcome.resolved) return state.familiesMoved + " families moved to a new home. The welcome was not fully settled.";
+    if (welcome.resolvedKind === "winwin") return state.familiesMoved + " families moved, and the welcome was fair — both hosts and newcomers were heard.";
+    if (welcome.resolvedKind === "winner") return state.familiesMoved + " families moved. One side was favored in the welcome, so fairness was only partial.";
+    return state.familiesMoved + " families moved, but the welcome disagreement was left open, and Trust slipped.";
+  }
+
+  function showReport(allLogs) {
+    setPhase("report");
+    var river = cityById("river");
+    var total = totalFamilies();
+    var helped = state.helpNeededLast;
+    var safe = Math.max(0, total - helped);
+    var safePct = safe / total;
+    var fairMove = moveFairnessNote();
+    var builtCount = state.actionLog.length;
+    var settledFair = state.disputes.some(function (d) { return d.resolvedKind === "winwin"; });
+    var badge = safePct >= 0.7 && state.trust >= 52 && builtCount >= 2 && (settledFair || (state.familiesMoved > 0 && state.newcomersHelping) || state.trust >= 70);
+
+    var story;
+    if (badge) {
+      story = "Thoughtful work. After six seasons, most families were safe and fed. You watched the rains fade, planned ahead, and treated moving as a careful human choice.";
+    } else if (safePct >= 0.6) {
+      story = "The cities made it through a drier time with care. Some families needed extra help. That is how planners learn — what would you try next?";
+    } else {
+      story = "These seasons were hard, and they taught a lot. Some families needed extra help. Inventors and helpers learn by trying a new plan.";
+    }
+    story += " " + fairMove;
+    $("report-story").textContent = story;
+
+    var trade = tradeoffSentence();
+    var tradeEl = $("report-tradeoff");
+    if (trade) {
+      tradeEl.style.display = "block";
+      tradeEl.textContent = "👀 Whole region: " + trade;
+    } else {
+      tradeEl.style.display = "none";
+      tradeEl.textContent = "";
+    }
+
+    var skipped = PEOPLE_DEFS.filter(function (v) { return !state.talkedTo.has(v.id); }).map(function (v) { return v.name; });
+    var listenNote = "";
+    if (state.powers.meeting && skipped.length) {
+      listenNote = "A Council Meeting helped you know everyone's needs, even people you didn't visit one-on-one.";
+    } else if (skipped.length) {
+      listenNote = "You didn't talk to " + friendlyList(skipped) + ", so some surprises were harder to see coming. Listening makes the forecast surer.";
+    } else {
+      listenNote = "You listened to every city voice, so your forecast had a fair chance to be sure.";
+    }
+    $("report-listen").textContent = listenNote;
+
+    var snap = state.predictSnap || { water: river.water, food: avgFood(), trust: state.trust };
+    var keys = [
+      { key: "water", label: "River City water", start: snap.water, end: river.water },
+      { key: "food", label: "Food stores", start: snap.food, end: avgFood() },
+      { key: "trust", label: "Trust", start: snap.trust, end: state.trust }
+    ];
+    var gWrap = $("report-guesses");
+    gWrap.innerHTML = "";
+    keys.forEach(function (k) {
+      var actual = changeDir(k.start, k.end);
+      var guess = state.guesses[k.key] || "same";
+      var fb = guessFeedback(k.label, guess, actual, k.start, k.end);
+      var div = document.createElement("div");
+      div.className = "guess-result " + (fb.ok ? "correct" : "miss");
+      div.textContent = (fb.ok ? "✓ " : "△ ") + fb.msg + "  (start " + Math.round(k.start) + " → " + Math.round(k.end) + ")";
+      gWrap.appendChild(div);
+    });
+
+    var metrics = [
+      { label: "Families safe and fed (last season)", val: safePct * 100, color: "#4caf70", display: safe + " of " + total },
+      { label: "River City water", val: river.water, color: "#4a9fd8" },
+      { label: "Food stores", val: avgFood(), color: "#8bc98a" },
+      { label: "Trust", val: state.trust, color: "#9b8ad8" },
+      { label: "Families who moved", val: total ? (state.familiesMoved / total) * 100 : 0, color: "#e8a838", display: String(state.familiesMoved) }
+    ];
+    $("report-metrics").innerHTML = metrics.map(function (m) {
+      var shown = m.display != null ? m.display : Math.round(m.val);
+      return '<div class="metric"><span>' + m.label + '</span><div class="meter"><span style="width:' + clamp(m.val, 0, 100) + '%;background:' + m.color + '"></span></div><strong>' + shown + "</strong></div>";
+    }).join("");
+
+    $("report-legacy").textContent = legacySentence() + " " + fairMove;
+    $("report-badge").style.display = badge ? "block" : "none";
+
+    renderChips("rq1", ["Watching the rain and river", "Reservoirs or wells", "Hardy crops or grain stores", "A fair agreement", "A careful move", "Welcoming newcomers as helpers", "Trade from the dock"]);
+    renderChips("rq2", ["River City", "Dry-Land City", "The Coastal Trade City", "The East Villages", "Moving families", "Everyone fairly", "Not sure yet"]);
+    $("rq3").value = "";
+
+    state.lastReport = {
+      safe: safe,
+      total: total,
+      helpNeededLast: helped,
+      helpNeededMax: state.helpNeededMax,
+      familiesMoved: state.familiesMoved,
+      movePlan: state.movePlan.slice(),
+      fairness: fairMove,
+      trust: Math.round(state.trust),
+      water: Math.round(river.water),
+      food: Math.round(avgFood()),
+      guesses: Object.assign({}, state.guesses),
+      tradeoff: trade,
+      listenNote: listenNote,
+      legacy: legacySentence(),
+      actions: state.actionLog.map(function (a) {
+        var b = ACTIONS.find(function (x) { return x.id === a.id; });
+        return (b ? b.name : a.id) + (a.cityId ? " (" + cityById(a.cityId).name + ")" : "");
+      }),
+      disputes: state.disputes.map(function (d) { return d.title + ": " + (d.resolvedLabel || "unresolved"); }),
+      powers: Object.keys(state.powers).filter(function (k) { return state.powers[k]; }),
+      skills: state.skills.slice(),
+      badge: badge,
+      logs: (allLogs || state.seasonLogs).slice(-12),
+      cities: state.cities.map(function (c) { return c.name + " — " + cityStatLine(c); })
+    };
+    try { localStorage.setItem("indus_last_report", JSON.stringify(state.lastReport)); } catch (err) {}
+    updateParentRecord();
+    openOverlay("overlay-report");
+  }
+
+  function renderChips(id, options) {
+    var el = $(id);
+    el.innerHTML = "";
+    options.forEach(function (opt) {
+      var c = document.createElement("button");
+      c.type = "button";
+      c.className = "chip";
+      c.textContent = opt;
+      c.addEventListener("click", function () {
+        el.querySelectorAll(".chip").forEach(function (x) { x.classList.remove("picked"); });
+        c.classList.add("picked");
+        if (id === "rq1") state.reflection.q1 = opt;
+        if (id === "rq2") state.reflection.q2 = opt;
+      });
+      el.appendChild(c);
+    });
+  }
+
+  function updateParentRecord() {
+    var rec = state.lastReport;
+    if (!rec) {
+      $("parent-record").textContent = "No seasons have been run yet. After the report, outcomes and reflections appear here.";
+      return;
+    }
+    state.reflection.q3 = ($("rq3") && $("rq3").value) || state.reflection.q3 || "";
+    $("parent-record").textContent = [
+      "Cities: " + rec.cities.join("; "),
+      "Plans made: " + (rec.actions.join(", ") || "none"),
+      "Disagreements: " + rec.disputes.join("; "),
+      "Council powers used: " + ((rec.powers && rec.powers.length) ? rec.powers.join(", ") : "none"),
+      "Families safe and fed (last season): " + rec.safe + " of " + rec.total,
+      "Families who moved: " + rec.familiesMoved + " — " + rec.fairness,
+      "Outcomes — River City water: " + rec.water + ", Food: " + rec.food + ", Trust: " + rec.trust,
+      "Guesses: " + (rec.guesses ? ("Water " + rec.guesses.water + ", Food " + rec.guesses.food + ", Trust " + rec.guesses.trust) : "—"),
+      "Whole-region note: " + (rec.tradeoff || "none this run"),
+      "Listening: " + (rec.listenNote || "—"),
+      "Left behind: " + rec.legacy,
+      "Newcomer skills: " + ((rec.skills && rec.skills.length) ? rec.skills.join(", ") : "none"),
+      "Badge earned: " + (rec.badge ? "Yes — Indus Council Helper" : "Not yet"),
+      "Reflection — Worked well: " + (state.reflection.q1 || "—"),
+      "Who benefited: " + (state.reflection.q2 || "—"),
+      "Try differently: " + (state.reflection.q3 || "—"),
+      "",
+      "Note: This is a thinking tool, not a historical forecast. Characters and events are fictional."
+    ].join("\n");
+  }
+
+  function resetAll() {
+    initGame();
+    updateResourcesUI();
+    renderActionCards();
+    refreshNeeds();
+    $("build-mode-label").textContent = "Select a plan, then click a city";
+  }
+
+  $("btn-start").addEventListener("click", function () {
+    closeOverlays();
+    setPhase("explore");
+    toast("Click people and cities — River City, Dry-Land City, the Coastal Trade City, and the East Villages!", 2800);
+  });
+  $("btn-dlg-close").addEventListener("click", function () {
+    closeOverlays();
+    maybeOfferDispute(450);
+  });
+  $("btn-place-close").addEventListener("click", function () {
+    closeOverlays();
+    maybeOfferDispute(450);
+  });
+  $("btn-needs").addEventListener("click", function () { refreshNeeds(); openOverlay("overlay-needs"); });
+  $("btn-needs-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
+  $("btn-how").addEventListener("click", function () { openOverlay("overlay-how"); });
+  $("btn-how-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
+  $("btn-facts").addEventListener("click", function () { openOverlay("overlay-facts"); });
+  $("btn-facts-close").addEventListener("click", function () { closeOverlays(); });
+  $("btn-parent").addEventListener("click", function () { updateParentRecord(); openOverlay("overlay-parent"); });
+  $("btn-parent-close").addEventListener("click", function () { closeOverlays(); });
+  $("btn-leader").addEventListener("click", function () {
+    if (state.phase === "intro" || state.phase === "simulate" || state.phase === "end") return;
+    renderLeaderPanel();
+    openOverlay("overlay-leader");
+  });
+  $("btn-leader-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
+  $("btn-meeting-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
+  $("btn-power-meeting").setAttribute("data-label", "Hold a Council Meeting");
+  $("btn-power-hands").setAttribute("data-label", "Ask for Extra Hands");
+  $("btn-power-welcome").setAttribute("data-label", "Start a Fair Welcome Plan");
+  $("btn-power-meeting").addEventListener("click", usePowerMeeting);
+  $("btn-power-hands").addEventListener("click", usePowerHands);
+  $("btn-power-welcome").addEventListener("click", usePowerWelcome);
+
+  $("btn-remove").addEventListener("click", function () {
+    if (state.phase !== "plan" && state.phase !== "explore") return;
+    undoLast();
+  });
+  $("btn-run").addEventListener("click", function () { requestBeginSeason(); });
+  $("btn-predict-back").addEventListener("click", function () {
+    setPhase("plan");
+    closeOverlays();
+  });
+  $("btn-predict-run").addEventListener("click", function () {
+    if (!["water", "food", "trust"].every(function (k) { return state.guesses[k]; })) return;
+    startDrySeasons();
+  });
+  $("btn-sim-slow").addEventListener("click", function () {
+    state.simSpeed = state.simSpeed === 0.5 ? 1 : 0.5;
+    toast(state.simSpeed === 0.5 ? "Slow motion" : "Normal speed");
+  });
+  $("btn-sim-skip").addEventListener("click", function () { state.skipSim = true; });
+
+  $("btn-restart").addEventListener("click", function () {
+    resetAll();
+    closeOverlays();
+    setPhase("intro");
+    openOverlay("overlay-intro");
+  });
+  $("btn-end-day").addEventListener("click", function () {
+    state.reflection.q3 = $("rq3").value;
+    updateParentRecord();
+    var badge = state.lastReport && state.lastReport.badge;
+    $("end-msg").textContent = badge
+      ? "The cities are stronger because you planned ahead and treated moving families with care. Rest well, Council Helper."
+      : "The cities are resting for today. Come back another time to try a new plan — every helper learns by trying again.";
+    setPhase("end");
+    openOverlay("overlay-end");
+  });
+  $("btn-finish").addEventListener("click", function () {
+    $("end-msg").textContent = "The cities are resting for today. Come back another time to try a new plan.";
+    setPhase("end");
+    openOverlay("overlay-end");
+  });
+  $("btn-play-again").addEventListener("click", function () {
+    resetAll();
+    setPhase("intro");
+    openOverlay("overlay-intro");
+  });
+  $("rq3").addEventListener("change", function () {
+    state.reflection.q3 = $("rq3").value;
+    updateParentRecord();
+  });
+
+  canvas.addEventListener("pointerdown", onCanvasClick);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      var blocking = ["overlay-intro", "overlay-sim", "overlay-report", "overlay-end", "overlay-predict", "overlay-dispute", "overlay-migrate"];
+      var open = Array.prototype.slice.call(document.querySelectorAll(".overlay.open"));
+      if (open.length && blocking.indexOf(open[0].id) < 0) closeOverlays();
+    }
+  });
+
+  window.INDUS = {
+    version: INDUS_VERSION,
+    getPeople: function () {
+      return visiblePeople().map(function (v) {
+        return { id: v.id, name: v.name, x: v.x, y: v.y, cityId: v.cityId };
+      });
+    },
+    getCities: function () {
+      return state.cities.map(function (c) {
+        return {
+          id: c.id, name: c.name, cx: c.cx, cy: c.cy, r: c.r,
+          families: c.families, capacity: c.capacity, water: c.water, food: c.food,
+          wells: c.wells, reservoirs: c.reservoirs, grain: c.grain, hardy: c.hardy, drains: c.drains,
+          atRisk: c.atRisk
+        };
+      });
+    },
+    getState: function () {
+      return {
+        phase: state.phase,
+        season: state.season,
+        bricks: state.bricks,
+        workers: state.workers,
+        trust: state.trust,
+        trustPoints: state.trustPoints,
+        talkedTo: Array.from(state.talkedTo),
+        powers: Object.assign({}, state.powers),
+        listening: listeningPct(),
+        flags: Object.assign({}, state.flags),
+        disputes: state.disputes.map(function (d) { return { id: d.id, title: d.title, resolved: d.resolved, resolvedKind: d.resolvedKind || null }; }),
+        guesses: Object.assign({}, state.guesses),
+        migrated: state.migrated,
+        familiesMoved: state.familiesMoved,
+        ashaVisible: state.ashaVisible,
+        newcomersHelping: state.newcomersHelping,
+        actions: state.actionLog.length,
+        rain: state.rain,
+        river: state.river
+      };
+    }
+  };
+
+  initGame();
+  updateResourcesUI();
+  renderActionCards();
+  refreshNeeds();
+  setPhase("intro");
+  loop();
+  console.log("Riverbend: Indus Valley ready", INDUS_VERSION);
+})();
+
+</script>
+
+</body>
+</html>

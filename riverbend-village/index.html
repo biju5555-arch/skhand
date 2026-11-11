@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Riverbend Village</title>
+<link rel="icon" href="data:,">
+<!-- riverbend-v2-geography-trust -->
 <style>
 :root {
   --sky: #7ec8e8; --grass: #5aad4a; --grass-dark: #4a943c; --dirt: #8b6a45;
@@ -49,6 +51,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   box-shadow: none;
 }
 .btn-sm { padding: 8px 14px; font-size: 13px; min-height: 40px; }
+.btn-block { width: 100%; text-align: left; margin-bottom: 8px; }
 #app {
   display: grid; grid-template-rows: auto 1fr auto; height: 100%;
   max-width: 1100px; margin: 0 auto; position: relative;
@@ -66,6 +69,12 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 }
 .res .ico { font-size: 16px; }
 .res label { color: var(--ink-soft); font-weight: 600; font-size: 11px; }
+#res-listen { min-width: 132px; }
+#listen-bar {
+  width: 64px; height: 10px; background: #d8d0c0; border: 2px solid #a09080;
+  border-radius: 2px; overflow: hidden;
+}
+#listen-bar > span { display: block; height: 100%; background: #5a9ad0; width: 0%; transition: width 0.3s; }
 #phase-label {
   margin-left: auto; background: var(--purple); color: #fff;
   padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 800;
@@ -124,6 +133,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   box-shadow: 0 4px 0 #a09080; background: var(--panel);
   border: 3px solid var(--panel-border); font-size: 13px; padding: 10px 12px;
   border-radius: 4px; min-height: 44px;
+}
+#btn-leader.has-news {
+  background: #fff4d0; border-color: #c48820;
+  box-shadow: 0 4px 0 #c48820;
 }
 .overlay {
   position: absolute; inset: 0; background: rgba(30,40,50,0.5); z-index: 40;
@@ -203,8 +216,46 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   white-space: pre-wrap; max-height: 200px; overflow-y: auto;
   border: 2px solid #c4b090;
 }
+.guess-row {
+  display: flex; align-items: center; gap: 8px; margin: 10px 0; flex-wrap: wrap;
+}
+.guess-row .glabel { width: 72px; font-weight: 800; font-size: 14px; }
+.listen-box {
+  background: #e8f4fa; border: 3px solid #a0c8e0; border-radius: 4px;
+  padding: 10px 12px; margin: 8px 0 12px; font-size: 13px;
+}
+.listen-box .lmeter { height: 14px; background: #d8d0c0; border: 2px solid #a09080; border-radius: 2px; overflow: hidden; margin: 6px 0; }
+.listen-box .lmeter > span { display: block; height: 100%; background: #5a9ad0; }
+.dispute-side {
+  background: #f0f6fa; border: 3px solid #b0c8d8; border-radius: 4px;
+  padding: 10px 12px; margin: 8px 0;
+}
+.dispute-side strong { display: block; margin-bottom: 4px; }
+.power-card {
+  border: 3px solid var(--panel-border); border-radius: 4px;
+  padding: 12px; margin: 8px 0; background: #fff;
+}
+.power-card.owned { border-color: var(--good); background: #e8f8e8; }
+.power-card h4 { margin: 0 0 4px; font-size: 15px; }
+.power-card p { font-size: 13px; margin-bottom: 8px; }
+.tradeoff {
+  background: #fff4d8; border: 3px solid #e8a838; border-radius: 4px;
+  padding: 10px 12px; margin: 10px 0; font-weight: 700; font-size: 14px;
+}
+.guess-result {
+  font-size: 13px; margin: 6px 0; padding: 8px 10px; background: #efe6d4;
+  border-radius: 4px; font-weight: 600;
+}
+.guess-result.correct { background: #e0f4e8; border-left: 4px solid var(--good); }
+.guess-result.miss { background: #f8eee0; border-left: 4px solid var(--warn); }
+.meet-row {
+  display: flex; gap: 10px; align-items: flex-start; margin: 8px 0;
+  padding: 8px; background: #f4eee0; border-radius: 4px; border: 2px solid #d4c4a8;
+}
+.meet-row .ma { width: 44px; height: 44px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 2px solid var(--panel-border); flex-shrink: 0; }
 @media (max-width: 600px) {
   .res label { display: none; }
+  #res-listen label { display: none; }
   .build-card { width: 104px; }
   #side-btns button { font-size: 12px; padding: 8px 10px; }
   .panel { padding: 14px; }
@@ -222,7 +273,13 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     <div class="res" title="Happiness"><span class="ico">😊</span><label>Happy</label><span class="val" id="r-happy">55</span></div>
     <div class="res" title="Health"><span class="ico">💚</span><label>Health</label><span class="val" id="r-health">70</span></div>
     <div class="res" title="Farm health"><span class="ico">🌾</span><label>Farm</label><span class="val" id="r-farm">45</span></div>
-    <div class="res" title="Trust and fairness"><span class="ico">🤝</span><label>Trust</label><span class="val" id="r-trust">60</span></div>
+    <div class="res" title="Trust and fairness in the village"><span class="ico">🤝</span><label>Trust</label><span class="val" id="r-trust">60</span></div>
+    <div class="res" title="Trust Points earned by settling disagreements fairly"><span class="ico">🌟</span><label>Trust Pts</label><span class="val" id="r-trustpts">0</span></div>
+    <div class="res" id="res-listen" title="How sure is our forecast? Listening to neighbors fills this meter.">
+      <span class="ico">👂</span><label>Listening</label>
+      <div id="listen-bar" aria-hidden="true"><span id="listen-fill"></span></div>
+      <span class="val" id="r-listen">0%</span>
+    </div>
     <span id="phase-label">Welcome</span>
   </header>
 
@@ -232,6 +289,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     </div>
     <div id="side-btns">
       <button type="button" id="btn-needs" title="Village Needs board">📋 Needs</button>
+      <button type="button" id="btn-leader" title="Trust points and leader powers">🌟 Leader</button>
       <button type="button" id="btn-how" title="How the Village Works">❓ How it works</button>
       <button type="button" id="btn-parent" title="For parents and educators">👨‍👩‍👧 Parent</button>
       <button type="button" id="btn-finish" title="Finish for today">🌙 Finish</button>
@@ -245,7 +303,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         <p>It is a dry season. The well is low. Neighbors worry about water for drinking, cooking, and the farm.</p>
         <p>You are a young community inventor. Your challenge:</p>
         <p><strong>Help Riverbend Village get enough clean water while keeping the community healthy, fair, and happy.</strong></p>
-        <p>💡 Great inventors begin by noticing what people need. Explore the village, listen carefully, then build a solution.</p>
+        <p>💡 Great inventors begin by noticing what people need. Look at where each family lives — the land shapes how they think about water. Listen carefully. Neighbors may disagree, and a fair fix earns Trust.</p>
         <p style="font-size:12px;color:var(--ink-soft)">Villagers are friendly fictional characters in a learning game — not real people.</p>
         <div class="actions">
           <button type="button" class="btn-primary" id="btn-start">Start Exploring ▶</button>
@@ -285,6 +343,9 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         <h2>❓ How the Village Works</h2>
         <p>Each simulated day, weather changes and the village uses water.</p>
         <ul>
+          <li>🗺️ People who live in different places need different things. Read the land: Dry Hill, Riverside, Low Fields, Near the Well, and Downstream.</li>
+          <li>👂 A listening meter shows how sure your forecast is. Talking to neighbors reveals their habits.</li>
+          <li>⚖️ If neighbors disagree, hear both sides and choose a fair fix. Fair fixes earn Trust Points and leader powers.</li>
           <li>🏠 Homes and school need drinking water every day.</li>
           <li>🌾 The farm needs water to grow food.</li>
           <li>🌧️ Rain collectors work best on rainy days.</li>
@@ -294,6 +355,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
           <li>💧 Drip irrigation helps the farm use less water (not for drinking).</li>
           <li>🔧 Repair benches help machines stay working.</li>
           <li>🤝 Fair sharing improves Trust. Unfair sharing lowers it.</li>
+          <li>🔮 Before you run 7 days, guess what will happen — then check your guess on the report.</li>
         </ul>
         <p>Click people and places to learn. Place objects on glowing build plots. Connect a source to a tank or farm when asked. Then Run 7 Days!</p>
         <div class="actions">
@@ -308,7 +370,15 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         <h3>Today's challenge</h3>
         <p>Water systems and community tradeoffs — observing needs, building, testing, and improving.</p>
         <h3>Skills practiced</h3>
-        <p>Observation · Experimentation · Systems thinking · Fairness · Iteration</p>
+        <p>Observation · Experimentation · Systems thinking · Perspective-taking · Fair conflict resolution · Hypothesis testing · Fairness · Iteration</p>
+        <p>Kids connect place, people, and choices: where someone lives shapes how they think about water. They hear both sides of a disagreement, try a fair fix, then guess what a 7-day test will do before they run it.</p>
+        <h3>Discussion prompts</h3>
+        <ul>
+          <li>How does where someone lives change what they need?</li>
+          <li>What made a disagreement feel fair to both sides?</li>
+          <li>What did you guess would happen, and why?</li>
+          <li>Did one part of the village do well while another had a harder week?</li>
+        </ul>
         <h3>Important</h3>
         <p>Villagers are fictional characters in a learning game. There are no ads, purchases, or multiplayer.</p>
         <h3>Child's design record</h3>
@@ -325,6 +395,68 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         <p id="place-desc"></p>
         <div class="actions">
           <button type="button" class="btn-secondary" id="btn-place-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-leader" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>🌟 Trust &amp; Leader Powers</h2>
+        <p>Settle disagreements fairly to earn <strong>Trust Points</strong>. Spend them on powers that help the village.</p>
+        <p><strong>Trust Points: <span id="leader-pts">0</span></strong> · Village Trust: <span id="leader-trust">60</span></p>
+        <div id="leader-disputes"></div>
+        <h3>Leader powers</h3>
+        <div class="power-card" id="power-meeting">
+          <h4>📣 Village Meeting · 2 points</h4>
+          <p>Call everyone together. You learn each neighbor's home, habit, and hidden need — and your forecast gets more sure.</p>
+          <button type="button" class="btn-primary btn-sm" id="btn-power-meeting">Hold a Village Meeting</button>
+        </div>
+        <div class="power-card" id="power-hands">
+          <h4>🛠️ Helping Hands · 2 points</h4>
+          <p>Neighbors pitch in. You get <strong>+3 materials</strong> to build with.</p>
+          <button type="button" class="btn-primary btn-sm" id="btn-power-hands">Ask for Helping Hands</button>
+        </div>
+        <div class="power-card" id="power-sharing">
+          <h4>📅 Sharing Plan · 3 points</h4>
+          <p>The village agrees to a water schedule. During the 7-day test, less water is wasted and sharing stays fairer.</p>
+          <button type="button" class="btn-primary btn-sm" id="btn-power-sharing">Start a Sharing Plan</button>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btn-leader-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-meeting" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>📣 Village Meeting</h2>
+        <p>Everyone shares where they live and what they need.</p>
+        <div id="meeting-list"></div>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="btn-meeting-close">Thanks, everyone!</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-dispute" class="overlay">
+      <div class="panel" role="dialog">
+        <h2 id="dispute-title">A disagreement</h2>
+        <p id="dispute-intro">Two neighbors see the water problem differently. Hear both sides, then choose a fix.</p>
+        <div id="dispute-sides"></div>
+        <h3>What will you do?</h3>
+        <div id="dispute-options"></div>
+      </div>
+    </div>
+
+    <div id="overlay-predict" class="overlay">
+      <div class="panel" role="dialog">
+        <h2>🔮 What's your guess?</h2>
+        <p>Before we run 7 days, guess what will happen to each of these.</p>
+        <div id="predict-listen" class="listen-box"></div>
+        <div id="predict-guesses"></div>
+        <div class="actions">
+          <button type="button" class="btn-good" id="btn-predict-run" disabled>▶ Run 7 Days</button>
+          <button type="button" class="btn-secondary" id="btn-predict-back">Go back</button>
         </div>
       </div>
     </div>
@@ -350,6 +482,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       <div class="panel" role="dialog" style="max-width:560px">
         <h2>📊 Village Report Card</h2>
         <p id="report-story"></p>
+        <div id="report-tradeoff" class="tradeoff" style="display:none"></div>
+        <div id="report-listen" style="font-size:13px;margin:8px 0;color:var(--ink-soft)"></div>
+        <h3>Your guesses</h3>
+        <div id="report-guesses"></div>
         <div id="report-metrics"></div>
         <div id="report-badge" style="display:none" class="badge-big">
           <div class="star">🏅</div>
@@ -408,6 +544,8 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 (function () {
   "use strict";
 
+  var RIVERBEND_VERSION = "geography-trust-v2";
+
   const WEATHER = [
     { day: 1, type: "dry", icon: "☀️", name: "Sunny & dry" },
     { day: 2, type: "rain", icon: "🌧️", name: "Rainy" },
@@ -427,40 +565,109 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     { id: "bench", name: "Repair Bench", cost: 2, icon: "🔧", benefit: "Fewer breakdowns (Eli helps)", limit: "Does not make water itself", near: ["workshop"] },
   ];
 
-  const VILLAGERS = [
-    { id: "maya", name: "Maya", role: "Student & curious builder", need: "Wants smart ways to catch rain at school.", line: "Could we collect rainwater from the school roof?", emoji: "🧒", color: "#7ec8e8", x: 520, y: 140 },
-    { id: "arun", name: "Arun", role: "Farmer", need: "Needs water for the garden and food.", line: "If the garden dries out, we will have less food.", emoji: "👨‍🌾", color: "#8bc98a", x: 180, y: 380 },
-    { id: "rosa", name: "Rosa", role: "Nurse", need: "Everyone needs clean drinking water.", line: "Water must be clean before everyone drinks it.", emoji: "👩‍⚕️", color: "#f0a0b8", x: 420, y: 360 },
-    { id: "eli", name: "Eli", role: "Repairer", need: "Machines need care so they keep working.", line: "A clever machine is only useful if we can repair it.", emoji: "🧑‍🔧", color: "#e8c070", x: 600, y: 300 },
-    { id: "jordan", name: "Jordan", role: "Shopkeeper & organizer", need: "Solutions should help the whole village.", line: "A solution should help everyone, not only one part of town.", emoji: "🧑‍💼", color: "#9b8ad8", x: 300, y: 200 },
+  const VILLAGER_TEMPLATES = [
+    { id: "maya", name: "Maya", role: "Student & curious builder", emoji: "🧒", color: "#7ec8e8" },
+    { id: "arun", name: "Arun", role: "Farmer", emoji: "👨‍🌾", color: "#8bc98a" },
+    { id: "rosa", name: "Rosa", role: "Nurse", emoji: "👩‍⚕️", color: "#f0a0b8" },
+    { id: "eli", name: "Eli", role: "Repairer", emoji: "🧑‍🔧", color: "#e8c070" },
+    { id: "jordan", name: "Jordan", role: "Shopkeeper & organizer", emoji: "🧑‍💼", color: "#9b8ad8" },
   ];
 
-  const PLACES = [
-    { id: "well", name: "Village Well", desc: "The shared well is low this dry season. Watch the water meter — when it drops, drinking water gets harder to share.", x: 360, y: 260, r: 36 },
-    { id: "stream", name: "Small Stream", desc: "Cool water flows here, but it is not always clean enough to drink. A pump can move it — carefully.", x: 90, y: 260, r: 40 },
-    { id: "farm", name: "Village Farm", desc: "Arun grows food here. Without enough water, farm health falls and the village has less to eat.", x: 150, y: 420, r: 42 },
+  const ZONES = [
+    {
+      id: "riverside",
+      name: "Riverside",
+      short: "by the stream",
+      homeName: "Riverside Home",
+      placeDesc: "This home sits right by the stream. Families here trust stream water and use it freely, but they worry if too many pumps tire the stream.",
+      line: "I live right by the stream. We trust this water and use it freely — but if too many pumps run, I worry the stream will get tired.",
+      need: "Wants the stream protected, and is cautious about heavy pumping.",
+      houseColor: "#b8e0f0",
+      homeX: 195, homeY: 180,
+      villagerX: 230, villagerY: 245
+    },
+    {
+      id: "hill",
+      name: "Dry Hill",
+      short: "up on the dry hill",
+      homeName: "Hill Home",
+      placeDesc: "This home sits up on the dry hill. Families here carry water the farthest, save every drop, and care a lot about fairness.",
+      line: "I live up on the dry hill. We carry water the farthest of anyone, so I save every drop and watch that everyone gets a fair share.",
+      need: "Wants a fair share of clean water, without such a long uphill carry.",
+      houseColor: "#e8c8a0",
+      homeX: 240, homeY: 90,
+      villagerX: 290, villagerY: 115
+    },
+    {
+      id: "fields",
+      name: "Low Fields",
+      short: "in the low fields by the farm",
+      homeName: "Fields Home",
+      placeDesc: "This home sits in the low fields beside the farm. Families here want plenty of water for crops, and they love drip irrigation.",
+      line: "I live in the low fields by the farm. Our crops need a lot of water. A drip irrigation setup would make me so glad!",
+      need: "Wants enough water for the crops, especially a drip system that wastes less.",
+      houseColor: "#c8e0a0",
+      homeX: 255, homeY: 425,
+      villagerX: 300, villagerY: 400
+    },
+    {
+      id: "wellside",
+      name: "Near the Well",
+      short: "near the well",
+      homeName: "Well-side Home",
+      placeDesc: "This home sits near the well, so water usually feels easy to get. If the well runs low, these neighbors notice — and worry — first.",
+      line: "I live near the well, so water usually feels easy to get. If the well runs low, though, I notice first — and I get worried fast.",
+      need: "Wants the well to stay from getting too low, and is first to panic if it does.",
+      houseColor: "#e8d8c0",
+      homeX: 475, homeY: 250,
+      villagerX: 525, villagerY: 275
+    },
+    {
+      id: "downstream",
+      name: "Downstream",
+      short: "downstream",
+      homeName: "Downstream Home",
+      placeDesc: "This home sits downstream, where water arrives last. Families here notice dirty water first and really want a filter.",
+      line: "I live downstream, where the water arrives last. I notice dirty water first, and I really want a filter before we drink from the stream.",
+      need: "Wants a filter so downstream water stays clean enough to drink.",
+      houseColor: "#a8d0c8",
+      homeX: 200, homeY: 315,
+      villagerX: 240, villagerY: 345
+    }
+  ];
+
+  const TRAITS = [
+    { id: "saver", name: "Saver", line: "People say I'm a Saver — wasting water upsets me.", need: "Uses little water and gets upset when it is wasted.", habit: "uses water carefully" },
+    { id: "grower", name: "Grower", line: "I'm a Grower at heart. I dream of lush crops and plenty of food.", need: "Wants lots of water for growing food, and cheers for drip irrigation.", habit: "cares most about the farm" },
+    { id: "worrier", name: "Worrier", line: "I'm a bit of a Worrier. I don't feel safe until drinking water is filtered.", need: "Needs a filter before feeling that drinking water is safe.", habit: "worries about dirty water" },
+    { id: "fairness", name: "Fairness Keeper", line: "Friends call me a Fairness Keeper. I speak up if one home gets more than another.", need: "Watches whether every home gets a fair share.", habit: "watches for fairness" },
+    { id: "tinkerer", name: "Tinkerer", line: "I'm a Tinkerer! New tools excite me, and I can help fix things when they rattle.", need: "Gets excited about new tools and can help with repairs.", habit: "loves tools and fixes" },
+    { id: "skeptic", name: "Skeptic", line: "I'm a Skeptic about big changes — but if you listen to my worries, I can come around.", need: "Dislikes sudden change at first, but listening softens that.", habit: "is cautious about change" }
+  ];
+
+  const PLACE_BASE = [
+    { id: "well", name: "Village Well", desc: "The shared well is low this dry season. Watch the water meter — when it drops, drinking water gets harder to share. Homes near the well notice a drop first.", x: 360, y: 260, r: 36 },
+    { id: "stream", name: "Small Stream", desc: "Cool water flows here, from the riverside down to the downstream homes. It is not always clean enough to drink. A pump can move it — carefully.", x: 90, y: 260, r: 40 },
+    { id: "farm", name: "Village Farm", desc: "The farm sits in the low fields. Without enough water, farm health falls and the village has less to eat. Drip irrigation helps a lot here.", x: 150, y: 420, r: 42 },
     { id: "school", name: "School", desc: "Maya's school has a big roof — perfect for catching rain if you place a collector nearby.", x: 560, y: 100, r: 38 },
     { id: "workshop", name: "Workshop", desc: "Eli's workshop. A repair bench here helps keep filters and pumps working.", x: 620, y: 340, r: 36 },
-    { id: "gather", name: "Gathering Space", desc: "Where neighbors meet. Fair water plans make people smile here.", x: 360, y: 140, r: 34 },
-    { id: "home1", name: "Home", desc: "A family home. Homes need clean drinking water every day.", x: 220, y: 120, r: 28 },
-    { id: "home2", name: "Home", desc: "A family home. Homes need clean drinking water every day.", x: 280, y: 90, r: 28 },
-    { id: "home3", name: "Home", desc: "A family home. Homes need clean drinking water every day.", x: 460, y: 420, r: 28 },
-    { id: "home4", name: "Home", desc: "A family home. Homes need clean drinking water every day.", x: 520, y: 390, r: 28 },
-    { id: "home5", name: "Home", desc: "A family home. Homes need clean drinking water every day.", x: 200, y: 300, r: 28 },
+    { id: "gather", name: "Gathering Space", desc: "Where neighbors meet. Fair water plans make people smile here. A Village Meeting can be held when you have enough Trust Points.", x: 360, y: 140, r: 34 }
   ];
 
   const PLOTS = [
     { id: "p1", x: 480, y: 160, near: ["school", "home"], label: "Near school" },
-    { id: "p2", x: 250, y: 160, near: ["home", "gather"], label: "Near homes" },
-    { id: "p3", x: 160, y: 220, near: ["stream"], label: "Near stream" },
-    { id: "p4", x: 140, y: 350, near: ["farm", "stream"], label: "Near farm" },
-    { id: "p5", x: 300, y: 320, near: ["home", "well"], label: "Near well" },
+    { id: "p2", x: 250, y: 160, near: ["home", "gather", "hill"], label: "Near homes" },
+    { id: "p3", x: 160, y: 220, near: ["stream", "riverside"], label: "Near stream" },
+    { id: "p4", x: 140, y: 350, near: ["farm", "stream", "fields", "downstream"], label: "Near farm" },
+    { id: "p5", x: 300, y: 320, near: ["home", "well", "wellside"], label: "Near well" },
     { id: "p6", x: 440, y: 300, near: ["home", "well"], label: "Central plot" },
     { id: "p7", x: 580, y: 240, near: ["workshop"], label: "Near workshop" },
-    { id: "p8", x: 400, y: 200, near: ["gather", "home"], label: "Near gathering" },
+    { id: "p8", x: 400, y: 200, near: ["gather", "home", "wellside"], label: "Near gathering" },
   ];
 
   const START = { materials: 10, stored: 0, well: 35, happiness: 55, health: 70, farm: 45, trust: 60, streamHealth: 70 };
+
+  const POWER_COST = { meeting: 2, hands: 2, sharing: 3 };
 
   const state = {
     phase: "intro",
@@ -472,17 +679,62 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     connectFrom: null,
     talkedTo: new Set(),
     inspected: new Set(),
+    knownTraits: new Set(),
+    villagers: [],
+    places: PLACE_BASE.slice(),
+    trustPoints: 0,
+    powers: { meeting: false, hands: false, sharing: false },
+    disputes: [],
+    disputeTrustDelta: 0,
+    disputeEffects: {},
+    guesses: { well: null, farm: null, health: null, trust: null },
+    simFlags: {},
     simSpeed: 1,
     skipSim: false,
     lastReport: null,
     reflection: { q1: null, q2: null, q3: "" },
     animT: 0,
     weatherFlash: null,
+    disputeLock: false
   };
 
   const canvas = document.getElementById("village-canvas");
   const ctx = canvas.getContext("2d");
   const $ = function (id) { return document.getElementById(id); };
+
+  function zoneById(id) {
+    return ZONES.find(function (z) { return z.id === id; });
+  }
+  function traitById(id) {
+    return TRAITS.find(function (t) { return t.id === id; });
+  }
+  function villagerById(id) {
+    return state.villagers.find(function (v) { return v.id === id; });
+  }
+  function hasTrait(traitId) {
+    return state.villagers.some(function (v) { return v.traitId === traitId; });
+  }
+  function villagerInZone(zoneId) {
+    return state.villagers.find(function (v) { return v.zoneId === zoneId; });
+  }
+  function knowsVillager(v) {
+    return state.knownTraits.has(v.id) || state.talkedTo.has(v.id) || state.powers.meeting;
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    var i, j, t;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function listeningPct() {
+    if (state.powers.meeting) return 100;
+    return clamp(state.talkedTo.size * 20, 0, 100);
+  }
 
   function toast(msg, ms) {
     ms = ms || 2200;
@@ -509,6 +761,21 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     $("r-health").textContent = Math.round(r.health);
     $("r-farm").textContent = Math.round(r.farm);
     $("r-trust").textContent = Math.round(r.trust);
+    $("r-trustpts").textContent = state.trustPoints;
+    $("r-listen").textContent = listeningPct() + "%";
+    $("listen-fill").style.width = listeningPct() + "%";
+    updateLeaderBtn();
+  }
+
+  function updateLeaderBtn() {
+    var btn = $("btn-leader");
+    if (nextOfferableDispute() && (state.phase === "explore" || state.phase === "build")) {
+      btn.textContent = "🌟 Leader !";
+      btn.classList.add("has-news");
+    } else {
+      btn.textContent = "🌟 Leader";
+      btn.classList.remove("has-news");
+    }
   }
 
   function openOverlay(id) {
@@ -519,6 +786,9 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   }
   function closeOverlays() {
     document.querySelectorAll(".overlay").forEach(function (el) { el.classList.remove("open"); });
+  }
+  function anyOverlayOpen() {
+    return !!document.querySelector(".overlay.open");
   }
 
   function renderBuildCards() {
@@ -546,17 +816,296 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   function refreshNeeds() {
     var items = [
       "Well water is low (dry season).",
+      "Look at the map: Dry Hill, Riverside, Low Fields, Near the Well, and Downstream.",
       "Homes and school need clean drinking water daily.",
-      "Farm needs water or food will suffer.",
-      "Stream water should be filtered before drinking.",
+      "Farm in the low fields needs water or food will suffer.",
+      "Downstream homes notice dirty water first — a filter helps.",
       "Fair sharing keeps Trust high.",
       "Machines need repairs to keep working."
     ];
-    VILLAGERS.forEach(function (v) {
-      if (state.talkedTo.has(v.id)) items.push('✓ Heard ' + v.name + ': "' + v.line + '"');
-      else items.push("○ Talk to " + v.name + " (" + v.role + ")");
+    state.villagers.forEach(function (v) {
+      var z = zoneById(v.zoneId);
+      var t = traitById(v.traitId);
+      if (state.talkedTo.has(v.id)) {
+        items.push("✓ Heard " + v.name + " (" + z.name + ", " + t.name + '): "' + v.line + '"');
+      } else if (knowsVillager(v)) {
+        items.push("○ " + v.name + " lives " + z.short + " and is a " + t.name + " — visit them!");
+      } else {
+        items.push("○ Talk to " + v.name + " (" + v.role + ") — find out where they live.");
+      }
     });
     $("needs-list").innerHTML = items.map(function (t) { return "<li>" + t + "</li>"; }).join("");
+  }
+
+  function initVillage() {
+    var zoneOrder = shuffle(ZONES.map(function (z) { return z.id; }));
+    var traitOrder = shuffle(TRAITS.map(function (t) { return t.id; }));
+    state.villagers = VILLAGER_TEMPLATES.map(function (tmpl, i) {
+      var z = zoneById(zoneOrder[i]);
+      var traitId = traitOrder[i];
+      var t = traitById(traitId);
+      return {
+        id: tmpl.id,
+        name: tmpl.name,
+        role: tmpl.role,
+        emoji: tmpl.emoji,
+        color: tmpl.color,
+        zoneId: z.id,
+        traitId: traitId,
+        x: z.villagerX,
+        y: z.villagerY,
+        line: z.line + " " + t.line,
+        need: z.need + " Habit: " + t.name + " — " + t.need
+      };
+    });
+    state.places = PLACE_BASE.concat(ZONES.map(function (z) {
+      return { id: "home-" + z.id, name: z.homeName, desc: z.placeDesc, x: z.homeX, y: z.homeY, r: 28 };
+    }));
+    state.talkedTo = new Set();
+    state.inspected = new Set();
+    state.knownTraits = new Set();
+    state.trustPoints = 0;
+    state.powers = { meeting: false, hands: false, sharing: false };
+    state.disputeTrustDelta = 0;
+    state.disputeEffects = {};
+    state.guesses = { well: null, farm: null, health: null, trust: null };
+    state.disputes = generateDisputes();
+    state.disputeLock = false;
+  }
+
+  function generateDisputes() {
+    var hill = villagerInZone("hill");
+    var fields = villagerInZone("fields");
+    var down = villagerInZone("downstream");
+    var river = villagerInZone("riverside");
+    var well = villagerInZone("wellside");
+    var list = [];
+
+    if (hill && fields) {
+      list.push({
+        id: "hill_vs_farm",
+        title: "Who gets the water?",
+        intro: hill.name + " lives on the dry hill. " + fields.name + " lives in the low fields by the farm. They both need water — and they disagree.",
+        aId: hill.id,
+        bId: fields.id,
+        aLine: "The farm uses so much water. We carry every bucket up the hill. It isn't fair.",
+        bLine: "If the fields go dry, the whole village has less food. We need enough for the crops.",
+        resolved: null,
+        options: [
+          { id: "schedule", kind: "winwin", label: "Share on a schedule", hint: "Hill homes get morning water; the farm waters in the evening.", pts: 3, effect: "schedule" },
+          { id: "drip", kind: "winwin", label: "Ask the farm to try drip irrigation", hint: "The farm can grow food with less water, so the hill keeps a fair share.", pts: 3, effect: "nudge_drip" },
+          { id: "hill_first", kind: "winner", label: "Give hill homes the first share", hint: "The hill is happier, but the farm may stay thirsty.", pts: 1, effect: "favor_hill" },
+          { id: "farm_first", kind: "winner", label: "Let the farm take what it needs", hint: "The farm is happier, but the hill may feel left out.", pts: 1, effect: "favor_farm" },
+          { id: "ignore", kind: "ignore", label: "Leave it for now", hint: "The disagreement stays, and village Trust slips a little.", pts: 0, effect: "ignore" }
+        ]
+      });
+    }
+
+    if (down) {
+      var other = river || well || fields || hill;
+      list.push({
+        id: "downstream_clean",
+        title: "Is the stream water clean enough?",
+        intro: down.name + " lives downstream and notices dirty water first. " + other.name + " sees things from " + zoneById(other.zoneId).short + ".",
+        aId: down.id,
+        bId: other.id,
+        aLine: "When water is pumped or stirred, I notice it first down here. We need a filter before anyone drinks from the stream.",
+        bLine: other.zoneId === "riverside"
+          ? "We live by the stream and have always trusted this water. A pump could help us — I just hope we are careful."
+          : "I want enough water for my home. If a pump helps, we should use it — but maybe a filter is wise too.",
+        resolved: null,
+        options: [
+          { id: "filter_first", kind: "winwin", label: "Build a filter before pumping a lot", hint: "Downstream feels safer, and the village can still move water.", pts: 3, effect: "nudge_filter" },
+          { id: "careful_pump", kind: "winwin", label: "Agree to pump only a little, and filter it", hint: "A careful plan protects the stream and the downstream homes.", pts: 3, effect: "careful_pump" },
+          { id: "filter_now", kind: "winner", label: "No pumping until there is a filter", hint: "Downstream is relieved, but others may wait longer for water.", pts: 1, effect: "favor_downstream" },
+          { id: "pump_ok", kind: "winner", label: "Allow pumping to get water moving", hint: "More water may move, but downstream stays worried.", pts: 1, effect: "favor_pump" },
+          { id: "ignore", kind: "ignore", label: "Leave it for now", hint: "The disagreement stays, and village Trust slips a little.", pts: 0, effect: "ignore" }
+        ]
+      });
+    }
+
+    if (well && (hill || down)) {
+      var partner = hill || down;
+      list.push({
+        id: "well_sharing",
+        title: "Should well water be shared evenly?",
+        intro: well.name + " lives near the well, where water feels easy. " + partner.name + " lives " + zoneById(partner.zoneId).short + " and has a longer walk.",
+        aId: partner.id,
+        bId: well.id,
+        aLine: "We walk much farther for water. If the well is shared fairly, every home can get a turn.",
+        bLine: "The well is right here, so we are used to fetching water whenever we need it. I get worried if it starts to run low.",
+        resolved: null,
+        options: [
+          { id: "fair_turns", kind: "winwin", label: "Give every home a fair turn at the well", hint: "A simple turn-taking plan helps both sides feel respected.", pts: 3, effect: "fair_turns" },
+          { id: "tank_far", kind: "winwin", label: "Plan a tank for the homes farther away", hint: "Nearby homes keep easy access, and far homes store water closer.", pts: 3, effect: "nudge_tank" },
+          { id: "far_first", kind: "winner", label: "Let far-away homes fill up first", hint: "Far homes are glad, but well-side neighbors may feel squeezed.", pts: 1, effect: "favor_far" },
+          { id: "near_easy", kind: "winner", label: "Let well-side homes keep easy access", hint: "Well-side homes stay comfortable, but others may call it unfair.", pts: 1, effect: "favor_wellside" },
+          { id: "ignore", kind: "ignore", label: "Leave it for now", hint: "The disagreement stays, and village Trust slips a little.", pts: 0, effect: "ignore" }
+        ]
+      });
+    }
+
+    return list.slice(0, 3);
+  }
+
+  function nextOfferableDispute() {
+    if (state.phase !== "explore" && state.phase !== "build") return null;
+    var resolvedCount = state.disputes.filter(function (d) { return d.resolved; }).length;
+    var next = state.disputes.find(function (d) { return !d.resolved; });
+    if (!next) return null;
+    var talkedParty = state.talkedTo.has(next.aId) || state.talkedTo.has(next.bId);
+    var talkedEnough = state.talkedTo.size >= 2;
+    if (resolvedCount === 0) {
+      if (talkedEnough || talkedParty) return next;
+    } else if (resolvedCount === 1) {
+      if (state.placed.length >= 1 || state.talkedTo.size >= 3) return next;
+    } else if (resolvedCount === 2) {
+      if (state.placed.length >= 1 || state.talkedTo.size >= 4) return next;
+    }
+    return null;
+  }
+
+  function maybeOfferDispute(delay) {
+    if (state.disputeLock) return;
+    delay = delay == null ? 500 : delay;
+    clearTimeout(maybeOfferDispute._t);
+    maybeOfferDispute._t = setTimeout(function () {
+      if (anyOverlayOpen()) return;
+      if (state.phase !== "explore" && state.phase !== "build") return;
+      var next = nextOfferableDispute();
+      if (next) openDispute(next);
+    }, delay);
+  }
+
+  function openDispute(d) {
+    state.disputeLock = true;
+    var a = villagerById(d.aId);
+    var b = villagerById(d.bId);
+    $("dispute-title").textContent = "⚖️ " + d.title;
+    $("dispute-intro").textContent = d.intro;
+    $("dispute-sides").innerHTML =
+      '<div class="dispute-side"><strong>' + a.emoji + " " + a.name + " · " + zoneById(a.zoneId).name + "</strong><p>\"" + d.aLine + "\"</p></div>" +
+      '<div class="dispute-side"><strong>' + b.emoji + " " + b.name + " · " + zoneById(b.zoneId).name + "</strong><p>\"" + d.bLine + "\"</p></div>";
+    var box = $("dispute-options");
+    box.innerHTML = "";
+    d.options.forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-block " + (opt.kind === "winwin" ? "btn-good" : opt.kind === "ignore" ? "btn-ghost" : "btn-secondary");
+      btn.textContent = opt.label;
+      btn.setAttribute("data-opt", opt.id);
+      btn.addEventListener("click", function () { resolveDispute(d, opt); });
+      box.appendChild(btn);
+    });
+    openOverlay("overlay-dispute");
+  }
+
+  function resolveDispute(d, opt) {
+    d.resolved = opt.id;
+    d.resolvedKind = opt.kind;
+    d.resolvedLabel = opt.label;
+    if (opt.effect && opt.effect !== "ignore") state.disputeEffects[opt.effect] = true;
+    if (opt.kind === "winwin") {
+      state.trustPoints += opt.pts;
+      state.disputeTrustDelta += 8;
+      toast("A fair fix! You earned " + opt.pts + " Trust Points. " + opt.hint, 3200);
+    } else if (opt.kind === "winner") {
+      state.trustPoints += opt.pts;
+      state.disputeTrustDelta += 2;
+      toast("You chose a side and earned " + opt.pts + " Trust Point. " + opt.hint, 3200);
+    } else {
+      state.disputeTrustDelta -= 6;
+      toast("The disagreement stays for now. Village Trust slips a little.", 2800);
+    }
+    state.disputeLock = false;
+    updateResourcesUI();
+    closeOverlays();
+    maybeOfferDispute(1800);
+  }
+
+  function renderLeaderPanel() {
+    $("leader-pts").textContent = state.trustPoints;
+    $("leader-trust").textContent = Math.round(state.resources.trust);
+    var dhtml = "";
+    var unresolved = state.disputes.filter(function (d) { return !d.resolved; });
+    var resolved = state.disputes.filter(function (d) { return d.resolved; });
+    if (unresolved.length) {
+      dhtml += "<h3>Open disagreements</h3>";
+      unresolved.forEach(function (d) {
+        dhtml += "<p>• " + d.title + "</p>";
+      });
+      if (nextOfferableDispute()) {
+        dhtml += '<p><button type="button" class="btn-primary btn-sm" id="btn-open-dispute">Help with a disagreement</button></p>';
+      } else {
+        dhtml += "<p style='font-size:13px;color:var(--ink-soft)'>Talk with neighbors (and maybe build a little) to hear the next disagreement.</p>";
+      }
+    } else {
+      dhtml += "<p>All disagreements have been heard. Nice work, peacemaker!</p>";
+    }
+    if (resolved.length) {
+      dhtml += "<p style='font-size:13px'>Settled: " + resolved.map(function (d) { return d.title + " (“" + d.resolvedLabel + "”)"; }).join("; ") + "</p>";
+    }
+    $("leader-disputes").innerHTML = dhtml;
+    var openBtn = $("btn-open-dispute");
+    if (openBtn) {
+      openBtn.addEventListener("click", function () {
+        var next = nextOfferableDispute() || state.disputes.find(function (d) { return !d.resolved; });
+        if (next) openDispute(next);
+      });
+    }
+    ["meeting", "hands", "sharing"].forEach(function (key) {
+      var card = $("power-" + key);
+      var btn = $("btn-power-" + key);
+      if (state.powers[key]) {
+        card.classList.add("owned");
+        btn.disabled = true;
+        btn.textContent = "Already in use";
+      } else {
+        card.classList.remove("owned");
+        btn.disabled = state.trustPoints < POWER_COST[key] || (state.phase !== "explore" && state.phase !== "build");
+        btn.textContent = btn.getAttribute("data-label") || btn.textContent;
+      }
+    });
+  }
+
+  function usePowerMeeting() {
+    if (state.powers.meeting || state.trustPoints < POWER_COST.meeting) return;
+    if (state.phase !== "explore" && state.phase !== "build") return;
+    state.trustPoints -= POWER_COST.meeting;
+    state.powers.meeting = true;
+    state.villagers.forEach(function (v) { state.knownTraits.add(v.id); });
+    updateResourcesUI();
+    refreshNeeds();
+    var list = $("meeting-list");
+    list.innerHTML = state.villagers.map(function (v) {
+      var z = zoneById(v.zoneId);
+      var t = traitById(v.traitId);
+      return '<div class="meet-row"><div class="ma" style="background:' + v.color + '">' + v.emoji + "</div><div><strong>" + v.name + "</strong> · " + z.name + " · " + t.name + "<br><span style='font-size:13px'>" + v.need + "</span></div></div>";
+    }).join("");
+    openOverlay("overlay-meeting");
+    toast("Village Meeting held — you now know everyone's needs!", 2600);
+  }
+
+  function usePowerHands() {
+    if (state.powers.hands || state.trustPoints < POWER_COST.hands) return;
+    if (state.phase !== "explore" && state.phase !== "build") return;
+    state.trustPoints -= POWER_COST.hands;
+    state.powers.hands = true;
+    state.resources.materials += 3;
+    updateResourcesUI();
+    renderBuildCards();
+    renderLeaderPanel();
+    toast("Helping Hands! Neighbors brought 3 extra materials.", 2600);
+  }
+
+  function usePowerSharing() {
+    if (state.powers.sharing || state.trustPoints < POWER_COST.sharing) return;
+    if (state.phase !== "explore" && state.phase !== "build") return;
+    state.trustPoints -= POWER_COST.sharing;
+    state.powers.sharing = true;
+    updateResourcesUI();
+    renderLeaderPanel();
+    toast("Sharing Plan is on! The village will waste less water during the test.", 2800);
   }
 
   function shadeHex(hex, amt) {
@@ -606,6 +1155,64 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     ctx.strokeStyle = shadeHex(color, -50);
     ctx.lineWidth = 1;
     ctx.strokeRect(x, y, w, h);
+  }
+
+  function drawZoneLabel(x, y, text, color) {
+    ctx.font = "bold 11px sans-serif";
+    ctx.textAlign = "center";
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "rgba(255,254,245,0.9)";
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = color || "#3a3020";
+    ctx.fillText(text, x, y);
+  }
+
+  function drawHillZone() {
+    var spots = [
+      [200, 140, 90, 18, "#b89058"],
+      [248, 128, 100, 16, "#c4a068"],
+      [230, 116, 80, 14, "#d0b078"],
+      [260, 106, 70, 12, "#c8b868"],
+      [215, 108, 44, 12, "#d4bc70"]
+    ];
+    spots.forEach(function (s) {
+      drawFlatBlock(s[0], s[1], s[2], s[3], s[4]);
+    });
+    drawCube(188, 132, 28, 20, 8, "#a08058");
+    drawCube(300, 128, 22, 16, 7, "#b09060");
+    drawCube(210, 118, 18, 14, 6, "#c4a070");
+    drawZoneLabel(230, 58, "Dry Hill", "#6a4a20");
+  }
+
+  function drawRiversideZone() {
+    var i;
+    for (i = 0; i < 5; i++) {
+      drawCube(118 + (i % 2) * 8, 170 + i * 14, 8, 16, 3, i % 2 ? "#5a9a48" : "#6aaa50");
+    }
+    drawZoneLabel(125, 155, "Riverside", "#1a5a70");
+  }
+
+  function drawDownstreamZone() {
+    var i;
+    for (i = 0; i < 4; i++) {
+      drawCube(112 + (i % 2) * 10, 300 + i * 16, 8, 14, 3, i % 2 ? "#4a8a68" : "#5a9a70");
+    }
+    drawZoneLabel(128, 285, "Downstream", "#1a4a48");
+  }
+
+  function drawFieldsZone() {
+    drawZoneLabel(255, 470, "Low Fields", "#3a5020");
+  }
+
+  function drawWellsideZone() {
+    var i, j;
+    for (i = -2; i <= 2; i++) {
+      for (j = -1; j <= 1; j++) {
+        if (Math.abs(i) + Math.abs(j) > 2) continue;
+        drawFlatBlock(350 + i * 16 - 8, 248 + j * 12 - 6, 15, 11, (i + j) % 2 ? "#c8b490" : "#d4c4a0");
+      }
+    }
+    drawZoneLabel(360, 318, "Near the Well", "#5a4030");
   }
 
   function drawHouse(x, y, wallColor, s) {
@@ -690,11 +1297,14 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   }
 
   function drawStream(W, H) {
-    var y, wx, ww;
+    var y, wx, ww, downstream, c1, c2;
     for (y = 20; y < H - 10; y += 16) {
       wx = 48 + Math.sin(y * 0.05 + state.animT) * 4;
       ww = 36;
-      drawFlatBlock(wx, y, ww, 15, (Math.floor(y / 16) % 2) ? "#3a9fd0" : "#4ab0e0");
+      downstream = y > 300;
+      c1 = downstream ? "#3a9aaa" : "#3a9fd0";
+      c2 = downstream ? "#4aa8a0" : "#4ab0e0";
+      drawFlatBlock(wx, y, ww, 15, (Math.floor(y / 16) % 2) ? c1 : c2);
       ctx.fillStyle = "rgba(255,255,255,0.35)";
       ctx.fillRect(wx + 4, y + 2, 8, 4);
       ctx.fillRect(wx + ww - 14, y + 8, 6, 3);
@@ -707,7 +1317,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   function drawPaths() {
     var pts = [
       [110, 260], [150, 255], [200, 250], [250, 252], [300, 255],
-      [360, 260], [420, 270], [480, 290], [540, 310], [600, 325]
+      [360, 260], [420, 270], [480, 290], [540, 310], [600, 325],
+      [245, 200], [242, 150], [238, 115],
+      [200, 380], [230, 410],
+      [200, 300], [200, 200]
     ];
     var i, p;
     for (i = 0; i < pts.length; i++) {
@@ -733,10 +1346,16 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   }
 
   function drawGrassTiles(W, H) {
-    var tile = 24, tx, ty, c;
+    var tile = 24, tx, ty, c, hill, fields, river;
     for (ty = 0; ty < H; ty += tile) {
       for (tx = 0; tx < W; tx += tile) {
-        c = ((tx / tile + ty / tile) % 2 === 0) ? "#5aad4a" : "#52a044";
+        hill = tx > 170 && tx < 330 && ty > 40 && ty < 150;
+        fields = tx > 80 && tx < 340 && ty > 380;
+        river = tx > 90 && tx < 230 && ty > 160 && ty < 280;
+        if (hill) c = ((tx / tile + ty / tile) % 2 === 0) ? "#c8b868" : "#b8a858";
+        else if (fields) c = ((tx / tile + ty / tile) % 2 === 0) ? "#6aaa40" : "#7ab848";
+        else if (river) c = ((tx / tile + ty / tile) % 2 === 0) ? "#5aad5a" : "#4a9a52";
+        else c = ((tx / tile + ty / tile) % 2 === 0) ? "#5aad4a" : "#52a044";
         ctx.fillStyle = c;
         ctx.fillRect(tx, ty, tile, tile);
         ctx.fillStyle = shadeHex(c, 20);
@@ -792,17 +1411,21 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     ctx.fillRect(0, 0, W, 90);
 
     drawGrassTiles(W, H);
+    drawHillZone();
+    drawRiversideZone();
+    drawDownstreamZone();
+    drawWellsideZone();
     drawClouds(W);
     drawStream(W, H);
     drawPaths();
+    drawFieldsZone();
     drawGathering(360, 140);
     drawSchool(560, 100);
     drawWorkshop(620, 340);
     drawFarm(150, 420);
 
-    [[220, 120, "#f0c0a0"], [280, 90, "#e8b8c8"], [460, 420, "#d0d0e8"],
-     [520, 390, "#c8e0c8"], [200, 300, "#e8d8a0"]].forEach(function (h) {
-      drawHouse(h[0], h[1], h[2], 1);
+    ZONES.forEach(function (z) {
+      drawHouse(z.homeX, z.homeY, z.houseColor, 1);
     });
 
     drawWell(360, 260);
@@ -869,7 +1492,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       }
     });
 
-    VILLAGERS.forEach(function (v) {
+    state.villagers.forEach(function (v) {
       var bob = Math.sin(state.animT * 2 + v.x) * 2;
       drawCube(v.x, v.y + 18 + bob, 28, 10, 5, shadeHex(v.color, -20));
       ctx.fillStyle = v.color;
@@ -898,14 +1521,14 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
     if (state.phase === "explore" && state.talkedTo.size < 2) {
       ctx.fillStyle = "rgba(42,42,42,0.8)";
-      ctx.fillRect(W / 2 - 170, H - 38, 340, 30);
+      ctx.fillRect(W / 2 - 200, H - 38, 400, 30);
       ctx.strokeStyle = "#6b5344";
       ctx.lineWidth = 3;
-      ctx.strokeRect(W / 2 - 170, H - 38, 340, 30);
+      ctx.strokeRect(W / 2 - 200, H - 38, 400, 30);
       ctx.fillStyle = "#fff";
       ctx.font = "bold 12px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("Click villagers (and places) to listen and learn!", W / 2, H - 18);
+      ctx.fillText("Click villagers and places — look at where each family lives!", W / 2, H - 18);
     }
   }
 
@@ -922,22 +1545,21 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  
   function onCanvasClick(e) {
     if (state.phase === "simulate" || state.phase === "report" || state.phase === "end" || state.phase === "intro") return;
     var p = canvasPos(e);
     var i, v, plot, place;
 
-    for (i = 0; i < VILLAGERS.length; i++) {
-      v = VILLAGERS[i];
+    for (i = 0; i < state.villagers.length; i++) {
+      v = state.villagers[i];
       if (dist(v.x, v.y, p.x, p.y) < 28) { openDialogue(v); return; }
     }
     for (i = 0; i < PLOTS.length; i++) {
       plot = PLOTS[i];
       if (dist(plot.x, plot.y, p.x, p.y) < 28) { handlePlotClick(plot); return; }
     }
-    for (i = 0; i < PLACES.length; i++) {
-      place = PLACES[i];
+    for (i = 0; i < state.places.length; i++) {
+      place = state.places[i];
       if (dist(place.x, place.y, p.x, p.y) < place.r) {
         state.inspected.add(place.id);
         $("place-title").textContent = place.name;
@@ -951,12 +1573,16 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
   function openDialogue(v) {
     state.talkedTo.add(v.id);
+    state.knownTraits.add(v.id);
+    var z = zoneById(v.zoneId);
+    var t = traitById(v.traitId);
     $("dlg-avatar").textContent = v.emoji;
     $("dlg-avatar").style.background = v.color;
     $("dlg-name").textContent = v.name;
-    $("dlg-role").textContent = v.role;
+    $("dlg-role").textContent = v.role + " · lives " + z.short + " · " + t.name;
     $("dlg-text").textContent = '"' + v.line + '"';
     $("dlg-need").textContent = "Need: " + v.need;
+    updateResourcesUI();
     openOverlay("overlay-dialogue");
     refreshNeeds();
     if (state.phase === "explore") maybeEnterBuild();
@@ -1034,6 +1660,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     if (b.id === "tank" || b.id === "pump" || b.id === "filter") {
       setTimeout(function () { toast("Tip: use Connect Mode to link sources and tanks."); }, 2500);
     }
+    maybeOfferDispute(1600);
   }
 
   function countType(id) {
@@ -1054,6 +1681,17 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
   function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
 
+  function talkedToId(id) {
+    return state.talkedTo.has(id);
+  }
+  function talkedToZone(zoneId) {
+    var v = villagerInZone(zoneId);
+    return v ? state.talkedTo.has(v.id) : false;
+  }
+  function traitOwner(traitId) {
+    return state.villagers.find(function (v) { return v.traitId === traitId; });
+  }
+
   function runDay(dayIndex, logs) {
     var w = WEATHER[dayIndex];
     var r = state.resources;
@@ -1064,8 +1702,17 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     var nDrip = countType("drip");
     var nBench = countType("bench");
     var tankLinked = nTank > 0 && (tankConnectedToSource() || nCollector > 0);
+    var fx = state.disputeEffects;
     var rainGain = 0, pumpWater = 0, drinkNeed, drinkFromStored, drinkFromWell;
     var farmNeed, got, dripUse, rest, drinkSupport, farmSupport, breakChance;
+    var saver = traitOwner("saver");
+    var grower = traitOwner("grower");
+    var worrier = traitOwner("worrier");
+    var fairness = traitOwner("fairness");
+    var tinkerer = traitOwner("tinkerer");
+    var skeptic = traitOwner("skeptic");
+    var flags = state.simFlags;
+    var pumpLimit, dirty, homeUses, i, v, use, totalNeed, unmet, order, share, z, gotShare;
 
     if (nCollector > 0) {
       rainGain = w.type === "rain" ? nCollector * 8 : nCollector * 1.5;
@@ -1078,11 +1725,15 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       }
     }
 
+    pumpLimit = nPump;
+    if (fx.careful_pump) pumpLimit = Math.min(nPump, 1);
     if (nPump > 0) {
-      pumpWater = nPump * 6;
-      r.streamHealth = clamp(r.streamHealth - nPump * 4, 0, 100);
+      pumpWater = pumpLimit * 6;
+      r.streamHealth = clamp(r.streamHealth - pumpLimit * 4, 0, 100);
+      if (fx.careful_pump) r.streamHealth = clamp(r.streamHealth + 2, 0, 100);
       if (r.streamHealth < 40) {
         pumpWater *= 0.6;
+        flags.streamTired = true;
         logs.push("The stream is tired from pumping — less water moved today.");
       }
       if (nFilter > 0) {
@@ -1091,19 +1742,43 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         logs.push("Solar pump moved stream water through a filter toward storage.");
       } else {
         r.well = clamp(r.well + pumpWater * 0.3, 0, 100);
+        dirty = 4 * pumpLimit;
+        if (worrier) dirty += 2;
+        if (villagerInZone("downstream")) dirty += 2;
+        r.health = clamp(r.health - dirty, 0, 100);
+        flags.downstreamDirty = true;
         logs.push("Village health fell because some stream water was not filtered.");
-        r.health = clamp(r.health - 4 * nPump, 0, 100);
+        if (dayIndex === 1 || dayIndex === 4) {
+          var downV = villagerInZone("downstream");
+          if (downV) logs.push(downV.name + " downstream noticed the unclean water first.");
+          if (worrier) logs.push(worrier.name + " the Worrier felt unsafe without a filter.");
+        }
       }
-      if (nPump >= 2) {
+      if (pumpLimit >= 2 || (nPump >= 2 && !fx.careful_pump)) {
         logs.push("Trust dipped a little — heavy pumping worried neighbors who love the stream.");
         r.trust = clamp(r.trust - 2, 0, 100);
+        var riverV = villagerInZone("riverside");
+        if (riverV) r.trust = clamp(r.trust - 2, 0, 100);
       }
+      if (fx.favor_pump && nFilter === 0) r.trust = clamp(r.trust - 1, 0, 100);
+      if (fx.favor_downstream && nPump > 0 && nFilter === 0) r.happiness = clamp(r.happiness - 1, 0, 100);
+    }
+
+    if (fx.nudge_filter && nFilter > 0 && dayIndex === 0) {
+      logs.push("The promised filter is in place — downstream neighbors feel safer.");
+      r.trust = clamp(r.trust + 2, 0, 100);
+    } else if (fx.nudge_filter && nFilter === 0 && dayIndex === 2) {
+      logs.push("Downstream neighbors still hope for a filter.");
+      r.trust = clamp(r.trust - 1, 0, 100);
     }
 
     breakChance = Math.max(0.05, 0.25 - nBench * 0.1);
+    if (tinkerer && (state.talkedTo.has(tinkerer.id) || state.powers.meeting)) breakChance = Math.max(0.02, breakChance - 0.08);
     if ((nFilter > 0 || nPump > 0) && Math.random() < breakChance) {
       if (nBench > 0) {
         logs.push("A machine sputtered, but Eli's repair bench kept it working!");
+      } else if (tinkerer && (state.talkedTo.has(tinkerer.id) || state.powers.meeting)) {
+        logs.push("A machine rattled, but " + tinkerer.name + " the Tinkerer kept it going!");
       } else {
         r.stored = Math.max(0, r.stored - 3);
         logs.push("A filter or pump needed repair and worked poorly today. A repair bench would help.");
@@ -1113,19 +1788,73 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       logs.push("Repair bench reduced breakdown risk — Eli kept things humming.");
     }
 
-    drinkNeed = 10 + 3;
+    homeUses = [];
+    totalNeed = 3;
+    for (i = 0; i < state.villagers.length; i++) {
+      v = state.villagers[i];
+      use = 2.5;
+      if (v.zoneId === "hill") use -= 0.4;
+      if (v.zoneId === "wellside") use += 0.5;
+      if (v.traitId === "saver") use -= 0.5;
+      if (v.zoneId === "fields") use += 0.2;
+      if (fx.schedule && v.zoneId === "fields") use -= 0.2;
+      homeUses.push({ v: v, need: use, got: 0 });
+      totalNeed += use;
+    }
+    if (state.powers.sharing || fx.fair_turns || fx.schedule) {
+      totalNeed *= 0.85;
+      homeUses.forEach(function (h) { h.need *= 0.85; });
+      if (dayIndex === 0) logs.push("A sharing plan cut waste — the village used water more carefully.");
+    }
+
+    drinkNeed = totalNeed;
     drinkFromStored = Math.min(r.stored, drinkNeed);
     r.stored -= drinkFromStored;
     drinkNeed -= drinkFromStored;
     drinkFromWell = Math.min(r.well, drinkNeed);
     r.well -= drinkFromWell;
     drinkNeed -= drinkFromWell;
+    unmet = drinkNeed;
 
-    if (drinkNeed > 0) {
-      r.happiness = clamp(r.happiness - drinkNeed * 1.5, 0, 100);
-      r.health = clamp(r.health - drinkNeed, 0, 100);
+    order = homeUses.slice();
+    if (fx.favor_hill) {
+      order.sort(function (a, b) { return (a.v.zoneId === "hill" ? -1 : 0) - (b.v.zoneId === "hill" ? -1 : 0); });
+    } else if (fx.favor_wellside) {
+      order.sort(function (a, b) { return (a.v.zoneId === "wellside" ? -1 : 0) - (b.v.zoneId === "wellside" ? -1 : 0); });
+    } else if (fx.favor_far) {
+      order.sort(function (a, b) {
+        var ar = (a.v.zoneId === "hill" || a.v.zoneId === "downstream") ? -1 : 0;
+        var br = (b.v.zoneId === "hill" || b.v.zoneId === "downstream") ? -1 : 0;
+        return ar - br;
+      });
+    } else {
+      order.sort(function (a, b) {
+        var rank = { hill: 0, downstream: 1, fields: 2, riverside: 3, wellside: 4 };
+        return (rank[a.v.zoneId] || 3) - (rank[b.v.zoneId] || 3);
+      });
+    }
+
+    share = (totalNeed - unmet);
+    for (i = 0; i < order.length; i++) {
+      gotShare = Math.min(order[i].need, Math.max(0, share));
+      order[i].got = gotShare;
+      share -= gotShare;
+      if (order[i].got < order[i].need * 0.7) {
+        if (order[i].v.zoneId === "hill") flags.hillThirsty = true;
+        flags.homesThirsty = true;
+      }
+    }
+
+    if (unmet > 0) {
+      r.happiness = clamp(r.happiness - unmet * 1.5, 0, 100);
+      r.health = clamp(r.health - unmet, 0, 100);
       r.trust = clamp(r.trust - 2, 0, 100);
+      if (fairness) r.trust = clamp(r.trust - 2, 0, 100);
       logs.push("Homes received too little clean water — happiness and trust slipped.");
+      if (flags.hillThirsty && dayIndex % 2 === 0) {
+        var hillV = villagerInZone("hill");
+        if (hillV) logs.push(hillV.name + " on the dry hill felt the shortage first — that is a long walk with empty buckets.");
+      }
     } else {
       r.happiness = clamp(r.happiness + 1.5, 0, 100);
       if (drinkFromStored > 0 && w.type === "dry") {
@@ -1133,55 +1862,165 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       }
     }
 
+    if (r.well < 22) {
+      flags.wellPanic = true;
+      var wellV = villagerInZone("wellside");
+      r.happiness = clamp(r.happiness - 2, 0, 100);
+      if (dayIndex === 3 || dayIndex === 6) {
+        logs.push((wellV ? wellV.name + " near the well" : "Well-side homes") + " panicked first as the well ran low.");
+      }
+    } else {
+      flags.wellOk = true;
+    }
+
     farmNeed = nDrip > 0 ? 4 : 9;
+    if (fx.favor_farm) farmNeed += 1;
+    if (fx.favor_hill) farmNeed = Math.max(3, farmNeed - 1);
+    if (grower && nDrip === 0) farmNeed += 1;
+    if (state.powers.sharing) farmNeed = Math.max(3, farmNeed - 1);
+
     if (nDrip > 0) {
-      r.farm = clamp(r.farm + 5 + nDrip * 2, 0, 100);
+      r.farm = clamp(r.farm + 5 + nDrip * 2 + (grower ? 2 : 0), 0, 100);
+      if (fx.nudge_drip) r.farm = clamp(r.farm + 1, 0, 100);
       if (r.stored >= farmNeed) r.stored -= farmNeed;
       else {
         rest = farmNeed - r.stored;
         r.stored = 0;
         r.well = Math.max(0, r.well - rest);
       }
+      flags.farmPlenty = r.farm >= 55;
       logs.push("Farm health increased because drip irrigation used less water.");
+      if (grower && dayIndex === 1) logs.push(grower.name + " the Grower was delighted with the drip system.");
     } else {
       got = Math.min(farmNeed, r.well);
       r.well -= got;
-      if (got >= farmNeed * 0.7) r.farm = clamp(r.farm + 1, 0, 100);
-      else {
-        r.farm = clamp(r.farm - 4, 0, 100);
+      if (got >= farmNeed * 0.7) {
+        r.farm = clamp(r.farm + 1, 0, 100);
+        flags.farmPlenty = r.farm >= 60;
+      } else {
+        r.farm = clamp(r.farm - 4 - (grower ? 1 : 0), 0, 100);
+        flags.farmThirsty = true;
         logs.push("Farm health fell — the garden is thirsty. Drip irrigation could help.");
       }
+      if (fx.nudge_drip && dayIndex === 2) logs.push("The farm still hopes for drip irrigation, as promised.");
+    }
+
+    if (saver && (nPump >= 2 || r.stored > 70) && dayIndex === 5) {
+      if (nPump >= 2) {
+        r.happiness = clamp(r.happiness - 2, 0, 100);
+        logs.push(saver.name + " the Saver was upset to see water used so freely.");
+      }
+    }
+
+    if (skeptic) {
+      if (!state.talkedTo.has(skeptic.id) && state.placed.length >= 2) {
+        r.trust = clamp(r.trust - 1, 0, 100);
+        if (dayIndex === 1) logs.push(skeptic.name + " the Skeptic is unsure about the new tools. Listening can help.");
+      } else if (state.talkedTo.has(skeptic.id)) {
+        r.trust = clamp(r.trust + 0.6, 0, 100);
+        if (dayIndex === 2) logs.push(skeptic.name + " the Skeptic came around after being heard.");
+      }
+    }
+
+    if (tinkerer && state.placed.length >= 2 && dayIndex === 0) {
+      r.happiness = clamp(r.happiness + 1, 0, 100);
     }
 
     drinkSupport = nCollector + nTank + nFilter;
     farmSupport = nDrip + (nPump > 0 ? 1 : 0);
-    if (farmSupport > drinkSupport + 1 && drinkNeed > 0) {
-      r.trust = clamp(r.trust - 4, 0, 100);
+    if (farmSupport > drinkSupport + 1 && unmet > 0) {
+      r.trust = clamp(r.trust - 4 - (fairness ? 2 : 0), 0, 100);
       logs.push("Trust fell because homes received too little water while the farm received most of it.");
     } else if (drinkSupport > 0 && farmSupport > 0) {
-      r.trust = clamp(r.trust + 2, 0, 100);
+      r.trust = clamp(r.trust + 2 + (fairness ? 1 : 0), 0, 100);
       if (dayIndex === 3) logs.push("Trust grew — the plan helped both homes and the farm.");
     } else if (drinkSupport >= 2) {
       r.trust = clamp(r.trust + 1.5, 0, 100);
     }
 
+    if (fx.schedule || fx.fair_turns || state.powers.sharing) {
+      r.trust = clamp(r.trust + 1, 0, 100);
+    }
+
     if (w.type === "rain") r.well = clamp(r.well + 2, 0, 100);
     else r.well = clamp(r.well - 1, 0, 100);
 
-    if (nFilter > 0 && drinkNeed <= 0) r.health = clamp(r.health + 2, 0, 100);
+    if (nFilter > 0 && unmet <= 0) r.health = clamp(r.health + 2, 0, 100);
     r.stored = clamp(r.stored, 0, 80 + nTank * 20);
     return logs;
   }
 
   function sleep(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
 
+  function changeDir(start, end) {
+    var d = end - start;
+    if (d > 3) return "up";
+    if (d < -3) return "down";
+    return "same";
+  }
+  function dirWord(d) {
+    return d === "up" ? "Up" : d === "down" ? "Down" : "About the same";
+  }
+
+  function openPredict() {
+    if (state.placed.length < 1) { toast("Place at least one object before testing!"); return; }
+    state.guesses = { well: null, farm: null, health: null, trust: null };
+    var pct = listeningPct();
+    var heard = state.talkedTo.size;
+    var hint;
+    if (pct >= 100) hint = "You have heard everyone (or held a Village Meeting). Your forecast can be quite sure.";
+    else if (heard === 0) hint = "You haven't talked to neighbors yet, so this forecast is a wild guess — you can still run the week.";
+    else hint = "You've heard " + heard + " of 5 neighbors. More listening would make this guess surer.";
+    $("predict-listen").innerHTML = "<strong>How sure is our forecast? " + pct + "%</strong><div class='lmeter'><span style='width:" + pct + "%'></span></div><p style='margin:4px 0 0'>" + hint + "</p>";
+    var metrics = [
+      { key: "well", label: "🕳️ Well" },
+      { key: "farm", label: "🌾 Farm" },
+      { key: "health", label: "💚 Health" },
+      { key: "trust", label: "🤝 Trust" }
+    ];
+    var wrap = $("predict-guesses");
+    wrap.innerHTML = "";
+    metrics.forEach(function (m) {
+      var row = document.createElement("div");
+      row.className = "guess-row";
+      row.setAttribute("data-metric", m.key);
+      var lab = document.createElement("div");
+      lab.className = "glabel";
+      lab.textContent = m.label;
+      row.appendChild(lab);
+      var chips = document.createElement("div");
+      chips.className = "chips";
+      ["up", "same", "down"].forEach(function (d) {
+        var c = document.createElement("button");
+        c.type = "button";
+        c.className = "chip";
+        c.setAttribute("data-guess", d);
+        c.textContent = dirWord(d);
+        c.addEventListener("click", function () {
+          state.guesses[m.key] = d;
+          chips.querySelectorAll(".chip").forEach(function (x) { x.classList.remove("picked"); });
+          c.classList.add("picked");
+          var ready = ["well", "farm", "health", "trust"].every(function (k) { return state.guesses[k]; });
+          $("btn-predict-run").disabled = !ready;
+        });
+        chips.appendChild(c);
+      });
+      row.appendChild(chips);
+      wrap.appendChild(row);
+    });
+    $("btn-predict-run").disabled = true;
+    openOverlay("overlay-predict");
+  }
+
   async function startSimulation() {
     if (state.placed.length < 1) { toast("Place at least one object before testing!"); return; }
     setPhase("simulate");
     state.skipSim = false;
     state.simSpeed = 1;
-    var startSnap = Object.assign({}, START);
+    state.simFlags = { hillThirsty: false, farmPlenty: false, farmThirsty: false, downstreamDirty: false, wellPanic: false, streamTired: false, homesThirsty: false, wellOk: false };
     state.resources = Object.assign({}, START, { materials: state.resources.materials });
+    state.resources.trust = clamp(START.trust + (state.disputeTrustDelta || 0), 0, 100);
+    var startSnap = Object.assign({}, state.resources);
     updateResourcesUI();
     openOverlay("overlay-sim");
     $("sim-log").innerHTML = "";
@@ -1232,6 +2071,33 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     showReport(startSnap, allLogs);
   }
 
+  function tradeoffSentence() {
+    var r = state.resources;
+    var f = state.simFlags;
+    if (f.farmPlenty && f.hillThirsty) return "The farm got plenty, but the hill homes went thirsty.";
+    if (r.farm >= 60 && f.homesThirsty) return "The farm did great, but some homes went thirsty.";
+    if (f.wellOk && f.downstreamDirty) return "Homes near the well were fine, but downstream neighbors noticed dirty water first.";
+    if (f.streamTired && villagerInZone("riverside")) return "Pumping helped storage, but the stream and riverside homes were worried.";
+    if (!f.homesThirsty && f.farmThirsty) return "Homes had enough to drink, but the farm in the low fields stayed thirsty.";
+    if (f.wellPanic && f.farmPlenty) return "The farm got plenty, but when the well ran low, well-side homes panicked first.";
+    if (f.wellPanic && !f.homesThirsty) return "When the well ran low, well-side homes panicked first.";
+    if (f.downstreamDirty && r.farm >= 55) return "The farm got enough water, but downstream homes felt the unfiltered stream.";
+    return "";
+  }
+
+  function guessFeedback(label, guess, actual, startVal, endVal) {
+    var ok = guess === actual;
+    var delta = Math.round(endVal - startVal);
+    var move = actual === "same" ? "stayed about the same" : (actual === "up" ? "went up" : "went down");
+    var msg;
+    if (ok) {
+      msg = "You guessed " + label + " would go " + dirWord(guess).toLowerCase() + " — and it " + move + ". Nice thinking!";
+    } else {
+      msg = "You guessed " + label + " would go " + dirWord(guess).toLowerCase() + ", but it " + move + " (" + (delta >= 0 ? "+" : "") + delta + "). That's how inventors learn!";
+    }
+    return { ok: ok, msg: msg };
+  }
+
   function showReport(startSnap, allLogs) {
     setPhase("report");
     var r = state.resources;
@@ -1243,17 +2109,64 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     var cleanScore = r.health, farmScore = r.farm, happyScore = r.happiness, trustScore = r.trust;
     var goodCount = [waterScore >= 40, cleanScore >= 60, farmScore >= 50, happyScore >= 50, trustScore >= 55].filter(Boolean).length;
     var badge = goodCount >= 3 && improved;
-    var story, metrics, badgeEl, chips1, chips2;
+    var story, metrics, badgeEl, chips1, chips2, trade, gWrap, keys, fb;
 
     if (badge) story = "Wonderful work! After seven days, Riverbend has cleaner, fairer water habits. You listened, built, and tested like a true inventor.";
     else if (improved) story = "Nice progress! The village is a bit better off. Some parts still need care — try improving your design.";
     else story = "This test taught us a lot. Some needs were unmet. Inventors learn by trying again — what will you change?";
 
     if (countType("drip") > 0) story += " The farm appreciated drip irrigation.";
-    if (countType("filter") === 0 && countType("pump") > 0) story += " Rosa reminds everyone: filter stream water before drinking.";
+    if (countType("filter") === 0 && countType("pump") > 0) story += " Downstream neighbors remind everyone: filter stream water before drinking.";
     if (countType("bench") > 0) story += " Eli's repair help kept machines going.";
+    if (state.powers.sharing) story += " The Sharing Plan helped cut waste.";
 
     $("report-story").textContent = story;
+
+    trade = tradeoffSentence();
+    var tradeEl = $("report-tradeoff");
+    if (trade) {
+      tradeEl.style.display = "block";
+      tradeEl.textContent = "👀 Whole village: " + trade;
+    } else {
+      tradeEl.style.display = "none";
+      tradeEl.textContent = "";
+    }
+
+    function friendlyList(names) {
+      if (!names || !names.length) return "";
+      if (names.length === 1) return names[0];
+      if (names.length === 2) return names[0] + " and " + names[1];
+      return names.slice(0, -1).join(", ") + ", and " + names[names.length - 1];
+    }
+    var skipped = state.villagers.filter(function (v) { return !state.talkedTo.has(v.id); }).map(function (v) { return v.name; });
+    var listenNote = "";
+    if (state.powers.meeting && skipped.length) {
+      listenNote = "A Village Meeting helped you know everyone's needs, even neighbors you didn't visit one-on-one.";
+    } else if (skipped.length) {
+      listenNote = "You didn't talk to " + friendlyList(skipped) + ", so some surprises were harder to see coming. Listening makes the forecast surer.";
+    } else {
+      listenNote = "You listened to every neighbor, so your forecast had a fair chance to be sure.";
+    }
+    $("report-listen").textContent = listenNote;
+
+    keys = [
+      { key: "well", label: "Well", start: startSnap.well, end: r.well },
+      { key: "farm", label: "Farm", start: startSnap.farm, end: r.farm },
+      { key: "health", label: "Health", start: startSnap.health, end: r.health },
+      { key: "trust", label: "Trust", start: startSnap.trust, end: r.trust }
+    ];
+    gWrap = $("report-guesses");
+    gWrap.innerHTML = "";
+    keys.forEach(function (k) {
+      var actual = changeDir(k.start, k.end);
+      var guess = state.guesses[k.key] || "same";
+      fb = guessFeedback(k.label, guess, actual, k.start, k.end);
+      var div = document.createElement("div");
+      div.className = "guess-result " + (fb.ok ? "correct" : "miss");
+      div.textContent = (fb.ok ? "✓ " : "△ ") + fb.msg + "  (start " + Math.round(k.start) + " → " + Math.round(k.end) + ")";
+      gWrap.appendChild(div);
+    });
+
     metrics = [
       { label: "Water security", val: waterScore, color: "#4a9fd8" },
       { label: "Cleanliness / Health", val: cleanScore, color: "#4caf70" },
@@ -1270,8 +2183,8 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     badgeEl = $("report-badge");
     badgeEl.style.display = badge ? "block" : "none";
 
-    chips1 = ["Rain collectors", "Storage tanks", "Filters", "Listening to villagers", "Connecting objects"];
-    chips2 = ["Homes & school", "The farm", "Everyone fairly", "The stream", "Not sure yet"];
+    chips1 = ["Rain collectors", "Storage tanks", "Filters", "Listening to villagers", "Connecting objects", "A fair agreement"];
+    chips2 = ["Homes & school", "The farm", "Everyone fairly", "The stream", "The hill homes", "Not sure yet"];
     renderChips("rq1", chips1);
     renderChips("rq2", chips2);
     $("rq3").value = "";
@@ -1287,6 +2200,17 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
         farm: Math.round(r.farm), happiness: Math.round(r.happiness), trust: Math.round(r.trust),
         materials: r.materials
       },
+      guesses: Object.assign({}, state.guesses),
+      tradeoff: trade,
+      listenNote: listenNote,
+      villagers: state.villagers.map(function (v) {
+        return v.name + " · " + zoneById(v.zoneId).name + " · " + traitById(v.traitId).name;
+      }),
+      disputes: state.disputes.map(function (d) {
+        return d.title + ": " + (d.resolvedLabel || "unresolved");
+      }),
+      powers: Object.keys(state.powers).filter(function (k) { return state.powers[k]; }),
+      trustPointsLeft: state.trustPoints,
       badge: badge,
       logs: allLogs.slice(0, 12),
       reflection: null
@@ -1322,12 +2246,18 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     }
     state.reflection.q3 = ($("rq3") && $("rq3").value) || state.reflection.q3 || "";
     $("parent-record").textContent = [
+      "Who lives where: " + (rec.villagers ? rec.villagers.join("; ") : "—"),
+      "Disagreements: " + ((rec.disputes && rec.disputes.length) ? rec.disputes.join("; ") : "none"),
+      "Leader powers used: " + ((rec.powers && rec.powers.length) ? rec.powers.join(", ") : "none") + " (Trust Points left: " + rec.trustPointsLeft + ")",
       "Objects placed: " + (rec.objects.join(", ") || "none"),
       "Connections: " + rec.connections,
       "Outcomes — Well: " + rec.outcomes.well + ", Stored: " + rec.outcomes.stored +
         ", Health: " + rec.outcomes.health + ", Farm: " + rec.outcomes.farm +
         ", Happy: " + rec.outcomes.happiness + ", Trust: " + rec.outcomes.trust +
         ", Materials left: " + rec.outcomes.materials,
+      "Guesses: " + (rec.guesses ? ("Well " + rec.guesses.well + ", Farm " + rec.guesses.farm + ", Health " + rec.guesses.health + ", Trust " + rec.guesses.trust) : "—"),
+      "Whole-village note: " + (rec.tradeoff || "none this run"),
+      "Listening: " + (rec.listenNote || "—"),
       "Badge earned: " + (rec.badge ? "Yes" : "Not yet"),
       "Reflection — Worked well: " + (state.reflection.q1 || "—"),
       "Who benefited: " + (state.reflection.q2 || "—"),
@@ -1345,14 +2275,14 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     state.connectFrom = null;
     state.resources = Object.assign({}, START);
     if (full) {
-      state.talkedTo = new Set();
-      state.inspected = new Set();
+      initVillage();
       state.reflection = { q1: null, q2: null, q3: "" };
       state.lastReport = null;
       state.weatherFlash = null;
     }
     updateResourcesUI();
     renderBuildCards();
+    refreshNeeds();
     $("btn-run").disabled = true;
     $("build-mode-label").textContent = "Select a card, then click a glowing plot";
   }
@@ -1360,16 +2290,35 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   $("btn-start").addEventListener("click", function () {
     closeOverlays();
     setPhase("explore");
-    toast("Click Maya, Arun, Rosa, Eli, or Jordan — and explore the well, stream, and farm!");
+    toast("Click villagers and places — look at the hill, stream, fields, well, and downstream!", 2800);
   });
-  $("btn-dlg-close").addEventListener("click", function () { closeOverlays(); });
-  $("btn-place-close").addEventListener("click", function () { closeOverlays(); });
+  $("btn-dlg-close").addEventListener("click", function () {
+    closeOverlays();
+    maybeOfferDispute(450);
+  });
+  $("btn-place-close").addEventListener("click", function () {
+    closeOverlays();
+    maybeOfferDispute(450);
+  });
   $("btn-needs").addEventListener("click", function () { refreshNeeds(); openOverlay("overlay-needs"); });
-  $("btn-needs-close").addEventListener("click", function () { closeOverlays(); });
+  $("btn-needs-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
   $("btn-how").addEventListener("click", function () { openOverlay("overlay-how"); });
-  $("btn-how-close").addEventListener("click", function () { closeOverlays(); });
+  $("btn-how-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
   $("btn-parent").addEventListener("click", function () { updateParentRecord(); openOverlay("overlay-parent"); });
   $("btn-parent-close").addEventListener("click", function () { closeOverlays(); });
+  $("btn-leader").addEventListener("click", function () {
+    if (state.phase === "intro" || state.phase === "simulate" || state.phase === "end") return;
+    renderLeaderPanel();
+    openOverlay("overlay-leader");
+  });
+  $("btn-leader-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
+  $("btn-meeting-close").addEventListener("click", function () { closeOverlays(); maybeOfferDispute(300); });
+  $("btn-power-meeting").setAttribute("data-label", "Hold a Village Meeting");
+  $("btn-power-hands").setAttribute("data-label", "Ask for Helping Hands");
+  $("btn-power-sharing").setAttribute("data-label", "Start a Sharing Plan");
+  $("btn-power-meeting").addEventListener("click", usePowerMeeting);
+  $("btn-power-hands").addEventListener("click", usePowerHands);
+  $("btn-power-sharing").addEventListener("click", usePowerSharing);
 
   $("btn-connect").addEventListener("click", function () {
     if (state.phase !== "build" && state.phase !== "explore") return;
@@ -1394,7 +2343,12 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     toast("Removed " + (b ? b.name : "object") + ". Materials returned.");
   });
 
-  $("btn-run").addEventListener("click", function () { startSimulation(); });
+  $("btn-run").addEventListener("click", function () { openPredict(); });
+  $("btn-predict-back").addEventListener("click", function () { closeOverlays(); });
+  $("btn-predict-run").addEventListener("click", function () {
+    if (!["well", "farm", "health", "trust"].every(function (k) { return state.guesses[k]; })) return;
+    startSimulation();
+  });
   $("btn-sim-slow").addEventListener("click", function () {
     state.simSpeed = state.simSpeed === 0.5 ? 1 : 0.5;
     toast(state.simSpeed === 0.5 ? "Slow motion" : "Normal speed");
@@ -1449,18 +2403,42 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
-      var blocking = ["overlay-intro", "overlay-sim", "overlay-report", "overlay-end"];
+      var blocking = ["overlay-intro", "overlay-sim", "overlay-report", "overlay-end", "overlay-predict", "overlay-dispute"];
       var open = Array.prototype.slice.call(document.querySelectorAll(".overlay.open"));
       if (open.length && blocking.indexOf(open[0].id) < 0) closeOverlays();
     }
   });
 
+  window.RIVERBEND = {
+    version: RIVERBEND_VERSION,
+    getVillagers: function () {
+      return state.villagers.map(function (v) {
+        return { id: v.id, name: v.name, x: v.x, y: v.y, zoneId: v.zoneId, traitId: v.traitId };
+      });
+    },
+    getPlots: function () { return PLOTS.slice(); },
+    getState: function () {
+      return {
+        phase: state.phase,
+        placed: state.placed.length,
+        trustPoints: state.trustPoints,
+        talkedTo: Array.from(state.talkedTo),
+        powers: Object.assign({}, state.powers),
+        listening: listeningPct(),
+        disputes: state.disputes.map(function (d) { return { id: d.id, title: d.title, resolved: d.resolved, resolvedKind: d.resolvedKind || null }; }),
+        guesses: Object.assign({}, state.guesses),
+        materials: state.resources.materials
+      };
+    }
+  };
+
+  initVillage();
   updateResourcesUI();
   renderBuildCards();
   refreshNeeds();
   setPhase("intro");
   loop();
-  console.log("Riverbend Village ready");
+  console.log("Riverbend Village ready", RIVERBEND_VERSION);
 
 })();
 </script>
